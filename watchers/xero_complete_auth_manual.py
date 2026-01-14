@@ -111,5 +111,5 @@ def complete_auth(auth_code):
 
 if __name__ == "__main__":
     # The authorization code from the redirect URL
-    auth_code = "1Oa-bkY69R-K6uMEi2RMyBHW2M0fHikbr-jPTLqHKtM"
+    auth_code = "OeoMnEHKEvXK5Fv1BdpQdbZYe_UpvCyWpfSQEOsePkw"
     complete_auth(auth_code)

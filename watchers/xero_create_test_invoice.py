@@ -43,10 +43,13 @@ def create_test_invoice():
     # Step 1: Create a test contact (customer)
     print("\nStep 1: Creating test contact...")
 
+    # Use timestamp to create unique contact name
+    timestamp = datetime.now().strftime('%Y%m%d_%H%M%S')
+
     contact_data = {
         "Contacts": [{
-            "Name": "Test Customer - AI Employee",
-            "EmailAddress": "test@aiemployee.local",
+            "Name": f"Test Customer AI-{timestamp}",
+            "EmailAddress": f"test-{timestamp}@aiemployee.local",
             "ContactStatus": "ACTIVE"
         }]
     }

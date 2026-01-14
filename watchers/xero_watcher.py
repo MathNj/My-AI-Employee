@@ -163,7 +163,7 @@ class XeroWatcher(BaseWatcher):
             # Save updated token
             self._save_token(credentials.token)
 
-            self.logger.info("✓ Connected to Xero API")
+            self.logger.info("[OK] Connected to Xero API")
 
         except Exception as e:
             self.logger.error(f"Failed to connect to Xero: {e}")

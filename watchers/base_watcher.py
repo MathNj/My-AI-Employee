@@ -326,7 +326,7 @@ class BaseWatcher(ABC):
 
                                 if task_path:
                                     self.total_items_processed += 1
-                                    self.logger.info(f"✓ Created task: {task_path.name}")
+                                    self.logger.info(f"[OK] Created task: {task_path.name}")
 
                             except Exception as e:
                                 self.total_errors += 1
@@ -366,7 +366,7 @@ class BaseWatcher(ABC):
         # Save final state
         self._save_processed_items()
 
-        self.logger.info(f"✓ {self.watcher_name} stopped successfully")
+        self.logger.info(f"[OK] {self.watcher_name} stopped successfully")
         self.logger.info("=" * 70)
 
         sys.exit(0)
