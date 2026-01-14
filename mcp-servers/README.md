@@ -1,10 +1,10 @@
 # MCP Servers for Personal AI Employee
 
-Production-ready Model Context Protocol (MCP) servers for Gmail and LinkedIn integration with OAuth 2.0, Human-in-the-Loop approval workflows, and comprehensive automation capabilities.
+Production-ready Model Context Protocol (MCP) servers for Gmail, LinkedIn, and Xero integration with OAuth 2.0, Human-in-the-Loop approval workflows, and comprehensive automation capabilities.
 
 ## Project Overview
 
-This project provides two enterprise-grade MCP servers designed for the Personal AI Employee hackathon:
+This project provides three enterprise-grade MCP servers designed for the Personal AI Employee hackathon:
 
 ### 1. Gmail MCP Server
 - **Purpose**: Email automation with human oversight
@@ -18,7 +18,14 @@ This project provides two enterprise-grade MCP servers designed for the Personal
 - **Security**: OAuth 2.0, mandatory approval for all posts, content logging
 - **Templates**: 5 pre-built templates for common business posts
 
-Both servers are production-ready with:
+### 3. Xero MCP Server (Official)
+- **Purpose**: Accounting automation and financial management
+- **Features**: 40+ tools for invoices, reports, contacts, payments, payroll
+- **Security**: OAuth 2.0, official Xero API integration, audit logging
+- **Integration**: Full Xero accounting system automation
+- **Repository**: https://github.com/XeroAPI/xero-mcp-server
+
+All servers are production-ready with:
 - Comprehensive error handling and retry logic
 - Rate limiting to prevent quota exhaustion
 - Detailed audit logging with PII redaction
