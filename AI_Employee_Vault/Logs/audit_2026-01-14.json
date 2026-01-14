@@ -1,0 +1,28 @@
+[
+  {
+    "timestamp": "2026-01-14T13:41:08.651837",
+    "action_type": "email_send",
+    "actor": "test_script",
+    "target": "test@example.com",
+    "parameters": {
+      "subject": "Test Email",
+      "body": "This is a test"
+    },
+    "approval_status": "approved",
+    "approved_by": "human",
+    "result": "success"
+  },
+  {
+    "timestamp": "2026-01-14T13:41:20.220375",
+    "action_type": "email_send",
+    "actor": "test_script",
+    "target": "test@example.com",
+    "parameters": {
+      "subject": "Test Email",
+      "body": "This is a test"
+    },
+    "approval_status": "approved",
+    "approved_by": "human",
+    "result": "success"
+  }
+]

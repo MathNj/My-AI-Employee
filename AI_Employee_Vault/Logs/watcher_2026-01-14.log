@@ -1,0 +1,13 @@
+2026-01-14 12:33:35,056 - INFO - ============================================================
+2026-01-14 12:33:35,056 - INFO - Personal AI Employee - Filesystem Watcher
+2026-01-14 12:33:35,056 - INFO - ============================================================
+2026-01-14 12:33:35,057 - INFO - Vault: C:\Users\Najma-LP\Desktop\My Vault\AI_Employee_Vault
+2026-01-14 12:33:35,057 - INFO - Watching: C:\Users\Najma-LP\Desktop\My Vault\AI_Employee_Vault\Inbox
+2026-01-14 12:33:35,057 - INFO - Press Ctrl+C to stop
+2026-01-14 12:33:35,057 - INFO - ============================================================
+2026-01-14 12:33:35,058 - INFO - Watcher initialized
+2026-01-14 12:33:35,058 - INFO -   Monitoring: C:\Users\Najma-LP\Desktop\My Vault\AI_Employee_Vault\Inbox
+2026-01-14 12:33:35,058 - INFO -   Output to: C:\Users\Najma-LP\Desktop\My Vault\AI_Employee_Vault\Needs_Action
+2026-01-14 12:33:35,062 - INFO -   Drop files in: C:\Users\Najma-LP\Desktop\My Vault\AI_Employee_Vault\Inbox
+2026-01-14 12:33:35,062 - INFO -   Tasks created in: C:\Users\Najma-LP\Desktop\My Vault\AI_Employee_Vault\Needs_Action
+2026-01-14 12:33:35,062 - INFO - 

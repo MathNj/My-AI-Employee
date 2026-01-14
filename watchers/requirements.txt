@@ -1,0 +1,78 @@
+# Personal AI Employee - Watcher System Requirements
+# Install with: pip install -r requirements.txt
+
+# ============================================================================
+# Core Dependencies
+# ============================================================================
+python-dotenv>=1.0.0
+
+# ============================================================================
+# Google API Dependencies (Gmail & Calendar Watchers)
+# ============================================================================
+google-api-python-client>=2.108.0
+google-auth>=2.25.2
+google-auth-httplib2>=0.2.0
+google-auth-oauthlib>=1.2.0
+
+# ============================================================================
+# Browser Automation (WhatsApp Watcher)
+# ============================================================================
+playwright>=1.40.0
+# Run after install: python -m playwright install chromium
+
+# ============================================================================
+# Filesystem Monitoring (Filesystem Watcher)
+# ============================================================================
+watchdog>=3.0.0
+
+# ============================================================================
+# Web APIs & HTTP (Slack, Xero, Generic API Watchers)
+# ============================================================================
+requests>=2.31.0
+aiohttp>=3.9.1
+
+# ============================================================================
+# Accounting & Finance (Xero Watcher)
+# ============================================================================
+xero-python>=2.0.0
+
+# ============================================================================
+# Utilities
+# ============================================================================
+# Date/time utilities
+python-dateutil>=2.8.2
+
+# File type detection
+python-magic>=0.4.27
+# Windows users may need python-magic-bin instead:
+# python-magic-bin>=0.4.14
+
+# PDF processing
+PyPDF2>=3.0.1
+
+# Excel/CSV processing
+pandas>=2.1.4
+openpyxl>=3.1.2
+
+# Image processing (optional, for screenshot analysis)
+Pillow>=10.1.0
+
+# ============================================================================
+# Process Management (Optional)
+# ============================================================================
+# PM2 alternative for Python
+supervisor>=4.2.5
+
+# ============================================================================
+# Testing Dependencies (Optional)
+# ============================================================================
+pytest>=7.4.3
+pytest-asyncio>=0.21.1
+pytest-cov>=4.1.0
+
+# ============================================================================
+# Version Info
+# ============================================================================
+# Generated: 2026-01-14
+# Python: 3.8+
+# Platform: Windows/Linux/macOS

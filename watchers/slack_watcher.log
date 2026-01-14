@@ -1,0 +1,509 @@
+======================================================================
+Personal AI Employee - Slack Watcher
+======================================================================
+Vault: C:\Users\Najma-LP\Desktop\My Vault\AI_Employee_Vault
+Monitoring: DMs, Mentions, Channels, Files
+Press Ctrl+C to stop
+======================================================================
+
+2026-01-14 12:02:26 - SlackWatcher - INFO - Loaded 3 processed items from cache
+2026-01-14 12:02:26 - SlackWatcher - INFO - SlackWatcher initialized
+2026-01-14 12:02:26 - SlackWatcher - INFO -   Vault: C:\Users\Najma-LP\Desktop\My Vault\AI_Employee_Vault
+2026-01-14 12:02:26 - SlackWatcher - INFO -   Output: C:\Users\Najma-LP\Desktop\My Vault\AI_Employee_Vault\Needs_Action
+2026-01-14 12:02:26 - SlackWatcher - INFO -   Check interval: 60s
+--- Logging error ---
+Traceback (most recent call last):
+  File "C:\Users\Najma-LP\AppData\Local\Programs\Python\Python313\Lib\logging\__init__.py", line 1154, in emit
+    stream.write(msg + self.terminator)
+    ~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Najma-LP\AppData\Local\Programs\Python\Python313\Lib\encodings\cp1252.py", line 19, in encode
+    return codecs.charmap_encode(input,self.errors,encoding_table)[0]
+           ~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+UnicodeEncodeError: 'charmap' codec can't encode character '\u2713' in position 44: character maps to <undefined>
+Call stack:
+  File "C:\Users\Najma-LP\Desktop\My Vault\watchers\slack_watcher.py", line 756, in <module>
+    main()
+  File "C:\Users\Najma-LP\Desktop\My Vault\watchers\slack_watcher.py", line 740, in main
+    watcher = SlackWatcher(
+  File "C:\Users\Najma-LP\Desktop\My Vault\watchers\slack_watcher.py", line 90, in __init__
+    self._initialize_slack_connection()
+  File "C:\Users\Najma-LP\Desktop\My Vault\watchers\slack_watcher.py", line 161, in _initialize_slack_connection
+    self.logger.info(f"\u2713 Connected to Slack (Bot ID: {self.bot_user_id})")
+Message: '\u2713 Connected to Slack (Bot ID: U0A8NSQN18C)'
+Arguments: ()
+2026-01-14 12:02:26 - SlackWatcher - INFO - Slack Watcher initialized
+2026-01-14 12:02:26 - SlackWatcher - INFO -   Monitoring: DMs, Mentions, Channels, Keywords
+2026-01-14 12:02:26 - SlackWatcher - INFO -   Keywords: urgent, important, help, issue, problem...
+2026-01-14 12:02:26 - SlackWatcher - INFO - ======================================================================
+2026-01-14 12:02:26 - SlackWatcher - INFO - SlackWatcher started
+2026-01-14 12:02:26 - SlackWatcher - INFO - Check interval: 60 seconds
+2026-01-14 12:02:26 - SlackWatcher - INFO - Press Ctrl+C to stop
+2026-01-14 12:02:26 - SlackWatcher - INFO - ======================================================================
+2026-01-14 12:02:29 - SlackWatcher - ERROR - Error checking mentions: The request to the Slack API failed. (url: https://slack.com/api/search.messages)
+The server responded with: {'ok': False, 'error': 'not_allowed_token_type'}
+2026-01-14 12:03:32 - SlackWatcher - ERROR - Error checking mentions: The request to the Slack API failed. (url: https://slack.com/api/search.messages)
+The server responded with: {'ok': False, 'error': 'not_allowed_token_type'}
+2026-01-14 12:04:35 - SlackWatcher - ERROR - Error checking mentions: The request to the Slack API failed. (url: https://slack.com/api/search.messages)
+The server responded with: {'ok': False, 'error': 'not_allowed_token_type'}
+2026-01-14 12:05:38 - SlackWatcher - ERROR - Error checking mentions: The request to the Slack API failed. (url: https://slack.com/api/search.messages)
+The server responded with: {'ok': False, 'error': 'not_allowed_token_type'}
+2026-01-14 12:06:47 - SlackWatcher - ERROR - Error checking mentions: The request to the Slack API failed. (url: https://slack.com/api/search.messages)
+The server responded with: {'ok': False, 'error': 'not_allowed_token_type'}
+2026-01-14 12:07:57 - SlackWatcher - ERROR - Error checking mentions: The request to the Slack API failed. (url: https://slack.com/api/search.messages)
+The server responded with: {'ok': False, 'error': 'not_allowed_token_type'}
+2026-01-14 12:09:07 - SlackWatcher - ERROR - Error checking mentions: The request to the Slack API failed. (url: https://slack.com/api/search.messages)
+The server responded with: {'ok': False, 'error': 'not_allowed_token_type'}
+2026-01-14 12:10:10 - SlackWatcher - ERROR - Error checking mentions: The request to the Slack API failed. (url: https://slack.com/api/search.messages)
+The server responded with: {'ok': False, 'error': 'not_allowed_token_type'}
+2026-01-14 12:11:14 - SlackWatcher - ERROR - Error checking mentions: The request to the Slack API failed. (url: https://slack.com/api/search.messages)
+The server responded with: {'ok': False, 'error': 'not_allowed_token_type'}
+2026-01-14 12:12:17 - SlackWatcher - ERROR - Error checking mentions: The request to the Slack API failed. (url: https://slack.com/api/search.messages)
+The server responded with: {'ok': False, 'error': 'not_allowed_token_type'}
+2026-01-14 12:13:22 - SlackWatcher - ERROR - Error checking mentions: The request to the Slack API failed. (url: https://slack.com/api/search.messages)
+The server responded with: {'ok': False, 'error': 'not_allowed_token_type'}
+2026-01-14 12:14:25 - SlackWatcher - ERROR - Error checking mentions: The request to the Slack API failed. (url: https://slack.com/api/search.messages)
+The server responded with: {'ok': False, 'error': 'not_allowed_token_type'}
+2026-01-14 12:15:29 - SlackWatcher - ERROR - Error checking mentions: The request to the Slack API failed. (url: https://slack.com/api/search.messages)
+The server responded with: {'ok': False, 'error': 'not_allowed_token_type'}
+2026-01-14 12:16:32 - SlackWatcher - ERROR - Error checking mentions: The request to the Slack API failed. (url: https://slack.com/api/search.messages)
+The server responded with: {'ok': False, 'error': 'not_allowed_token_type'}
+2026-01-14 12:17:35 - SlackWatcher - ERROR - Error checking mentions: The request to the Slack API failed. (url: https://slack.com/api/search.messages)
+The server responded with: {'ok': False, 'error': 'not_allowed_token_type'}
+2026-01-14 12:18:37 - SlackWatcher - ERROR - Error checking mentions: The request to the Slack API failed. (url: https://slack.com/api/search.messages)
+The server responded with: {'ok': False, 'error': 'not_allowed_token_type'}
+2026-01-14 12:19:40 - SlackWatcher - ERROR - Error checking mentions: The request to the Slack API failed. (url: https://slack.com/api/search.messages)
+The server responded with: {'ok': False, 'error': 'not_allowed_token_type'}
+2026-01-14 12:20:43 - SlackWatcher - ERROR - Error checking mentions: The request to the Slack API failed. (url: https://slack.com/api/search.messages)
+The server responded with: {'ok': False, 'error': 'not_allowed_token_type'}
+2026-01-14 12:21:45 - SlackWatcher - ERROR - Error checking mentions: The request to the Slack API failed. (url: https://slack.com/api/search.messages)
+The server responded with: {'ok': False, 'error': 'not_allowed_token_type'}
+2026-01-14 12:22:48 - SlackWatcher - ERROR - Error checking mentions: The request to the Slack API failed. (url: https://slack.com/api/search.messages)
+The server responded with: {'ok': False, 'error': 'not_allowed_token_type'}
+2026-01-14 12:23:51 - SlackWatcher - ERROR - Error checking mentions: The request to the Slack API failed. (url: https://slack.com/api/search.messages)
+The server responded with: {'ok': False, 'error': 'not_allowed_token_type'}
+2026-01-14 12:24:53 - SlackWatcher - ERROR - Error checking mentions: The request to the Slack API failed. (url: https://slack.com/api/search.messages)
+The server responded with: {'ok': False, 'error': 'not_allowed_token_type'}
+2026-01-14 12:25:56 - SlackWatcher - ERROR - Error checking mentions: The request to the Slack API failed. (url: https://slack.com/api/search.messages)
+The server responded with: {'ok': False, 'error': 'not_allowed_token_type'}
+2026-01-14 12:26:59 - SlackWatcher - ERROR - Error checking mentions: The request to the Slack API failed. (url: https://slack.com/api/search.messages)
+The server responded with: {'ok': False, 'error': 'not_allowed_token_type'}
+2026-01-14 12:28:02 - SlackWatcher - ERROR - Error checking mentions: The request to the Slack API failed. (url: https://slack.com/api/search.messages)
+The server responded with: {'ok': False, 'error': 'not_allowed_token_type'}
+2026-01-14 12:29:05 - SlackWatcher - ERROR - Error checking mentions: The request to the Slack API failed. (url: https://slack.com/api/search.messages)
+The server responded with: {'ok': False, 'error': 'not_allowed_token_type'}
+2026-01-14 12:30:07 - SlackWatcher - ERROR - Error checking mentions: The request to the Slack API failed. (url: https://slack.com/api/search.messages)
+The server responded with: {'ok': False, 'error': 'not_allowed_token_type'}
+2026-01-14 12:31:11 - SlackWatcher - ERROR - Error checking mentions: The request to the Slack API failed. (url: https://slack.com/api/search.messages)
+The server responded with: {'ok': False, 'error': 'not_allowed_token_type'}
+2026-01-14 12:32:14 - SlackWatcher - ERROR - Error checking mentions: The request to the Slack API failed. (url: https://slack.com/api/search.messages)
+The server responded with: {'ok': False, 'error': 'not_allowed_token_type'}
+2026-01-14 12:33:17 - SlackWatcher - ERROR - Error checking mentions: The request to the Slack API failed. (url: https://slack.com/api/search.messages)
+The server responded with: {'ok': False, 'error': 'not_allowed_token_type'}
+2026-01-14 12:34:20 - SlackWatcher - ERROR - Error checking mentions: The request to the Slack API failed. (url: https://slack.com/api/search.messages)
+The server responded with: {'ok': False, 'error': 'not_allowed_token_type'}
+2026-01-14 12:35:24 - SlackWatcher - ERROR - Error checking mentions: The request to the Slack API failed. (url: https://slack.com/api/search.messages)
+The server responded with: {'ok': False, 'error': 'not_allowed_token_type'}
+2026-01-14 12:36:27 - SlackWatcher - ERROR - Error checking mentions: The request to the Slack API failed. (url: https://slack.com/api/search.messages)
+The server responded with: {'ok': False, 'error': 'not_allowed_token_type'}
+2026-01-14 12:37:30 - SlackWatcher - ERROR - Error checking mentions: The request to the Slack API failed. (url: https://slack.com/api/search.messages)
+The server responded with: {'ok': False, 'error': 'not_allowed_token_type'}
+2026-01-14 12:38:33 - SlackWatcher - ERROR - Error checking mentions: The request to the Slack API failed. (url: https://slack.com/api/search.messages)
+The server responded with: {'ok': False, 'error': 'not_allowed_token_type'}
+2026-01-14 12:39:36 - SlackWatcher - ERROR - Error checking mentions: The request to the Slack API failed. (url: https://slack.com/api/search.messages)
+The server responded with: {'ok': False, 'error': 'not_allowed_token_type'}
+2026-01-14 12:40:40 - SlackWatcher - ERROR - Error checking mentions: The request to the Slack API failed. (url: https://slack.com/api/search.messages)
+The server responded with: {'ok': False, 'error': 'not_allowed_token_type'}
+2026-01-14 12:41:43 - SlackWatcher - ERROR - Error checking mentions: The request to the Slack API failed. (url: https://slack.com/api/search.messages)
+The server responded with: {'ok': False, 'error': 'not_allowed_token_type'}
+2026-01-14 12:42:46 - SlackWatcher - ERROR - Error checking mentions: The request to the Slack API failed. (url: https://slack.com/api/search.messages)
+The server responded with: {'ok': False, 'error': 'not_allowed_token_type'}
+2026-01-14 12:43:49 - SlackWatcher - ERROR - Error checking mentions: The request to the Slack API failed. (url: https://slack.com/api/search.messages)
+The server responded with: {'ok': False, 'error': 'not_allowed_token_type'}
+2026-01-14 12:44:52 - SlackWatcher - ERROR - Error checking mentions: The request to the Slack API failed. (url: https://slack.com/api/search.messages)
+The server responded with: {'ok': False, 'error': 'not_allowed_token_type'}
+2026-01-14 12:45:55 - SlackWatcher - ERROR - Error checking mentions: The request to the Slack API failed. (url: https://slack.com/api/search.messages)
+The server responded with: {'ok': False, 'error': 'not_allowed_token_type'}
+2026-01-14 12:46:59 - SlackWatcher - ERROR - Error checking mentions: The request to the Slack API failed. (url: https://slack.com/api/search.messages)
+The server responded with: {'ok': False, 'error': 'not_allowed_token_type'}
+2026-01-14 12:48:02 - SlackWatcher - ERROR - Error checking mentions: The request to the Slack API failed. (url: https://slack.com/api/search.messages)
+The server responded with: {'ok': False, 'error': 'not_allowed_token_type'}
+2026-01-14 12:49:05 - SlackWatcher - ERROR - Error checking mentions: The request to the Slack API failed. (url: https://slack.com/api/search.messages)
+The server responded with: {'ok': False, 'error': 'not_allowed_token_type'}
+2026-01-14 12:50:08 - SlackWatcher - ERROR - Error checking mentions: The request to the Slack API failed. (url: https://slack.com/api/search.messages)
+The server responded with: {'ok': False, 'error': 'not_allowed_token_type'}
+2026-01-14 12:51:11 - SlackWatcher - ERROR - Error checking mentions: The request to the Slack API failed. (url: https://slack.com/api/search.messages)
+The server responded with: {'ok': False, 'error': 'not_allowed_token_type'}
+2026-01-14 12:52:14 - SlackWatcher - ERROR - Error checking mentions: The request to the Slack API failed. (url: https://slack.com/api/search.messages)
+The server responded with: {'ok': False, 'error': 'not_allowed_token_type'}
+2026-01-14 12:53:17 - SlackWatcher - ERROR - Error checking mentions: The request to the Slack API failed. (url: https://slack.com/api/search.messages)
+The server responded with: {'ok': False, 'error': 'not_allowed_token_type'}
+2026-01-14 12:54:20 - SlackWatcher - ERROR - Error checking mentions: The request to the Slack API failed. (url: https://slack.com/api/search.messages)
+The server responded with: {'ok': False, 'error': 'not_allowed_token_type'}
+2026-01-14 12:55:24 - SlackWatcher - ERROR - Error checking mentions: The request to the Slack API failed. (url: https://slack.com/api/search.messages)
+The server responded with: {'ok': False, 'error': 'not_allowed_token_type'}
+2026-01-14 12:56:26 - SlackWatcher - ERROR - Error checking mentions: The request to the Slack API failed. (url: https://slack.com/api/search.messages)
+The server responded with: {'ok': False, 'error': 'not_allowed_token_type'}
+2026-01-14 12:57:30 - SlackWatcher - ERROR - Error checking mentions: The request to the Slack API failed. (url: https://slack.com/api/search.messages)
+The server responded with: {'ok': False, 'error': 'not_allowed_token_type'}
+2026-01-14 12:58:32 - SlackWatcher - ERROR - Error checking mentions: The request to the Slack API failed. (url: https://slack.com/api/search.messages)
+The server responded with: {'ok': False, 'error': 'not_allowed_token_type'}
+2026-01-14 12:59:35 - SlackWatcher - ERROR - Error checking mentions: The request to the Slack API failed. (url: https://slack.com/api/search.messages)
+The server responded with: {'ok': False, 'error': 'not_allowed_token_type'}
+2026-01-14 13:00:38 - SlackWatcher - ERROR - Error checking mentions: The request to the Slack API failed. (url: https://slack.com/api/search.messages)
+The server responded with: {'ok': False, 'error': 'not_allowed_token_type'}
+2026-01-14 13:01:42 - SlackWatcher - ERROR - Error checking mentions: The request to the Slack API failed. (url: https://slack.com/api/search.messages)
+The server responded with: {'ok': False, 'error': 'not_allowed_token_type'}
+2026-01-14 13:02:44 - SlackWatcher - ERROR - Error checking mentions: The request to the Slack API failed. (url: https://slack.com/api/search.messages)
+The server responded with: {'ok': False, 'error': 'not_allowed_token_type'}
+2026-01-14 13:03:47 - SlackWatcher - ERROR - Error checking mentions: The request to the Slack API failed. (url: https://slack.com/api/search.messages)
+The server responded with: {'ok': False, 'error': 'not_allowed_token_type'}
+2026-01-14 13:04:50 - SlackWatcher - ERROR - Error checking mentions: The request to the Slack API failed. (url: https://slack.com/api/search.messages)
+The server responded with: {'ok': False, 'error': 'not_allowed_token_type'}
+2026-01-14 13:05:53 - SlackWatcher - ERROR - Error checking mentions: The request to the Slack API failed. (url: https://slack.com/api/search.messages)
+The server responded with: {'ok': False, 'error': 'not_allowed_token_type'}
+2026-01-14 13:06:56 - SlackWatcher - ERROR - Error checking mentions: The request to the Slack API failed. (url: https://slack.com/api/search.messages)
+The server responded with: {'ok': False, 'error': 'not_allowed_token_type'}
+2026-01-14 13:07:59 - SlackWatcher - ERROR - Error checking mentions: The request to the Slack API failed. (url: https://slack.com/api/search.messages)
+The server responded with: {'ok': False, 'error': 'not_allowed_token_type'}
+2026-01-14 13:09:02 - SlackWatcher - ERROR - Error checking mentions: The request to the Slack API failed. (url: https://slack.com/api/search.messages)
+The server responded with: {'ok': False, 'error': 'not_allowed_token_type'}
+2026-01-14 13:10:05 - SlackWatcher - ERROR - Error checking mentions: The request to the Slack API failed. (url: https://slack.com/api/search.messages)
+The server responded with: {'ok': False, 'error': 'not_allowed_token_type'}
+2026-01-14 13:11:08 - SlackWatcher - ERROR - Error checking mentions: The request to the Slack API failed. (url: https://slack.com/api/search.messages)
+The server responded with: {'ok': False, 'error': 'not_allowed_token_type'}
+2026-01-14 13:12:11 - SlackWatcher - ERROR - Error checking mentions: The request to the Slack API failed. (url: https://slack.com/api/search.messages)
+The server responded with: {'ok': False, 'error': 'not_allowed_token_type'}
+2026-01-14 13:13:13 - SlackWatcher - ERROR - Error checking mentions: The request to the Slack API failed. (url: https://slack.com/api/search.messages)
+The server responded with: {'ok': False, 'error': 'not_allowed_token_type'}
+2026-01-14 13:14:16 - SlackWatcher - ERROR - Error checking mentions: The request to the Slack API failed. (url: https://slack.com/api/search.messages)
+The server responded with: {'ok': False, 'error': 'not_allowed_token_type'}
+2026-01-14 13:15:19 - SlackWatcher - ERROR - Error checking mentions: The request to the Slack API failed. (url: https://slack.com/api/search.messages)
+The server responded with: {'ok': False, 'error': 'not_allowed_token_type'}
+2026-01-14 13:16:22 - SlackWatcher - ERROR - Error checking mentions: The request to the Slack API failed. (url: https://slack.com/api/search.messages)
+The server responded with: {'ok': False, 'error': 'not_allowed_token_type'}
+2026-01-14 13:17:25 - SlackWatcher - ERROR - Error checking mentions: The request to the Slack API failed. (url: https://slack.com/api/search.messages)
+The server responded with: {'ok': False, 'error': 'not_allowed_token_type'}
+2026-01-14 13:18:29 - SlackWatcher - ERROR - Error checking mentions: The request to the Slack API failed. (url: https://slack.com/api/search.messages)
+The server responded with: {'ok': False, 'error': 'not_allowed_token_type'}
+2026-01-14 13:19:32 - SlackWatcher - ERROR - Error checking mentions: The request to the Slack API failed. (url: https://slack.com/api/search.messages)
+The server responded with: {'ok': False, 'error': 'not_allowed_token_type'}
+2026-01-14 13:20:35 - SlackWatcher - ERROR - Error checking mentions: The request to the Slack API failed. (url: https://slack.com/api/search.messages)
+The server responded with: {'ok': False, 'error': 'not_allowed_token_type'}
+2026-01-14 13:21:39 - SlackWatcher - ERROR - Error checking mentions: The request to the Slack API failed. (url: https://slack.com/api/search.messages)
+The server responded with: {'ok': False, 'error': 'not_allowed_token_type'}
+2026-01-14 13:22:44 - SlackWatcher - ERROR - Error checking mentions: The request to the Slack API failed. (url: https://slack.com/api/search.messages)
+The server responded with: {'ok': False, 'error': 'not_allowed_token_type'}
+2026-01-14 13:23:48 - SlackWatcher - ERROR - Error checking mentions: The request to the Slack API failed. (url: https://slack.com/api/search.messages)
+The server responded with: {'ok': False, 'error': 'not_allowed_token_type'}
+2026-01-14 13:24:51 - SlackWatcher - ERROR - Error checking mentions: The request to the Slack API failed. (url: https://slack.com/api/search.messages)
+The server responded with: {'ok': False, 'error': 'not_allowed_token_type'}
+2026-01-14 13:25:54 - SlackWatcher - ERROR - Error checking mentions: The request to the Slack API failed. (url: https://slack.com/api/search.messages)
+The server responded with: {'ok': False, 'error': 'not_allowed_token_type'}
+2026-01-14 13:26:57 - SlackWatcher - ERROR - Error checking mentions: The request to the Slack API failed. (url: https://slack.com/api/search.messages)
+The server responded with: {'ok': False, 'error': 'not_allowed_token_type'}
+2026-01-14 13:28:00 - SlackWatcher - ERROR - Error checking mentions: The request to the Slack API failed. (url: https://slack.com/api/search.messages)
+The server responded with: {'ok': False, 'error': 'not_allowed_token_type'}
+2026-01-14 13:29:03 - SlackWatcher - ERROR - Error checking mentions: The request to the Slack API failed. (url: https://slack.com/api/search.messages)
+The server responded with: {'ok': False, 'error': 'not_allowed_token_type'}
+2026-01-14 13:30:06 - SlackWatcher - ERROR - Error checking mentions: The request to the Slack API failed. (url: https://slack.com/api/search.messages)
+The server responded with: {'ok': False, 'error': 'not_allowed_token_type'}
+2026-01-14 13:31:09 - SlackWatcher - ERROR - Error checking mentions: The request to the Slack API failed. (url: https://slack.com/api/search.messages)
+The server responded with: {'ok': False, 'error': 'not_allowed_token_type'}
+2026-01-14 13:32:12 - SlackWatcher - ERROR - Error checking mentions: The request to the Slack API failed. (url: https://slack.com/api/search.messages)
+The server responded with: {'ok': False, 'error': 'not_allowed_token_type'}
+2026-01-14 13:33:15 - SlackWatcher - ERROR - Error checking mentions: The request to the Slack API failed. (url: https://slack.com/api/search.messages)
+The server responded with: {'ok': False, 'error': 'not_allowed_token_type'}
+2026-01-14 13:34:18 - SlackWatcher - ERROR - Error checking mentions: The request to the Slack API failed. (url: https://slack.com/api/search.messages)
+The server responded with: {'ok': False, 'error': 'not_allowed_token_type'}
+2026-01-14 13:35:21 - SlackWatcher - ERROR - Error checking mentions: The request to the Slack API failed. (url: https://slack.com/api/search.messages)
+The server responded with: {'ok': False, 'error': 'not_allowed_token_type'}
+2026-01-14 13:36:24 - SlackWatcher - ERROR - Error checking mentions: The request to the Slack API failed. (url: https://slack.com/api/search.messages)
+The server responded with: {'ok': False, 'error': 'not_allowed_token_type'}
+2026-01-14 13:37:27 - SlackWatcher - ERROR - Error checking mentions: The request to the Slack API failed. (url: https://slack.com/api/search.messages)
+The server responded with: {'ok': False, 'error': 'not_allowed_token_type'}
+2026-01-14 13:38:30 - SlackWatcher - ERROR - Error checking mentions: The request to the Slack API failed. (url: https://slack.com/api/search.messages)
+The server responded with: {'ok': False, 'error': 'not_allowed_token_type'}
+2026-01-14 13:39:33 - SlackWatcher - ERROR - Error checking mentions: The request to the Slack API failed. (url: https://slack.com/api/search.messages)
+The server responded with: {'ok': False, 'error': 'not_allowed_token_type'}
+2026-01-14 13:40:36 - SlackWatcher - ERROR - Error checking mentions: The request to the Slack API failed. (url: https://slack.com/api/search.messages)
+The server responded with: {'ok': False, 'error': 'not_allowed_token_type'}
+2026-01-14 13:41:39 - SlackWatcher - ERROR - Error checking mentions: The request to the Slack API failed. (url: https://slack.com/api/search.messages)
+The server responded with: {'ok': False, 'error': 'not_allowed_token_type'}
+2026-01-14 13:42:42 - SlackWatcher - ERROR - Error checking mentions: The request to the Slack API failed. (url: https://slack.com/api/search.messages)
+The server responded with: {'ok': False, 'error': 'not_allowed_token_type'}
+2026-01-14 13:43:45 - SlackWatcher - ERROR - Error checking mentions: The request to the Slack API failed. (url: https://slack.com/api/search.messages)
+The server responded with: {'ok': False, 'error': 'not_allowed_token_type'}
+2026-01-14 13:44:48 - SlackWatcher - ERROR - Error checking mentions: The request to the Slack API failed. (url: https://slack.com/api/search.messages)
+The server responded with: {'ok': False, 'error': 'not_allowed_token_type'}
+2026-01-14 13:45:51 - SlackWatcher - ERROR - Error checking mentions: The request to the Slack API failed. (url: https://slack.com/api/search.messages)
+The server responded with: {'ok': False, 'error': 'not_allowed_token_type'}
+2026-01-14 13:46:54 - SlackWatcher - ERROR - Error checking mentions: The request to the Slack API failed. (url: https://slack.com/api/search.messages)
+The server responded with: {'ok': False, 'error': 'not_allowed_token_type'}
+2026-01-14 13:47:57 - SlackWatcher - ERROR - Error checking mentions: The request to the Slack API failed. (url: https://slack.com/api/search.messages)
+The server responded with: {'ok': False, 'error': 'not_allowed_token_type'}
+2026-01-14 13:49:00 - SlackWatcher - ERROR - Error checking mentions: The request to the Slack API failed. (url: https://slack.com/api/search.messages)
+The server responded with: {'ok': False, 'error': 'not_allowed_token_type'}
+2026-01-14 13:50:03 - SlackWatcher - ERROR - Error checking mentions: The request to the Slack API failed. (url: https://slack.com/api/search.messages)
+The server responded with: {'ok': False, 'error': 'not_allowed_token_type'}
+2026-01-14 13:51:06 - SlackWatcher - ERROR - Error checking mentions: The request to the Slack API failed. (url: https://slack.com/api/search.messages)
+The server responded with: {'ok': False, 'error': 'not_allowed_token_type'}
+2026-01-14 13:52:09 - SlackWatcher - ERROR - Error checking mentions: The request to the Slack API failed. (url: https://slack.com/api/search.messages)
+The server responded with: {'ok': False, 'error': 'not_allowed_token_type'}
+2026-01-14 13:53:12 - SlackWatcher - ERROR - Error checking mentions: The request to the Slack API failed. (url: https://slack.com/api/search.messages)
+The server responded with: {'ok': False, 'error': 'not_allowed_token_type'}
+2026-01-14 13:54:14 - SlackWatcher - ERROR - Error checking mentions: The request to the Slack API failed. (url: https://slack.com/api/search.messages)
+The server responded with: {'ok': False, 'error': 'not_allowed_token_type'}
+2026-01-14 13:55:17 - SlackWatcher - ERROR - Error checking mentions: The request to the Slack API failed. (url: https://slack.com/api/search.messages)
+The server responded with: {'ok': False, 'error': 'not_allowed_token_type'}
+2026-01-14 13:56:20 - SlackWatcher - ERROR - Error checking mentions: The request to the Slack API failed. (url: https://slack.com/api/search.messages)
+The server responded with: {'ok': False, 'error': 'not_allowed_token_type'}
+2026-01-14 13:57:23 - SlackWatcher - ERROR - Error checking mentions: The request to the Slack API failed. (url: https://slack.com/api/search.messages)
+The server responded with: {'ok': False, 'error': 'not_allowed_token_type'}
+2026-01-14 13:58:26 - SlackWatcher - ERROR - Error checking mentions: The request to the Slack API failed. (url: https://slack.com/api/search.messages)
+The server responded with: {'ok': False, 'error': 'not_allowed_token_type'}
+2026-01-14 13:59:30 - SlackWatcher - ERROR - Error checking mentions: The request to the Slack API failed. (url: https://slack.com/api/search.messages)
+The server responded with: {'ok': False, 'error': 'not_allowed_token_type'}
+2026-01-14 14:00:33 - SlackWatcher - ERROR - Error checking mentions: The request to the Slack API failed. (url: https://slack.com/api/search.messages)
+The server responded with: {'ok': False, 'error': 'not_allowed_token_type'}
+2026-01-14 14:01:36 - SlackWatcher - ERROR - Error checking mentions: The request to the Slack API failed. (url: https://slack.com/api/search.messages)
+The server responded with: {'ok': False, 'error': 'not_allowed_token_type'}
+2026-01-14 14:02:38 - SlackWatcher - ERROR - Error checking mentions: The request to the Slack API failed. (url: https://slack.com/api/search.messages)
+The server responded with: {'ok': False, 'error': 'not_allowed_token_type'}
+2026-01-14 14:03:42 - SlackWatcher - ERROR - Error checking mentions: The request to the Slack API failed. (url: https://slack.com/api/search.messages)
+The server responded with: {'ok': False, 'error': 'not_allowed_token_type'}
+2026-01-14 14:04:45 - SlackWatcher - ERROR - Error checking mentions: The request to the Slack API failed. (url: https://slack.com/api/search.messages)
+The server responded with: {'ok': False, 'error': 'not_allowed_token_type'}
+2026-01-14 14:05:48 - SlackWatcher - ERROR - Error checking mentions: The request to the Slack API failed. (url: https://slack.com/api/search.messages)
+The server responded with: {'ok': False, 'error': 'not_allowed_token_type'}
+2026-01-14 14:06:51 - SlackWatcher - ERROR - Error checking mentions: The request to the Slack API failed. (url: https://slack.com/api/search.messages)
+The server responded with: {'ok': False, 'error': 'not_allowed_token_type'}
+2026-01-14 14:07:53 - SlackWatcher - ERROR - Error checking mentions: The request to the Slack API failed. (url: https://slack.com/api/search.messages)
+The server responded with: {'ok': False, 'error': 'not_allowed_token_type'}
+2026-01-14 14:08:56 - SlackWatcher - ERROR - Error checking mentions: The request to the Slack API failed. (url: https://slack.com/api/search.messages)
+The server responded with: {'ok': False, 'error': 'not_allowed_token_type'}
+2026-01-14 14:10:00 - SlackWatcher - ERROR - Error checking mentions: The request to the Slack API failed. (url: https://slack.com/api/search.messages)
+The server responded with: {'ok': False, 'error': 'not_allowed_token_type'}
+2026-01-14 14:11:03 - SlackWatcher - ERROR - Error checking mentions: The request to the Slack API failed. (url: https://slack.com/api/search.messages)
+The server responded with: {'ok': False, 'error': 'not_allowed_token_type'}
+2026-01-14 14:12:06 - SlackWatcher - ERROR - Error checking mentions: The request to the Slack API failed. (url: https://slack.com/api/search.messages)
+The server responded with: {'ok': False, 'error': 'not_allowed_token_type'}
+2026-01-14 14:13:09 - SlackWatcher - ERROR - Error checking mentions: The request to the Slack API failed. (url: https://slack.com/api/search.messages)
+The server responded with: {'ok': False, 'error': 'not_allowed_token_type'}
+2026-01-14 14:14:12 - SlackWatcher - ERROR - Error checking mentions: The request to the Slack API failed. (url: https://slack.com/api/search.messages)
+The server responded with: {'ok': False, 'error': 'not_allowed_token_type'}
+2026-01-14 14:15:15 - SlackWatcher - ERROR - Error checking mentions: The request to the Slack API failed. (url: https://slack.com/api/search.messages)
+The server responded with: {'ok': False, 'error': 'not_allowed_token_type'}
+2026-01-14 14:16:18 - SlackWatcher - ERROR - Error checking mentions: The request to the Slack API failed. (url: https://slack.com/api/search.messages)
+The server responded with: {'ok': False, 'error': 'not_allowed_token_type'}
+2026-01-14 14:17:21 - SlackWatcher - ERROR - Error checking mentions: The request to the Slack API failed. (url: https://slack.com/api/search.messages)
+The server responded with: {'ok': False, 'error': 'not_allowed_token_type'}
+2026-01-14 14:18:25 - SlackWatcher - ERROR - Error checking mentions: The request to the Slack API failed. (url: https://slack.com/api/search.messages)
+The server responded with: {'ok': False, 'error': 'not_allowed_token_type'}
+2026-01-14 14:19:28 - SlackWatcher - ERROR - Error checking mentions: The request to the Slack API failed. (url: https://slack.com/api/search.messages)
+The server responded with: {'ok': False, 'error': 'not_allowed_token_type'}
+2026-01-14 14:20:31 - SlackWatcher - ERROR - Error checking mentions: The request to the Slack API failed. (url: https://slack.com/api/search.messages)
+The server responded with: {'ok': False, 'error': 'not_allowed_token_type'}
+2026-01-14 14:21:34 - SlackWatcher - ERROR - Error checking mentions: The request to the Slack API failed. (url: https://slack.com/api/search.messages)
+The server responded with: {'ok': False, 'error': 'not_allowed_token_type'}
+2026-01-14 14:22:38 - SlackWatcher - ERROR - Error checking mentions: The request to the Slack API failed. (url: https://slack.com/api/search.messages)
+The server responded with: {'ok': False, 'error': 'not_allowed_token_type'}
+2026-01-14 14:23:41 - SlackWatcher - ERROR - Error checking mentions: The request to the Slack API failed. (url: https://slack.com/api/search.messages)
+The server responded with: {'ok': False, 'error': 'not_allowed_token_type'}
+2026-01-14 14:24:44 - SlackWatcher - ERROR - Error checking mentions: The request to the Slack API failed. (url: https://slack.com/api/search.messages)
+The server responded with: {'ok': False, 'error': 'not_allowed_token_type'}
+2026-01-14 14:25:47 - SlackWatcher - ERROR - Error checking mentions: The request to the Slack API failed. (url: https://slack.com/api/search.messages)
+The server responded with: {'ok': False, 'error': 'not_allowed_token_type'}
+2026-01-14 14:26:50 - SlackWatcher - ERROR - Error checking mentions: The request to the Slack API failed. (url: https://slack.com/api/search.messages)
+The server responded with: {'ok': False, 'error': 'not_allowed_token_type'}
+2026-01-14 14:27:53 - SlackWatcher - ERROR - Error checking mentions: The request to the Slack API failed. (url: https://slack.com/api/search.messages)
+The server responded with: {'ok': False, 'error': 'not_allowed_token_type'}
+2026-01-14 14:28:58 - SlackWatcher - ERROR - Error checking mentions: The request to the Slack API failed. (url: https://slack.com/api/search.messages)
+The server responded with: {'ok': False, 'error': 'not_allowed_token_type'}
+2026-01-14 14:30:01 - SlackWatcher - ERROR - Error checking mentions: The request to the Slack API failed. (url: https://slack.com/api/search.messages)
+The server responded with: {'ok': False, 'error': 'not_allowed_token_type'}
+2026-01-14 14:31:04 - SlackWatcher - ERROR - Error checking mentions: The request to the Slack API failed. (url: https://slack.com/api/search.messages)
+The server responded with: {'ok': False, 'error': 'not_allowed_token_type'}
+2026-01-14 14:32:07 - SlackWatcher - ERROR - Error checking mentions: The request to the Slack API failed. (url: https://slack.com/api/search.messages)
+The server responded with: {'ok': False, 'error': 'not_allowed_token_type'}
+2026-01-14 14:33:11 - SlackWatcher - ERROR - Error checking mentions: The request to the Slack API failed. (url: https://slack.com/api/search.messages)
+The server responded with: {'ok': False, 'error': 'not_allowed_token_type'}
+2026-01-14 14:34:14 - SlackWatcher - ERROR - Error checking mentions: The request to the Slack API failed. (url: https://slack.com/api/search.messages)
+The server responded with: {'ok': False, 'error': 'not_allowed_token_type'}
+2026-01-14 14:35:17 - SlackWatcher - ERROR - Error checking mentions: The request to the Slack API failed. (url: https://slack.com/api/search.messages)
+The server responded with: {'ok': False, 'error': 'not_allowed_token_type'}
+2026-01-14 14:36:21 - SlackWatcher - ERROR - Error checking mentions: The request to the Slack API failed. (url: https://slack.com/api/search.messages)
+The server responded with: {'ok': False, 'error': 'not_allowed_token_type'}
+2026-01-14 14:37:24 - SlackWatcher - ERROR - Error checking mentions: The request to the Slack API failed. (url: https://slack.com/api/search.messages)
+The server responded with: {'ok': False, 'error': 'not_allowed_token_type'}
+2026-01-14 14:38:27 - SlackWatcher - ERROR - Error checking mentions: The request to the Slack API failed. (url: https://slack.com/api/search.messages)
+The server responded with: {'ok': False, 'error': 'not_allowed_token_type'}
+2026-01-14 14:39:30 - SlackWatcher - ERROR - Error checking mentions: The request to the Slack API failed. (url: https://slack.com/api/search.messages)
+The server responded with: {'ok': False, 'error': 'not_allowed_token_type'}
+2026-01-14 14:40:34 - SlackWatcher - ERROR - Error checking mentions: The request to the Slack API failed. (url: https://slack.com/api/search.messages)
+The server responded with: {'ok': False, 'error': 'not_allowed_token_type'}
+2026-01-14 14:41:37 - SlackWatcher - ERROR - Error checking mentions: The request to the Slack API failed. (url: https://slack.com/api/search.messages)
+The server responded with: {'ok': False, 'error': 'not_allowed_token_type'}
+2026-01-14 14:42:40 - SlackWatcher - ERROR - Error checking mentions: The request to the Slack API failed. (url: https://slack.com/api/search.messages)
+The server responded with: {'ok': False, 'error': 'not_allowed_token_type'}
+2026-01-14 14:43:44 - SlackWatcher - ERROR - Error checking mentions: The request to the Slack API failed. (url: https://slack.com/api/search.messages)
+The server responded with: {'ok': False, 'error': 'not_allowed_token_type'}
+2026-01-14 14:44:47 - SlackWatcher - ERROR - Error checking mentions: The request to the Slack API failed. (url: https://slack.com/api/search.messages)
+The server responded with: {'ok': False, 'error': 'not_allowed_token_type'}
+2026-01-14 14:45:51 - SlackWatcher - ERROR - Error checking mentions: The request to the Slack API failed. (url: https://slack.com/api/search.messages)
+The server responded with: {'ok': False, 'error': 'not_allowed_token_type'}
+2026-01-14 14:46:54 - SlackWatcher - ERROR - Error checking mentions: The request to the Slack API failed. (url: https://slack.com/api/search.messages)
+The server responded with: {'ok': False, 'error': 'not_allowed_token_type'}
+2026-01-14 14:47:59 - SlackWatcher - ERROR - Error checking mentions: The request to the Slack API failed. (url: https://slack.com/api/search.messages)
+The server responded with: {'ok': False, 'error': 'not_allowed_token_type'}
+2026-01-14 14:49:01 - SlackWatcher - ERROR - Error checking mentions: The request to the Slack API failed. (url: https://slack.com/api/search.messages)
+The server responded with: {'ok': False, 'error': 'not_allowed_token_type'}
+2026-01-14 14:50:04 - SlackWatcher - ERROR - Error checking mentions: The request to the Slack API failed. (url: https://slack.com/api/search.messages)
+The server responded with: {'ok': False, 'error': 'not_allowed_token_type'}
+2026-01-14 14:51:07 - SlackWatcher - ERROR - Error checking mentions: The request to the Slack API failed. (url: https://slack.com/api/search.messages)
+The server responded with: {'ok': False, 'error': 'not_allowed_token_type'}
+2026-01-14 14:52:10 - SlackWatcher - ERROR - Error checking mentions: The request to the Slack API failed. (url: https://slack.com/api/search.messages)
+The server responded with: {'ok': False, 'error': 'not_allowed_token_type'}
+2026-01-14 14:53:14 - SlackWatcher - ERROR - Error checking mentions: The request to the Slack API failed. (url: https://slack.com/api/search.messages)
+The server responded with: {'ok': False, 'error': 'not_allowed_token_type'}
+2026-01-14 14:54:17 - SlackWatcher - ERROR - Error checking mentions: The request to the Slack API failed. (url: https://slack.com/api/search.messages)
+The server responded with: {'ok': False, 'error': 'not_allowed_token_type'}
+2026-01-14 14:55:20 - SlackWatcher - ERROR - Error checking mentions: The request to the Slack API failed. (url: https://slack.com/api/search.messages)
+The server responded with: {'ok': False, 'error': 'not_allowed_token_type'}
+2026-01-14 14:56:23 - SlackWatcher - ERROR - Error checking mentions: The request to the Slack API failed. (url: https://slack.com/api/search.messages)
+The server responded with: {'ok': False, 'error': 'not_allowed_token_type'}
+2026-01-14 14:57:26 - SlackWatcher - ERROR - Error checking mentions: The request to the Slack API failed. (url: https://slack.com/api/search.messages)
+The server responded with: {'ok': False, 'error': 'not_allowed_token_type'}
+2026-01-14 14:58:29 - SlackWatcher - ERROR - Error checking mentions: The request to the Slack API failed. (url: https://slack.com/api/search.messages)
+The server responded with: {'ok': False, 'error': 'not_allowed_token_type'}
+2026-01-14 14:59:32 - SlackWatcher - ERROR - Error checking mentions: The request to the Slack API failed. (url: https://slack.com/api/search.messages)
+The server responded with: {'ok': False, 'error': 'not_allowed_token_type'}
+2026-01-14 15:00:36 - SlackWatcher - ERROR - Error checking mentions: The request to the Slack API failed. (url: https://slack.com/api/search.messages)
+The server responded with: {'ok': False, 'error': 'not_allowed_token_type'}
+2026-01-14 15:01:38 - SlackWatcher - ERROR - Error checking mentions: The request to the Slack API failed. (url: https://slack.com/api/search.messages)
+The server responded with: {'ok': False, 'error': 'not_allowed_token_type'}
+2026-01-14 15:02:41 - SlackWatcher - ERROR - Error checking mentions: The request to the Slack API failed. (url: https://slack.com/api/search.messages)
+The server responded with: {'ok': False, 'error': 'not_allowed_token_type'}
+2026-01-14 15:03:44 - SlackWatcher - ERROR - Error checking mentions: The request to the Slack API failed. (url: https://slack.com/api/search.messages)
+The server responded with: {'ok': False, 'error': 'not_allowed_token_type'}
+2026-01-14 15:04:48 - SlackWatcher - ERROR - Error checking mentions: The request to the Slack API failed. (url: https://slack.com/api/search.messages)
+The server responded with: {'ok': False, 'error': 'not_allowed_token_type'}
+2026-01-14 15:05:51 - SlackWatcher - ERROR - Error checking mentions: The request to the Slack API failed. (url: https://slack.com/api/search.messages)
+The server responded with: {'ok': False, 'error': 'not_allowed_token_type'}
+2026-01-14 15:06:54 - SlackWatcher - ERROR - Error checking mentions: The request to the Slack API failed. (url: https://slack.com/api/search.messages)
+The server responded with: {'ok': False, 'error': 'not_allowed_token_type'}
+2026-01-14 15:07:57 - SlackWatcher - ERROR - Error checking mentions: The request to the Slack API failed. (url: https://slack.com/api/search.messages)
+The server responded with: {'ok': False, 'error': 'not_allowed_token_type'}
+2026-01-14 15:09:00 - SlackWatcher - ERROR - Error checking mentions: The request to the Slack API failed. (url: https://slack.com/api/search.messages)
+The server responded with: {'ok': False, 'error': 'not_allowed_token_type'}
+2026-01-14 15:10:04 - SlackWatcher - ERROR - Error checking mentions: The request to the Slack API failed. (url: https://slack.com/api/search.messages)
+The server responded with: {'ok': False, 'error': 'not_allowed_token_type'}
+2026-01-14 15:11:07 - SlackWatcher - ERROR - Error checking mentions: The request to the Slack API failed. (url: https://slack.com/api/search.messages)
+The server responded with: {'ok': False, 'error': 'not_allowed_token_type'}
+2026-01-14 15:12:09 - SlackWatcher - ERROR - Error checking mentions: The request to the Slack API failed. (url: https://slack.com/api/search.messages)
+The server responded with: {'ok': False, 'error': 'not_allowed_token_type'}
+2026-01-14 15:13:12 - SlackWatcher - ERROR - Error checking mentions: The request to the Slack API failed. (url: https://slack.com/api/search.messages)
+The server responded with: {'ok': False, 'error': 'not_allowed_token_type'}
+2026-01-14 15:14:15 - SlackWatcher - ERROR - Error checking mentions: The request to the Slack API failed. (url: https://slack.com/api/search.messages)
+The server responded with: {'ok': False, 'error': 'not_allowed_token_type'}
+2026-01-14 15:15:18 - SlackWatcher - ERROR - Error checking mentions: The request to the Slack API failed. (url: https://slack.com/api/search.messages)
+The server responded with: {'ok': False, 'error': 'not_allowed_token_type'}
+2026-01-14 15:16:21 - SlackWatcher - ERROR - Error checking mentions: The request to the Slack API failed. (url: https://slack.com/api/search.messages)
+The server responded with: {'ok': False, 'error': 'not_allowed_token_type'}
+2026-01-14 15:17:24 - SlackWatcher - ERROR - Error checking mentions: The request to the Slack API failed. (url: https://slack.com/api/search.messages)
+The server responded with: {'ok': False, 'error': 'not_allowed_token_type'}
+2026-01-14 15:18:26 - SlackWatcher - ERROR - Error checking mentions: The request to the Slack API failed. (url: https://slack.com/api/search.messages)
+The server responded with: {'ok': False, 'error': 'not_allowed_token_type'}
+2026-01-14 15:19:29 - SlackWatcher - ERROR - Error checking mentions: The request to the Slack API failed. (url: https://slack.com/api/search.messages)
+The server responded with: {'ok': False, 'error': 'not_allowed_token_type'}
+2026-01-14 15:20:33 - SlackWatcher - ERROR - Error checking mentions: The request to the Slack API failed. (url: https://slack.com/api/search.messages)
+The server responded with: {'ok': False, 'error': 'not_allowed_token_type'}
+2026-01-14 15:21:36 - SlackWatcher - ERROR - Error checking mentions: The request to the Slack API failed. (url: https://slack.com/api/search.messages)
+The server responded with: {'ok': False, 'error': 'not_allowed_token_type'}
+2026-01-14 15:22:39 - SlackWatcher - ERROR - Error checking mentions: The request to the Slack API failed. (url: https://slack.com/api/search.messages)
+The server responded with: {'ok': False, 'error': 'not_allowed_token_type'}
+2026-01-14 15:23:42 - SlackWatcher - ERROR - Error checking mentions: The request to the Slack API failed. (url: https://slack.com/api/search.messages)
+The server responded with: {'ok': False, 'error': 'not_allowed_token_type'}
+2026-01-14 15:24:46 - SlackWatcher - ERROR - Error checking mentions: The request to the Slack API failed. (url: https://slack.com/api/search.messages)
+The server responded with: {'ok': False, 'error': 'not_allowed_token_type'}
+2026-01-14 15:25:49 - SlackWatcher - ERROR - Error checking mentions: The request to the Slack API failed. (url: https://slack.com/api/search.messages)
+The server responded with: {'ok': False, 'error': 'not_allowed_token_type'}
+2026-01-14 15:26:52 - SlackWatcher - ERROR - Error checking mentions: The request to the Slack API failed. (url: https://slack.com/api/search.messages)
+The server responded with: {'ok': False, 'error': 'not_allowed_token_type'}
+2026-01-14 15:28:00 - SlackWatcher - ERROR - Error checking mentions: The request to the Slack API failed. (url: https://slack.com/api/search.messages)
+The server responded with: {'ok': False, 'error': 'not_allowed_token_type'}
+2026-01-14 15:29:03 - SlackWatcher - ERROR - Error checking mentions: The request to the Slack API failed. (url: https://slack.com/api/search.messages)
+The server responded with: {'ok': False, 'error': 'not_allowed_token_type'}
+2026-01-14 15:30:07 - SlackWatcher - ERROR - Error checking mentions: The request to the Slack API failed. (url: https://slack.com/api/search.messages)
+The server responded with: {'ok': False, 'error': 'not_allowed_token_type'}
+2026-01-14 15:31:10 - SlackWatcher - ERROR - Error checking mentions: The request to the Slack API failed. (url: https://slack.com/api/search.messages)
+The server responded with: {'ok': False, 'error': 'not_allowed_token_type'}
+2026-01-14 15:32:14 - SlackWatcher - ERROR - Error checking mentions: The request to the Slack API failed. (url: https://slack.com/api/search.messages)
+The server responded with: {'ok': False, 'error': 'not_allowed_token_type'}
+2026-01-14 15:33:26 - SlackWatcher - ERROR - Error checking mentions: The request to the Slack API failed. (url: https://slack.com/api/search.messages)
+The server responded with: {'ok': False, 'error': 'not_allowed_token_type'}
+2026-01-14 15:34:30 - SlackWatcher - ERROR - Error checking mentions: The request to the Slack API failed. (url: https://slack.com/api/search.messages)
+The server responded with: {'ok': False, 'error': 'not_allowed_token_type'}
+2026-01-14 15:35:38 - SlackWatcher - ERROR - Error checking mentions: The request to the Slack API failed. (url: https://slack.com/api/search.messages)
+The server responded with: {'ok': False, 'error': 'not_allowed_token_type'}
+2026-01-14 15:36:42 - SlackWatcher - ERROR - Error checking mentions: The request to the Slack API failed. (url: https://slack.com/api/search.messages)
+The server responded with: {'ok': False, 'error': 'not_allowed_token_type'}
+2026-01-14 15:37:46 - SlackWatcher - ERROR - Error checking mentions: The request to the Slack API failed. (url: https://slack.com/api/search.messages)
+The server responded with: {'ok': False, 'error': 'not_allowed_token_type'}
+2026-01-14 15:38:51 - SlackWatcher - ERROR - Error checking mentions: The request to the Slack API failed. (url: https://slack.com/api/search.messages)
+The server responded with: {'ok': False, 'error': 'not_allowed_token_type'}
+2026-01-14 15:39:54 - SlackWatcher - ERROR - Error checking mentions: The request to the Slack API failed. (url: https://slack.com/api/search.messages)
+The server responded with: {'ok': False, 'error': 'not_allowed_token_type'}
+2026-01-14 15:40:58 - SlackWatcher - ERROR - Error checking mentions: The request to the Slack API failed. (url: https://slack.com/api/search.messages)
+The server responded with: {'ok': False, 'error': 'not_allowed_token_type'}
+2026-01-14 15:42:02 - SlackWatcher - ERROR - Error checking mentions: The request to the Slack API failed. (url: https://slack.com/api/search.messages)
+The server responded with: {'ok': False, 'error': 'not_allowed_token_type'}
+2026-01-14 15:43:07 - SlackWatcher - ERROR - Error checking mentions: The request to the Slack API failed. (url: https://slack.com/api/search.messages)
+The server responded with: {'ok': False, 'error': 'not_allowed_token_type'}
+2026-01-14 15:44:10 - SlackWatcher - ERROR - Error checking mentions: The request to the Slack API failed. (url: https://slack.com/api/search.messages)
+The server responded with: {'ok': False, 'error': 'not_allowed_token_type'}
+2026-01-14 15:45:13 - SlackWatcher - ERROR - Error checking mentions: The request to the Slack API failed. (url: https://slack.com/api/search.messages)
+The server responded with: {'ok': False, 'error': 'not_allowed_token_type'}
+2026-01-14 15:46:16 - SlackWatcher - ERROR - Error checking mentions: The request to the Slack API failed. (url: https://slack.com/api/search.messages)
+The server responded with: {'ok': False, 'error': 'not_allowed_token_type'}
+2026-01-14 15:47:20 - SlackWatcher - ERROR - Error checking mentions: The request to the Slack API failed. (url: https://slack.com/api/search.messages)
+The server responded with: {'ok': False, 'error': 'not_allowed_token_type'}
+2026-01-14 15:48:23 - SlackWatcher - ERROR - Error checking mentions: The request to the Slack API failed. (url: https://slack.com/api/search.messages)
+The server responded with: {'ok': False, 'error': 'not_allowed_token_type'}
+2026-01-14 15:49:30 - SlackWatcher - ERROR - Error checking mentions: The request to the Slack API failed. (url: https://slack.com/api/search.messages)
+The server responded with: {'ok': False, 'error': 'not_allowed_token_type'}
+2026-01-14 15:50:35 - SlackWatcher - ERROR - Error checking mentions: The request to the Slack API failed. (url: https://slack.com/api/search.messages)
+The server responded with: {'ok': False, 'error': 'not_allowed_token_type'}
+2026-01-14 15:51:39 - SlackWatcher - ERROR - Error checking mentions: The request to the Slack API failed. (url: https://slack.com/api/search.messages)
+The server responded with: {'ok': False, 'error': 'not_allowed_token_type'}
+2026-01-14 15:52:42 - SlackWatcher - ERROR - Error checking mentions: The request to the Slack API failed. (url: https://slack.com/api/search.messages)
+The server responded with: {'ok': False, 'error': 'not_allowed_token_type'}
+2026-01-14 15:53:53 - SlackWatcher - ERROR - Error checking mentions: The request to the Slack API failed. (url: https://slack.com/api/search.messages)
+The server responded with: {'ok': False, 'error': 'not_allowed_token_type'}
+2026-01-14 15:55:01 - SlackWatcher - ERROR - Error checking mentions: The request to the Slack API failed. (url: https://slack.com/api/search.messages)
+The server responded with: {'ok': False, 'error': 'not_allowed_token_type'}
+2026-01-14 15:56:05 - SlackWatcher - ERROR - Error checking mentions: The request to the Slack API failed. (url: https://slack.com/api/search.messages)
+The server responded with: {'ok': False, 'error': 'not_allowed_token_type'}
+2026-01-14 15:57:09 - SlackWatcher - ERROR - Error checking mentions: The request to the Slack API failed. (url: https://slack.com/api/search.messages)
+The server responded with: {'ok': False, 'error': 'not_allowed_token_type'}
+2026-01-14 15:58:12 - SlackWatcher - ERROR - Error checking mentions: The request to the Slack API failed. (url: https://slack.com/api/search.messages)
+The server responded with: {'ok': False, 'error': 'not_allowed_token_type'}
+2026-01-14 15:59:15 - SlackWatcher - ERROR - Error checking mentions: The request to the Slack API failed. (url: https://slack.com/api/search.messages)
+The server responded with: {'ok': False, 'error': 'not_allowed_token_type'}
+2026-01-14 16:00:19 - SlackWatcher - ERROR - Error checking mentions: The request to the Slack API failed. (url: https://slack.com/api/search.messages)
+The server responded with: {'ok': False, 'error': 'not_allowed_token_type'}
+2026-01-14 16:01:25 - SlackWatcher - ERROR - Error checking mentions: The request to the Slack API failed. (url: https://slack.com/api/search.messages)
+The server responded with: {'ok': False, 'error': 'not_allowed_token_type'}
+2026-01-14 16:02:30 - SlackWatcher - ERROR - Error checking mentions: The request to the Slack API failed. (url: https://slack.com/api/search.messages)
+The server responded with: {'ok': False, 'error': 'not_allowed_token_type'}
+2026-01-14 16:03:33 - SlackWatcher - ERROR - Error checking mentions: The request to the Slack API failed. (url: https://slack.com/api/search.messages)
+The server responded with: {'ok': False, 'error': 'not_allowed_token_type'}
+2026-01-14 16:04:36 - SlackWatcher - ERROR - Error checking mentions: The request to the Slack API failed. (url: https://slack.com/api/search.messages)
+The server responded with: {'ok': False, 'error': 'not_allowed_token_type'}
+2026-01-14 16:05:38 - SlackWatcher - ERROR - Error checking mentions: The request to the Slack API failed. (url: https://slack.com/api/search.messages)
+The server responded with: {'ok': False, 'error': 'not_allowed_token_type'}
+2026-01-14 16:06:41 - SlackWatcher - ERROR - Error checking mentions: The request to the Slack API failed. (url: https://slack.com/api/search.messages)
+The server responded with: {'ok': False, 'error': 'not_allowed_token_type'}
+2026-01-14 16:07:44 - SlackWatcher - ERROR - Error checking mentions: The request to the Slack API failed. (url: https://slack.com/api/search.messages)
+The server responded with: {'ok': False, 'error': 'not_allowed_token_type'}
+2026-01-14 16:08:47 - SlackWatcher - ERROR - Error checking mentions: The request to the Slack API failed. (url: https://slack.com/api/search.messages)
+The server responded with: {'ok': False, 'error': 'not_allowed_token_type'}

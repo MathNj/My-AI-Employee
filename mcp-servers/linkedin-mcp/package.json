@@ -1,0 +1,39 @@
+{
+  "name": "@ai-employee/linkedin-mcp-server",
+  "version": "1.0.0",
+  "description": "LinkedIn MCP Server with OAuth 2.0 and business posting automation for Personal AI Employee",
+  "type": "module",
+  "main": "dist/index.js",
+  "bin": {
+    "linkedin-mcp": "dist/index.js"
+  },
+  "scripts": {
+    "build": "tsc",
+    "dev": "tsc --watch",
+    "start": "node dist/index.js",
+    "test": "node dist/test.js"
+  },
+  "keywords": [
+    "mcp",
+    "linkedin",
+    "social-media",
+    "oauth",
+    "automation",
+    "ai-employee"
+  ],
+  "author": "Personal AI Employee Team",
+  "license": "MIT",
+  "dependencies": {
+    "@modelcontextprotocol/sdk": "^0.5.0",
+    "axios": "^1.6.5",
+    "dotenv": "^16.4.1",
+    "winston": "^3.11.0"
+  },
+  "devDependencies": {
+    "@types/node": "^20.11.0",
+    "typescript": "^5.3.3"
+  },
+  "engines": {
+    "node": ">=20.0.0"
+  }
+}

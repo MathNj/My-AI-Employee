@@ -1,0 +1,26 @@
+2026-01-11 22:23:52,986 - INFO - ============================================================
+2026-01-11 22:23:52,986 - INFO - Personal AI Employee - Filesystem Watcher
+2026-01-11 22:23:52,986 - INFO - ============================================================
+2026-01-11 22:23:52,986 - INFO - Vault: C:\Users\Najma-LP\Desktop\My Vault\AI_Employee_Vault
+2026-01-11 22:23:52,986 - INFO - Watching: C:\Users\Najma-LP\Desktop\My Vault\AI_Employee_Vault\Inbox
+2026-01-11 22:23:52,986 - INFO - Press Ctrl+C to stop
+2026-01-11 22:23:52,986 - INFO - ============================================================
+2026-01-11 22:23:52,988 - INFO - Watcher initialized
+2026-01-11 22:23:52,988 - INFO -   Monitoring: C:\Users\Najma-LP\Desktop\My Vault\AI_Employee_Vault\Inbox
+2026-01-11 22:23:52,988 - INFO -   Output to: C:\Users\Najma-LP\Desktop\My Vault\AI_Employee_Vault\Needs_Action
+2026-01-11 22:23:52,993 - INFO -   Drop files in: C:\Users\Najma-LP\Desktop\My Vault\AI_Employee_Vault\Inbox
+2026-01-11 22:23:52,993 - INFO -   Tasks created in: C:\Users\Najma-LP\Desktop\My Vault\AI_Employee_Vault\Needs_Action
+2026-01-11 22:23:52,993 - INFO - 
+2026-01-11 22:24:38,533 - INFO - ============================================================
+2026-01-11 22:24:38,533 - INFO - Personal AI Employee - Filesystem Watcher
+2026-01-11 22:24:38,533 - INFO - ============================================================
+2026-01-11 22:24:38,533 - INFO - Vault: C:\Users\Najma-LP\Desktop\My Vault\AI_Employee_Vault
+2026-01-11 22:24:38,533 - INFO - Watching: C:\Users\Najma-LP\Desktop\My Vault\AI_Employee_Vault\Inbox
+2026-01-11 22:24:38,533 - INFO - Press Ctrl+C to stop
+2026-01-11 22:24:38,533 - INFO - ============================================================
+2026-01-11 22:24:38,534 - INFO - Watcher initialized
+2026-01-11 22:24:38,534 - INFO -   Monitoring: C:\Users\Najma-LP\Desktop\My Vault\AI_Employee_Vault\Inbox
+2026-01-11 22:24:38,534 - INFO -   Output to: C:\Users\Najma-LP\Desktop\My Vault\AI_Employee_Vault\Needs_Action
+2026-01-11 22:24:38,538 - INFO -   Drop files in: C:\Users\Najma-LP\Desktop\My Vault\AI_Employee_Vault\Inbox
+2026-01-11 22:24:38,538 - INFO -   Tasks created in: C:\Users\Najma-LP\Desktop\My Vault\AI_Employee_Vault\Needs_Action
+2026-01-11 22:24:38,539 - INFO - 

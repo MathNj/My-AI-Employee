@@ -1,0 +1,47 @@
+{
+  "check_interval": 60,
+  "auto_restart": true,
+  "max_restart_attempts": 3,
+  "restart_delay": 5,
+  "processes": {
+    "calendar": {
+      "enabled": true,
+      "priority": "high",
+      "check_interval_override": 300
+    },
+    "slack": {
+      "enabled": true,
+      "priority": "high",
+      "check_interval_override": 60
+    },
+    "gmail": {
+      "enabled": true,
+      "priority": "high",
+      "check_interval_override": 120
+    },
+    "whatsapp": {
+      "enabled": true,
+      "priority": "medium",
+      "requires_visible_browser": true,
+      "check_interval_override": 30
+    },
+    "filesystem": {
+      "enabled": true,
+      "priority": "medium"
+    },
+    "xero": {
+      "enabled": true,
+      "priority": "low",
+      "check_interval_override": 300
+    }
+  },
+  "notifications": {
+    "email_on_failure": false,
+    "slack_on_failure": false
+  },
+  "logging": {
+    "level": "INFO",
+    "max_file_size_mb": 10,
+    "backup_count": 5
+  }
+}

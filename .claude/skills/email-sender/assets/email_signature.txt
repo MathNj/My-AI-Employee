@@ -1,0 +1,20 @@
+---
+Best regards,
+Your Name
+Your Title
+Your Company
+
+Email: your-email@company.com
+Phone: (555) 123-4567
+Website: www.yourcompany.com
+
+---
+
+CUSTOMIZE THIS FILE:
+1. Replace "Your Name" with your actual name
+2. Add your title/position
+3. Add your company name
+4. Update contact information
+5. Remove this instruction block
+
+This signature will be appended to emails automatically (future feature).

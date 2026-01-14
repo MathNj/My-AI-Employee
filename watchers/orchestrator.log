@@ -1,0 +1,1333 @@
+2026-01-14 13:02:27,270 - Orchestrator - INFO - ======================================================================
+2026-01-14 13:02:27,270 - Orchestrator - INFO - Personal AI Employee - Orchestrator
+2026-01-14 13:02:27,270 - Orchestrator - INFO - ======================================================================
+2026-01-14 13:02:27,270 - Orchestrator - INFO - Loaded config from orchestrator_config.json
+2026-01-14 13:02:27,271 - Orchestrator - INFO - Registered 6 processes
+2026-01-14 13:02:27,271 - Orchestrator - INFO - ======================================================================
+2026-01-14 13:02:27,271 - Orchestrator - INFO - Orchestrator started
+2026-01-14 13:02:27,271 - Orchestrator - INFO - Health check interval: 60 seconds
+2026-01-14 13:02:27,271 - Orchestrator - INFO - Press Ctrl+C to stop
+2026-01-14 13:02:27,271 - Orchestrator - INFO - ======================================================================
+2026-01-14 13:02:27,271 - Orchestrator - INFO - Starting all enabled processes...
+2026-01-14 13:02:27,271 - Orchestrator - INFO - Starting Calendar Watcher: python calendar_watcher.py
+2026-01-14 13:02:27,273 - Orchestrator - INFO - [OK] Calendar Watcher started (PID: 14640)
+2026-01-14 13:02:29,274 - Orchestrator - INFO - Starting Slack Watcher: python slack_watcher.py
+2026-01-14 13:02:29,275 - Orchestrator - INFO - [OK] Slack Watcher started (PID: 16612)
+2026-01-14 13:02:31,276 - Orchestrator - INFO - Starting Gmail Watcher: python gmail_watcher.py
+2026-01-14 13:02:31,282 - Orchestrator - INFO - [OK] Gmail Watcher started (PID: 6364)
+2026-01-14 13:02:33,283 - Orchestrator - INFO - Starting WhatsApp Watcher: python whatsapp_watcher.py --visible
+2026-01-14 13:02:33,285 - Orchestrator - INFO - [OK] WhatsApp Watcher started (PID: 8576)
+2026-01-14 13:02:35,286 - Orchestrator - INFO - Starting Filesystem Watcher: python filesystem_watcher.py
+2026-01-14 13:02:35,287 - Orchestrator - INFO - [OK] Filesystem Watcher started (PID: 5520)
+2026-01-14 13:02:37,288 - Orchestrator - INFO - Starting Xero Watcher: python xero_watcher.py
+2026-01-14 13:02:37,289 - Orchestrator - INFO - [OK] Xero Watcher started (PID: 10504)
+2026-01-14 13:02:39,290 - Orchestrator - INFO - All processes started
+2026-01-14 13:03:39,292 - Orchestrator - INFO - Running health check...
+2026-01-14 13:03:39,293 - Orchestrator - WARNING - Filesystem Watcher is not running!
+2026-01-14 13:03:39,293 - Orchestrator - INFO - Auto-restarting Filesystem Watcher...
+2026-01-14 13:03:39,293 - Orchestrator - INFO - Starting Filesystem Watcher: python filesystem_watcher.py
+2026-01-14 13:03:39,298 - Orchestrator - INFO - [OK] Filesystem Watcher started (PID: 2416)
+2026-01-14 13:03:39,298 - Orchestrator - INFO - [OK] Filesystem Watcher restarted successfully
+2026-01-14 13:03:39,298 - Orchestrator - INFO - Health check complete
+2026-01-14 13:04:39,300 - Orchestrator - INFO - Running health check...
+2026-01-14 13:04:39,300 - Orchestrator - WARNING - Filesystem Watcher is not running!
+2026-01-14 13:04:39,301 - Orchestrator - INFO - Auto-restarting Filesystem Watcher...
+2026-01-14 13:04:39,301 - Orchestrator - INFO - Starting Filesystem Watcher: python filesystem_watcher.py
+2026-01-14 13:04:39,305 - Orchestrator - INFO - [OK] Filesystem Watcher started (PID: 3132)
+2026-01-14 13:04:39,305 - Orchestrator - INFO - [OK] Filesystem Watcher restarted successfully
+2026-01-14 13:04:39,306 - Orchestrator - INFO - Health check complete
+2026-01-14 13:05:39,306 - Orchestrator - INFO - Running health check...
+2026-01-14 13:05:39,307 - Orchestrator - WARNING - Filesystem Watcher is not running!
+2026-01-14 13:05:39,307 - Orchestrator - INFO - Auto-restarting Filesystem Watcher...
+2026-01-14 13:05:39,308 - Orchestrator - INFO - Starting Filesystem Watcher: python filesystem_watcher.py
+2026-01-14 13:05:39,312 - Orchestrator - INFO - [OK] Filesystem Watcher started (PID: 18000)
+2026-01-14 13:05:39,312 - Orchestrator - INFO - [OK] Filesystem Watcher restarted successfully
+2026-01-14 13:05:39,313 - Orchestrator - INFO - Health check complete
+2026-01-14 13:06:39,314 - Orchestrator - INFO - Running health check...
+2026-01-14 13:06:39,314 - Orchestrator - WARNING - Filesystem Watcher is not running!
+2026-01-14 13:06:39,315 - Orchestrator - INFO - Auto-restarting Filesystem Watcher...
+2026-01-14 13:06:39,315 - Orchestrator - INFO - Starting Filesystem Watcher: python filesystem_watcher.py
+2026-01-14 13:06:39,320 - Orchestrator - INFO - [OK] Filesystem Watcher started (PID: 3476)
+2026-01-14 13:06:39,320 - Orchestrator - INFO - [OK] Filesystem Watcher restarted successfully
+2026-01-14 13:06:39,321 - Orchestrator - INFO - Health check complete
+2026-01-14 13:07:39,322 - Orchestrator - INFO - Running health check...
+2026-01-14 13:07:39,322 - Orchestrator - WARNING - Filesystem Watcher is not running!
+2026-01-14 13:07:39,323 - Orchestrator - INFO - Auto-restarting Filesystem Watcher...
+2026-01-14 13:07:39,323 - Orchestrator - INFO - Starting Filesystem Watcher: python filesystem_watcher.py
+2026-01-14 13:07:39,327 - Orchestrator - INFO - [OK] Filesystem Watcher started (PID: 2228)
+2026-01-14 13:07:39,328 - Orchestrator - INFO - [OK] Filesystem Watcher restarted successfully
+2026-01-14 13:07:39,328 - Orchestrator - INFO - Health check complete
+2026-01-14 13:08:39,329 - Orchestrator - INFO - Running health check...
+2026-01-14 13:08:39,330 - Orchestrator - WARNING - Filesystem Watcher is not running!
+2026-01-14 13:08:39,330 - Orchestrator - INFO - Auto-restarting Filesystem Watcher...
+2026-01-14 13:08:39,330 - Orchestrator - INFO - Starting Filesystem Watcher: python filesystem_watcher.py
+2026-01-14 13:08:39,336 - Orchestrator - INFO - [OK] Filesystem Watcher started (PID: 18140)
+2026-01-14 13:08:39,336 - Orchestrator - INFO - [OK] Filesystem Watcher restarted successfully
+2026-01-14 13:08:39,336 - Orchestrator - INFO - Health check complete
+2026-01-14 13:09:39,337 - Orchestrator - INFO - Running health check...
+2026-01-14 13:09:39,337 - Orchestrator - WARNING - Filesystem Watcher is not running!
+2026-01-14 13:09:39,338 - Orchestrator - INFO - Auto-restarting Filesystem Watcher...
+2026-01-14 13:09:39,338 - Orchestrator - INFO - Starting Filesystem Watcher: python filesystem_watcher.py
+2026-01-14 13:09:39,346 - Orchestrator - INFO - [OK] Filesystem Watcher started (PID: 17736)
+2026-01-14 13:09:39,346 - Orchestrator - INFO - [OK] Filesystem Watcher restarted successfully
+2026-01-14 13:09:39,346 - Orchestrator - INFO - Health check complete
+2026-01-14 13:10:39,348 - Orchestrator - INFO - Running health check...
+2026-01-14 13:10:39,349 - Orchestrator - WARNING - Filesystem Watcher is not running!
+2026-01-14 13:10:39,349 - Orchestrator - INFO - Auto-restarting Filesystem Watcher...
+2026-01-14 13:10:39,350 - Orchestrator - INFO - Starting Filesystem Watcher: python filesystem_watcher.py
+2026-01-14 13:10:39,355 - Orchestrator - INFO - [OK] Filesystem Watcher started (PID: 11648)
+2026-01-14 13:10:39,355 - Orchestrator - INFO - [OK] Filesystem Watcher restarted successfully
+2026-01-14 13:10:39,355 - Orchestrator - INFO - Health check complete
+2026-01-14 13:11:39,357 - Orchestrator - INFO - Running health check...
+2026-01-14 13:11:39,357 - Orchestrator - WARNING - Filesystem Watcher is not running!
+2026-01-14 13:11:39,358 - Orchestrator - INFO - Auto-restarting Filesystem Watcher...
+2026-01-14 13:11:39,358 - Orchestrator - INFO - Starting Filesystem Watcher: python filesystem_watcher.py
+2026-01-14 13:11:39,363 - Orchestrator - INFO - [OK] Filesystem Watcher started (PID: 13712)
+2026-01-14 13:11:39,363 - Orchestrator - INFO - [OK] Filesystem Watcher restarted successfully
+2026-01-14 13:11:39,364 - Orchestrator - INFO - Health check complete
+2026-01-14 13:12:39,364 - Orchestrator - INFO - Running health check...
+2026-01-14 13:12:39,365 - Orchestrator - WARNING - Filesystem Watcher is not running!
+2026-01-14 13:12:39,365 - Orchestrator - INFO - Auto-restarting Filesystem Watcher...
+2026-01-14 13:12:39,366 - Orchestrator - INFO - Starting Filesystem Watcher: python filesystem_watcher.py
+2026-01-14 13:12:39,373 - Orchestrator - INFO - [OK] Filesystem Watcher started (PID: 13088)
+2026-01-14 13:12:39,373 - Orchestrator - INFO - [OK] Filesystem Watcher restarted successfully
+2026-01-14 13:12:39,374 - Orchestrator - INFO - Health check complete
+2026-01-14 13:13:39,375 - Orchestrator - INFO - Running health check...
+2026-01-14 13:13:39,375 - Orchestrator - WARNING - Filesystem Watcher is not running!
+2026-01-14 13:13:39,375 - Orchestrator - INFO - Auto-restarting Filesystem Watcher...
+2026-01-14 13:13:39,375 - Orchestrator - INFO - Starting Filesystem Watcher: python filesystem_watcher.py
+2026-01-14 13:13:39,383 - Orchestrator - INFO - [OK] Filesystem Watcher started (PID: 9744)
+2026-01-14 13:13:39,383 - Orchestrator - INFO - [OK] Filesystem Watcher restarted successfully
+2026-01-14 13:13:39,383 - Orchestrator - INFO - Health check complete
+2026-01-14 13:14:39,384 - Orchestrator - INFO - Running health check...
+2026-01-14 13:14:39,385 - Orchestrator - WARNING - Filesystem Watcher is not running!
+2026-01-14 13:14:39,386 - Orchestrator - INFO - Auto-restarting Filesystem Watcher...
+2026-01-14 13:14:39,386 - Orchestrator - INFO - Starting Filesystem Watcher: python filesystem_watcher.py
+2026-01-14 13:14:39,394 - Orchestrator - INFO - [OK] Filesystem Watcher started (PID: 16564)
+2026-01-14 13:14:39,394 - Orchestrator - INFO - [OK] Filesystem Watcher restarted successfully
+2026-01-14 13:14:39,395 - Orchestrator - INFO - Health check complete
+2026-01-14 13:15:39,396 - Orchestrator - INFO - Running health check...
+2026-01-14 13:15:39,396 - Orchestrator - WARNING - Filesystem Watcher is not running!
+2026-01-14 13:15:39,397 - Orchestrator - INFO - Auto-restarting Filesystem Watcher...
+2026-01-14 13:15:39,397 - Orchestrator - INFO - Starting Filesystem Watcher: python filesystem_watcher.py
+2026-01-14 13:15:39,401 - Orchestrator - INFO - [OK] Filesystem Watcher started (PID: 16056)
+2026-01-14 13:15:39,401 - Orchestrator - INFO - [OK] Filesystem Watcher restarted successfully
+2026-01-14 13:15:39,402 - Orchestrator - INFO - Health check complete
+2026-01-14 13:16:39,402 - Orchestrator - INFO - Running health check...
+2026-01-14 13:16:39,403 - Orchestrator - WARNING - Filesystem Watcher is not running!
+2026-01-14 13:16:39,403 - Orchestrator - INFO - Auto-restarting Filesystem Watcher...
+2026-01-14 13:16:39,403 - Orchestrator - INFO - Starting Filesystem Watcher: python filesystem_watcher.py
+2026-01-14 13:16:39,408 - Orchestrator - INFO - [OK] Filesystem Watcher started (PID: 11444)
+2026-01-14 13:16:39,408 - Orchestrator - INFO - [OK] Filesystem Watcher restarted successfully
+2026-01-14 13:16:39,409 - Orchestrator - INFO - Health check complete
+2026-01-14 13:17:39,410 - Orchestrator - INFO - Running health check...
+2026-01-14 13:17:39,410 - Orchestrator - WARNING - Filesystem Watcher is not running!
+2026-01-14 13:17:39,410 - Orchestrator - INFO - Auto-restarting Filesystem Watcher...
+2026-01-14 13:17:39,411 - Orchestrator - INFO - Starting Filesystem Watcher: python filesystem_watcher.py
+2026-01-14 13:17:39,415 - Orchestrator - INFO - [OK] Filesystem Watcher started (PID: 6572)
+2026-01-14 13:17:39,415 - Orchestrator - INFO - [OK] Filesystem Watcher restarted successfully
+2026-01-14 13:17:39,415 - Orchestrator - INFO - Health check complete
+2026-01-14 13:18:39,416 - Orchestrator - INFO - Running health check...
+2026-01-14 13:18:39,417 - Orchestrator - WARNING - Filesystem Watcher is not running!
+2026-01-14 13:18:39,417 - Orchestrator - INFO - Auto-restarting Filesystem Watcher...
+2026-01-14 13:18:39,417 - Orchestrator - INFO - Starting Filesystem Watcher: python filesystem_watcher.py
+2026-01-14 13:18:39,419 - Orchestrator - INFO - [OK] Filesystem Watcher started (PID: 15256)
+2026-01-14 13:18:39,419 - Orchestrator - INFO - [OK] Filesystem Watcher restarted successfully
+2026-01-14 13:18:39,420 - Orchestrator - INFO - Health check complete
+2026-01-14 13:19:39,420 - Orchestrator - INFO - Running health check...
+2026-01-14 13:19:39,421 - Orchestrator - WARNING - Filesystem Watcher is not running!
+2026-01-14 13:19:39,421 - Orchestrator - INFO - Auto-restarting Filesystem Watcher...
+2026-01-14 13:19:39,421 - Orchestrator - INFO - Starting Filesystem Watcher: python filesystem_watcher.py
+2026-01-14 13:19:39,425 - Orchestrator - INFO - [OK] Filesystem Watcher started (PID: 13476)
+2026-01-14 13:19:39,425 - Orchestrator - INFO - [OK] Filesystem Watcher restarted successfully
+2026-01-14 13:19:39,425 - Orchestrator - INFO - Health check complete
+2026-01-14 13:20:39,426 - Orchestrator - INFO - Running health check...
+2026-01-14 13:20:39,426 - Orchestrator - WARNING - Filesystem Watcher is not running!
+2026-01-14 13:20:39,427 - Orchestrator - INFO - Auto-restarting Filesystem Watcher...
+2026-01-14 13:20:39,427 - Orchestrator - INFO - Starting Filesystem Watcher: python filesystem_watcher.py
+2026-01-14 13:20:39,430 - Orchestrator - INFO - [OK] Filesystem Watcher started (PID: 8020)
+2026-01-14 13:20:39,430 - Orchestrator - INFO - [OK] Filesystem Watcher restarted successfully
+2026-01-14 13:20:39,430 - Orchestrator - INFO - Health check complete
+2026-01-14 13:21:39,431 - Orchestrator - INFO - Running health check...
+2026-01-14 13:21:39,432 - Orchestrator - WARNING - Filesystem Watcher is not running!
+2026-01-14 13:21:39,432 - Orchestrator - INFO - Auto-restarting Filesystem Watcher...
+2026-01-14 13:21:39,432 - Orchestrator - INFO - Starting Filesystem Watcher: python filesystem_watcher.py
+2026-01-14 13:21:39,436 - Orchestrator - INFO - [OK] Filesystem Watcher started (PID: 15608)
+2026-01-14 13:21:39,436 - Orchestrator - INFO - [OK] Filesystem Watcher restarted successfully
+2026-01-14 13:21:39,436 - Orchestrator - INFO - Health check complete
+2026-01-14 13:22:39,437 - Orchestrator - INFO - Running health check...
+2026-01-14 13:22:39,437 - Orchestrator - WARNING - Filesystem Watcher is not running!
+2026-01-14 13:22:39,437 - Orchestrator - INFO - Auto-restarting Filesystem Watcher...
+2026-01-14 13:22:39,438 - Orchestrator - INFO - Starting Filesystem Watcher: python filesystem_watcher.py
+2026-01-14 13:22:39,441 - Orchestrator - INFO - [OK] Filesystem Watcher started (PID: 11564)
+2026-01-14 13:22:39,442 - Orchestrator - INFO - [OK] Filesystem Watcher restarted successfully
+2026-01-14 13:22:39,442 - Orchestrator - INFO - Health check complete
+2026-01-14 13:23:39,443 - Orchestrator - INFO - Running health check...
+2026-01-14 13:23:39,443 - Orchestrator - WARNING - Filesystem Watcher is not running!
+2026-01-14 13:23:39,443 - Orchestrator - INFO - Auto-restarting Filesystem Watcher...
+2026-01-14 13:23:39,444 - Orchestrator - INFO - Starting Filesystem Watcher: python filesystem_watcher.py
+2026-01-14 13:23:39,447 - Orchestrator - INFO - [OK] Filesystem Watcher started (PID: 4920)
+2026-01-14 13:23:39,447 - Orchestrator - INFO - [OK] Filesystem Watcher restarted successfully
+2026-01-14 13:23:39,448 - Orchestrator - INFO - Health check complete
+2026-01-14 13:24:39,449 - Orchestrator - INFO - Running health check...
+2026-01-14 13:24:39,449 - Orchestrator - WARNING - Filesystem Watcher is not running!
+2026-01-14 13:24:39,449 - Orchestrator - INFO - Auto-restarting Filesystem Watcher...
+2026-01-14 13:24:39,449 - Orchestrator - INFO - Starting Filesystem Watcher: python filesystem_watcher.py
+2026-01-14 13:24:39,453 - Orchestrator - INFO - [OK] Filesystem Watcher started (PID: 16692)
+2026-01-14 13:24:39,453 - Orchestrator - INFO - [OK] Filesystem Watcher restarted successfully
+2026-01-14 13:24:39,453 - Orchestrator - INFO - Health check complete
+2026-01-14 13:25:39,454 - Orchestrator - INFO - Running health check...
+2026-01-14 13:25:39,455 - Orchestrator - WARNING - Filesystem Watcher is not running!
+2026-01-14 13:25:39,455 - Orchestrator - INFO - Auto-restarting Filesystem Watcher...
+2026-01-14 13:25:39,455 - Orchestrator - INFO - Starting Filesystem Watcher: python filesystem_watcher.py
+2026-01-14 13:25:39,459 - Orchestrator - INFO - [OK] Filesystem Watcher started (PID: 8412)
+2026-01-14 13:25:39,459 - Orchestrator - INFO - [OK] Filesystem Watcher restarted successfully
+2026-01-14 13:25:39,460 - Orchestrator - INFO - Health check complete
+2026-01-14 13:26:39,460 - Orchestrator - INFO - Running health check...
+2026-01-14 13:26:39,461 - Orchestrator - WARNING - Filesystem Watcher is not running!
+2026-01-14 13:26:39,461 - Orchestrator - INFO - Auto-restarting Filesystem Watcher...
+2026-01-14 13:26:39,461 - Orchestrator - INFO - Starting Filesystem Watcher: python filesystem_watcher.py
+2026-01-14 13:26:39,465 - Orchestrator - INFO - [OK] Filesystem Watcher started (PID: 9736)
+2026-01-14 13:26:39,465 - Orchestrator - INFO - [OK] Filesystem Watcher restarted successfully
+2026-01-14 13:26:39,466 - Orchestrator - INFO - Health check complete
+2026-01-14 13:27:39,466 - Orchestrator - INFO - Running health check...
+2026-01-14 13:27:39,466 - Orchestrator - WARNING - Filesystem Watcher is not running!
+2026-01-14 13:27:39,467 - Orchestrator - INFO - Auto-restarting Filesystem Watcher...
+2026-01-14 13:27:39,467 - Orchestrator - INFO - Starting Filesystem Watcher: python filesystem_watcher.py
+2026-01-14 13:27:39,472 - Orchestrator - INFO - [OK] Filesystem Watcher started (PID: 18420)
+2026-01-14 13:27:39,473 - Orchestrator - INFO - [OK] Filesystem Watcher restarted successfully
+2026-01-14 13:27:39,473 - Orchestrator - INFO - Health check complete
+2026-01-14 13:28:39,474 - Orchestrator - INFO - Running health check...
+2026-01-14 13:28:39,474 - Orchestrator - WARNING - Filesystem Watcher is not running!
+2026-01-14 13:28:39,475 - Orchestrator - INFO - Auto-restarting Filesystem Watcher...
+2026-01-14 13:28:39,475 - Orchestrator - INFO - Starting Filesystem Watcher: python filesystem_watcher.py
+2026-01-14 13:28:39,481 - Orchestrator - INFO - [OK] Filesystem Watcher started (PID: 11836)
+2026-01-14 13:28:39,481 - Orchestrator - INFO - [OK] Filesystem Watcher restarted successfully
+2026-01-14 13:28:39,481 - Orchestrator - INFO - Health check complete
+2026-01-14 13:29:39,482 - Orchestrator - INFO - Running health check...
+2026-01-14 13:29:39,483 - Orchestrator - WARNING - Filesystem Watcher is not running!
+2026-01-14 13:29:39,483 - Orchestrator - INFO - Auto-restarting Filesystem Watcher...
+2026-01-14 13:29:39,484 - Orchestrator - INFO - Starting Filesystem Watcher: python filesystem_watcher.py
+2026-01-14 13:29:39,494 - Orchestrator - INFO - [OK] Filesystem Watcher started (PID: 15968)
+2026-01-14 13:29:39,495 - Orchestrator - INFO - [OK] Filesystem Watcher restarted successfully
+2026-01-14 13:29:39,495 - Orchestrator - INFO - Health check complete
+2026-01-14 13:30:39,496 - Orchestrator - INFO - Running health check...
+2026-01-14 13:30:39,496 - Orchestrator - WARNING - Filesystem Watcher is not running!
+2026-01-14 13:30:39,497 - Orchestrator - INFO - Auto-restarting Filesystem Watcher...
+2026-01-14 13:30:39,498 - Orchestrator - INFO - Starting Filesystem Watcher: python filesystem_watcher.py
+2026-01-14 13:30:39,503 - Orchestrator - INFO - [OK] Filesystem Watcher started (PID: 7792)
+2026-01-14 13:30:39,503 - Orchestrator - INFO - [OK] Filesystem Watcher restarted successfully
+2026-01-14 13:30:39,504 - Orchestrator - INFO - Health check complete
+2026-01-14 13:31:39,505 - Orchestrator - INFO - Running health check...
+2026-01-14 13:31:39,505 - Orchestrator - WARNING - Filesystem Watcher is not running!
+2026-01-14 13:31:39,505 - Orchestrator - INFO - Auto-restarting Filesystem Watcher...
+2026-01-14 13:31:39,506 - Orchestrator - INFO - Starting Filesystem Watcher: python filesystem_watcher.py
+2026-01-14 13:31:39,510 - Orchestrator - INFO - [OK] Filesystem Watcher started (PID: 10372)
+2026-01-14 13:31:39,510 - Orchestrator - INFO - [OK] Filesystem Watcher restarted successfully
+2026-01-14 13:31:39,511 - Orchestrator - INFO - Health check complete
+2026-01-14 13:32:39,512 - Orchestrator - INFO - Running health check...
+2026-01-14 13:32:39,512 - Orchestrator - WARNING - Filesystem Watcher is not running!
+2026-01-14 13:32:39,513 - Orchestrator - INFO - Auto-restarting Filesystem Watcher...
+2026-01-14 13:32:39,514 - Orchestrator - INFO - Starting Filesystem Watcher: python filesystem_watcher.py
+2026-01-14 13:32:39,524 - Orchestrator - INFO - [OK] Filesystem Watcher started (PID: 1312)
+2026-01-14 13:32:39,526 - Orchestrator - INFO - [OK] Filesystem Watcher restarted successfully
+2026-01-14 13:32:39,526 - Orchestrator - INFO - Health check complete
+2026-01-14 13:33:39,527 - Orchestrator - INFO - Running health check...
+2026-01-14 13:33:39,528 - Orchestrator - WARNING - Filesystem Watcher is not running!
+2026-01-14 13:33:39,528 - Orchestrator - INFO - Auto-restarting Filesystem Watcher...
+2026-01-14 13:33:39,528 - Orchestrator - INFO - Starting Filesystem Watcher: python filesystem_watcher.py
+2026-01-14 13:33:39,533 - Orchestrator - INFO - [OK] Filesystem Watcher started (PID: 15948)
+2026-01-14 13:33:39,533 - Orchestrator - INFO - [OK] Filesystem Watcher restarted successfully
+2026-01-14 13:33:39,533 - Orchestrator - INFO - Health check complete
+2026-01-14 13:34:39,534 - Orchestrator - INFO - Running health check...
+2026-01-14 13:34:39,535 - Orchestrator - WARNING - Filesystem Watcher is not running!
+2026-01-14 13:34:39,535 - Orchestrator - INFO - Auto-restarting Filesystem Watcher...
+2026-01-14 13:34:39,536 - Orchestrator - INFO - Starting Filesystem Watcher: python filesystem_watcher.py
+2026-01-14 13:34:39,541 - Orchestrator - INFO - [OK] Filesystem Watcher started (PID: 524)
+2026-01-14 13:34:39,541 - Orchestrator - INFO - [OK] Filesystem Watcher restarted successfully
+2026-01-14 13:34:39,541 - Orchestrator - INFO - Health check complete
+2026-01-14 13:35:39,543 - Orchestrator - INFO - Running health check...
+2026-01-14 13:35:39,548 - Orchestrator - WARNING - Filesystem Watcher is not running!
+2026-01-14 13:35:39,548 - Orchestrator - INFO - Auto-restarting Filesystem Watcher...
+2026-01-14 13:35:39,549 - Orchestrator - INFO - Starting Filesystem Watcher: python filesystem_watcher.py
+2026-01-14 13:35:39,553 - Orchestrator - INFO - [OK] Filesystem Watcher started (PID: 12508)
+2026-01-14 13:35:39,553 - Orchestrator - INFO - [OK] Filesystem Watcher restarted successfully
+2026-01-14 13:35:39,554 - Orchestrator - INFO - Health check complete
+2026-01-14 13:36:39,554 - Orchestrator - INFO - Running health check...
+2026-01-14 13:36:39,555 - Orchestrator - WARNING - Filesystem Watcher is not running!
+2026-01-14 13:36:39,555 - Orchestrator - INFO - Auto-restarting Filesystem Watcher...
+2026-01-14 13:36:39,555 - Orchestrator - INFO - Starting Filesystem Watcher: python filesystem_watcher.py
+2026-01-14 13:36:39,560 - Orchestrator - INFO - [OK] Filesystem Watcher started (PID: 17496)
+2026-01-14 13:36:39,560 - Orchestrator - INFO - [OK] Filesystem Watcher restarted successfully
+2026-01-14 13:36:39,560 - Orchestrator - INFO - Health check complete
+2026-01-14 13:37:39,561 - Orchestrator - INFO - Running health check...
+2026-01-14 13:37:39,562 - Orchestrator - WARNING - Filesystem Watcher is not running!
+2026-01-14 13:37:39,562 - Orchestrator - INFO - Auto-restarting Filesystem Watcher...
+2026-01-14 13:37:39,562 - Orchestrator - INFO - Starting Filesystem Watcher: python filesystem_watcher.py
+2026-01-14 13:37:39,569 - Orchestrator - INFO - [OK] Filesystem Watcher started (PID: 5824)
+2026-01-14 13:37:39,569 - Orchestrator - INFO - [OK] Filesystem Watcher restarted successfully
+2026-01-14 13:37:39,570 - Orchestrator - INFO - Health check complete
+2026-01-14 13:38:39,570 - Orchestrator - INFO - Running health check...
+2026-01-14 13:38:39,571 - Orchestrator - WARNING - Filesystem Watcher is not running!
+2026-01-14 13:38:39,571 - Orchestrator - INFO - Auto-restarting Filesystem Watcher...
+2026-01-14 13:38:39,572 - Orchestrator - INFO - Starting Filesystem Watcher: python filesystem_watcher.py
+2026-01-14 13:38:39,576 - Orchestrator - INFO - [OK] Filesystem Watcher started (PID: 6856)
+2026-01-14 13:38:39,576 - Orchestrator - INFO - [OK] Filesystem Watcher restarted successfully
+2026-01-14 13:38:39,577 - Orchestrator - INFO - Health check complete
+2026-01-14 13:39:39,577 - Orchestrator - INFO - Running health check...
+2026-01-14 13:39:39,578 - Orchestrator - WARNING - Filesystem Watcher is not running!
+2026-01-14 13:39:39,578 - Orchestrator - INFO - Auto-restarting Filesystem Watcher...
+2026-01-14 13:39:39,579 - Orchestrator - INFO - Starting Filesystem Watcher: python filesystem_watcher.py
+2026-01-14 13:39:39,583 - Orchestrator - INFO - [OK] Filesystem Watcher started (PID: 10116)
+2026-01-14 13:39:39,583 - Orchestrator - INFO - [OK] Filesystem Watcher restarted successfully
+2026-01-14 13:39:39,583 - Orchestrator - INFO - Health check complete
+2026-01-14 13:40:39,584 - Orchestrator - INFO - Running health check...
+2026-01-14 13:40:39,585 - Orchestrator - WARNING - Filesystem Watcher is not running!
+2026-01-14 13:40:39,585 - Orchestrator - INFO - Auto-restarting Filesystem Watcher...
+2026-01-14 13:40:39,585 - Orchestrator - INFO - Starting Filesystem Watcher: python filesystem_watcher.py
+2026-01-14 13:40:39,590 - Orchestrator - INFO - [OK] Filesystem Watcher started (PID: 15432)
+2026-01-14 13:40:39,591 - Orchestrator - INFO - [OK] Filesystem Watcher restarted successfully
+2026-01-14 13:40:39,591 - Orchestrator - INFO - Health check complete
+2026-01-14 13:41:39,592 - Orchestrator - INFO - Running health check...
+2026-01-14 13:41:39,593 - Orchestrator - WARNING - Filesystem Watcher is not running!
+2026-01-14 13:41:39,593 - Orchestrator - INFO - Auto-restarting Filesystem Watcher...
+2026-01-14 13:41:39,593 - Orchestrator - INFO - Starting Filesystem Watcher: python filesystem_watcher.py
+2026-01-14 13:41:39,598 - Orchestrator - INFO - [OK] Filesystem Watcher started (PID: 15712)
+2026-01-14 13:41:39,599 - Orchestrator - INFO - [OK] Filesystem Watcher restarted successfully
+2026-01-14 13:41:39,599 - Orchestrator - INFO - Health check complete
+2026-01-14 13:42:39,600 - Orchestrator - INFO - Running health check...
+2026-01-14 13:42:39,601 - Orchestrator - WARNING - Filesystem Watcher is not running!
+2026-01-14 13:42:39,601 - Orchestrator - INFO - Auto-restarting Filesystem Watcher...
+2026-01-14 13:42:39,601 - Orchestrator - INFO - Starting Filesystem Watcher: python filesystem_watcher.py
+2026-01-14 13:42:39,612 - Orchestrator - INFO - [OK] Filesystem Watcher started (PID: 17324)
+2026-01-14 13:42:39,612 - Orchestrator - INFO - [OK] Filesystem Watcher restarted successfully
+2026-01-14 13:42:39,612 - Orchestrator - INFO - Health check complete
+2026-01-14 13:43:39,613 - Orchestrator - INFO - Running health check...
+2026-01-14 13:43:39,614 - Orchestrator - WARNING - Filesystem Watcher is not running!
+2026-01-14 13:43:39,614 - Orchestrator - INFO - Auto-restarting Filesystem Watcher...
+2026-01-14 13:43:39,614 - Orchestrator - INFO - Starting Filesystem Watcher: python filesystem_watcher.py
+2026-01-14 13:43:39,619 - Orchestrator - INFO - [OK] Filesystem Watcher started (PID: 9432)
+2026-01-14 13:43:39,620 - Orchestrator - INFO - [OK] Filesystem Watcher restarted successfully
+2026-01-14 13:43:39,620 - Orchestrator - INFO - Health check complete
+2026-01-14 13:44:39,621 - Orchestrator - INFO - Running health check...
+2026-01-14 13:44:39,621 - Orchestrator - WARNING - Filesystem Watcher is not running!
+2026-01-14 13:44:39,621 - Orchestrator - INFO - Auto-restarting Filesystem Watcher...
+2026-01-14 13:44:39,622 - Orchestrator - INFO - Starting Filesystem Watcher: python filesystem_watcher.py
+2026-01-14 13:44:39,627 - Orchestrator - INFO - [OK] Filesystem Watcher started (PID: 16648)
+2026-01-14 13:44:39,627 - Orchestrator - INFO - [OK] Filesystem Watcher restarted successfully
+2026-01-14 13:44:39,627 - Orchestrator - INFO - Health check complete
+2026-01-14 13:45:39,628 - Orchestrator - INFO - Running health check...
+2026-01-14 13:45:39,629 - Orchestrator - WARNING - Filesystem Watcher is not running!
+2026-01-14 13:45:39,629 - Orchestrator - INFO - Auto-restarting Filesystem Watcher...
+2026-01-14 13:45:39,630 - Orchestrator - INFO - Starting Filesystem Watcher: python filesystem_watcher.py
+2026-01-14 13:45:39,635 - Orchestrator - INFO - [OK] Filesystem Watcher started (PID: 5700)
+2026-01-14 13:45:39,635 - Orchestrator - INFO - [OK] Filesystem Watcher restarted successfully
+2026-01-14 13:45:39,635 - Orchestrator - INFO - Health check complete
+2026-01-14 13:46:39,636 - Orchestrator - INFO - Running health check...
+2026-01-14 13:46:39,637 - Orchestrator - WARNING - Filesystem Watcher is not running!
+2026-01-14 13:46:39,637 - Orchestrator - INFO - Auto-restarting Filesystem Watcher...
+2026-01-14 13:46:39,638 - Orchestrator - INFO - Starting Filesystem Watcher: python filesystem_watcher.py
+2026-01-14 13:46:39,644 - Orchestrator - INFO - [OK] Filesystem Watcher started (PID: 6176)
+2026-01-14 13:46:39,644 - Orchestrator - INFO - [OK] Filesystem Watcher restarted successfully
+2026-01-14 13:46:39,644 - Orchestrator - INFO - Health check complete
+2026-01-14 13:47:39,646 - Orchestrator - INFO - Running health check...
+2026-01-14 13:47:39,646 - Orchestrator - WARNING - Filesystem Watcher is not running!
+2026-01-14 13:47:39,646 - Orchestrator - INFO - Auto-restarting Filesystem Watcher...
+2026-01-14 13:47:39,646 - Orchestrator - INFO - Starting Filesystem Watcher: python filesystem_watcher.py
+2026-01-14 13:47:39,653 - Orchestrator - INFO - [OK] Filesystem Watcher started (PID: 13600)
+2026-01-14 13:47:39,653 - Orchestrator - INFO - [OK] Filesystem Watcher restarted successfully
+2026-01-14 13:47:39,654 - Orchestrator - INFO - Health check complete
+2026-01-14 13:48:39,655 - Orchestrator - INFO - Running health check...
+2026-01-14 13:48:39,656 - Orchestrator - WARNING - Filesystem Watcher is not running!
+2026-01-14 13:48:39,656 - Orchestrator - INFO - Auto-restarting Filesystem Watcher...
+2026-01-14 13:48:39,656 - Orchestrator - INFO - Starting Filesystem Watcher: python filesystem_watcher.py
+2026-01-14 13:48:39,664 - Orchestrator - INFO - [OK] Filesystem Watcher started (PID: 11436)
+2026-01-14 13:48:39,664 - Orchestrator - INFO - [OK] Filesystem Watcher restarted successfully
+2026-01-14 13:48:39,665 - Orchestrator - INFO - Health check complete
+2026-01-14 13:49:39,666 - Orchestrator - INFO - Running health check...
+2026-01-14 13:49:39,666 - Orchestrator - WARNING - Filesystem Watcher is not running!
+2026-01-14 13:49:39,666 - Orchestrator - INFO - Auto-restarting Filesystem Watcher...
+2026-01-14 13:49:39,666 - Orchestrator - INFO - Starting Filesystem Watcher: python filesystem_watcher.py
+2026-01-14 13:49:39,668 - Orchestrator - INFO - [OK] Filesystem Watcher started (PID: 12032)
+2026-01-14 13:49:39,668 - Orchestrator - INFO - [OK] Filesystem Watcher restarted successfully
+2026-01-14 13:49:39,668 - Orchestrator - INFO - Health check complete
+2026-01-14 13:50:39,669 - Orchestrator - INFO - Running health check...
+2026-01-14 13:50:39,669 - Orchestrator - WARNING - Filesystem Watcher is not running!
+2026-01-14 13:50:39,669 - Orchestrator - INFO - Auto-restarting Filesystem Watcher...
+2026-01-14 13:50:39,670 - Orchestrator - INFO - Starting Filesystem Watcher: python filesystem_watcher.py
+2026-01-14 13:50:39,674 - Orchestrator - INFO - [OK] Filesystem Watcher started (PID: 5328)
+2026-01-14 13:50:39,675 - Orchestrator - INFO - [OK] Filesystem Watcher restarted successfully
+2026-01-14 13:50:39,675 - Orchestrator - INFO - Health check complete
+2026-01-14 13:51:39,677 - Orchestrator - INFO - Running health check...
+2026-01-14 13:51:39,678 - Orchestrator - WARNING - Filesystem Watcher is not running!
+2026-01-14 13:51:39,678 - Orchestrator - INFO - Auto-restarting Filesystem Watcher...
+2026-01-14 13:51:39,678 - Orchestrator - INFO - Starting Filesystem Watcher: python filesystem_watcher.py
+2026-01-14 13:51:39,684 - Orchestrator - INFO - [OK] Filesystem Watcher started (PID: 12316)
+2026-01-14 13:51:39,685 - Orchestrator - INFO - [OK] Filesystem Watcher restarted successfully
+2026-01-14 13:51:39,685 - Orchestrator - INFO - Health check complete
+2026-01-14 13:52:39,686 - Orchestrator - INFO - Running health check...
+2026-01-14 13:52:39,687 - Orchestrator - WARNING - Filesystem Watcher is not running!
+2026-01-14 13:52:39,687 - Orchestrator - INFO - Auto-restarting Filesystem Watcher...
+2026-01-14 13:52:39,687 - Orchestrator - INFO - Starting Filesystem Watcher: python filesystem_watcher.py
+2026-01-14 13:52:39,692 - Orchestrator - INFO - [OK] Filesystem Watcher started (PID: 13060)
+2026-01-14 13:52:39,693 - Orchestrator - INFO - [OK] Filesystem Watcher restarted successfully
+2026-01-14 13:52:39,693 - Orchestrator - INFO - Health check complete
+2026-01-14 13:53:39,694 - Orchestrator - INFO - Running health check...
+2026-01-14 13:53:39,694 - Orchestrator - WARNING - Filesystem Watcher is not running!
+2026-01-14 13:53:39,694 - Orchestrator - INFO - Auto-restarting Filesystem Watcher...
+2026-01-14 13:53:39,695 - Orchestrator - INFO - Starting Filesystem Watcher: python filesystem_watcher.py
+2026-01-14 13:53:39,696 - Orchestrator - INFO - [OK] Filesystem Watcher started (PID: 5376)
+2026-01-14 13:53:39,696 - Orchestrator - INFO - [OK] Filesystem Watcher restarted successfully
+2026-01-14 13:53:39,696 - Orchestrator - INFO - Health check complete
+2026-01-14 13:54:39,697 - Orchestrator - INFO - Running health check...
+2026-01-14 13:54:39,698 - Orchestrator - WARNING - Filesystem Watcher is not running!
+2026-01-14 13:54:39,698 - Orchestrator - INFO - Auto-restarting Filesystem Watcher...
+2026-01-14 13:54:39,698 - Orchestrator - INFO - Starting Filesystem Watcher: python filesystem_watcher.py
+2026-01-14 13:54:39,704 - Orchestrator - INFO - [OK] Filesystem Watcher started (PID: 2372)
+2026-01-14 13:54:39,705 - Orchestrator - INFO - [OK] Filesystem Watcher restarted successfully
+2026-01-14 13:54:39,705 - Orchestrator - INFO - Health check complete
+2026-01-14 13:55:39,707 - Orchestrator - INFO - Running health check...
+2026-01-14 13:55:39,708 - Orchestrator - WARNING - Filesystem Watcher is not running!
+2026-01-14 13:55:39,709 - Orchestrator - INFO - Auto-restarting Filesystem Watcher...
+2026-01-14 13:55:39,709 - Orchestrator - INFO - Starting Filesystem Watcher: python filesystem_watcher.py
+2026-01-14 13:55:39,715 - Orchestrator - INFO - [OK] Filesystem Watcher started (PID: 9356)
+2026-01-14 13:55:39,716 - Orchestrator - INFO - [OK] Filesystem Watcher restarted successfully
+2026-01-14 13:55:39,716 - Orchestrator - INFO - Health check complete
+2026-01-14 13:56:39,717 - Orchestrator - INFO - Running health check...
+2026-01-14 13:56:39,717 - Orchestrator - WARNING - Filesystem Watcher is not running!
+2026-01-14 13:56:39,718 - Orchestrator - INFO - Auto-restarting Filesystem Watcher...
+2026-01-14 13:56:39,718 - Orchestrator - INFO - Starting Filesystem Watcher: python filesystem_watcher.py
+2026-01-14 13:56:39,722 - Orchestrator - INFO - [OK] Filesystem Watcher started (PID: 13956)
+2026-01-14 13:56:39,723 - Orchestrator - INFO - [OK] Filesystem Watcher restarted successfully
+2026-01-14 13:56:39,723 - Orchestrator - INFO - Health check complete
+2026-01-14 13:57:39,724 - Orchestrator - INFO - Running health check...
+2026-01-14 13:57:39,725 - Orchestrator - WARNING - Filesystem Watcher is not running!
+2026-01-14 13:57:39,725 - Orchestrator - INFO - Auto-restarting Filesystem Watcher...
+2026-01-14 13:57:39,725 - Orchestrator - INFO - Starting Filesystem Watcher: python filesystem_watcher.py
+2026-01-14 13:57:39,730 - Orchestrator - INFO - [OK] Filesystem Watcher started (PID: 14512)
+2026-01-14 13:57:39,731 - Orchestrator - INFO - [OK] Filesystem Watcher restarted successfully
+2026-01-14 13:57:39,731 - Orchestrator - INFO - Health check complete
+2026-01-14 13:58:39,732 - Orchestrator - INFO - Running health check...
+2026-01-14 13:58:39,733 - Orchestrator - WARNING - Filesystem Watcher is not running!
+2026-01-14 13:58:39,733 - Orchestrator - INFO - Auto-restarting Filesystem Watcher...
+2026-01-14 13:58:39,733 - Orchestrator - INFO - Starting Filesystem Watcher: python filesystem_watcher.py
+2026-01-14 13:58:39,738 - Orchestrator - INFO - [OK] Filesystem Watcher started (PID: 10668)
+2026-01-14 13:58:39,738 - Orchestrator - INFO - [OK] Filesystem Watcher restarted successfully
+2026-01-14 13:58:39,738 - Orchestrator - INFO - Health check complete
+2026-01-14 13:59:39,739 - Orchestrator - INFO - Running health check...
+2026-01-14 13:59:39,739 - Orchestrator - WARNING - Filesystem Watcher is not running!
+2026-01-14 13:59:39,739 - Orchestrator - INFO - Auto-restarting Filesystem Watcher...
+2026-01-14 13:59:39,739 - Orchestrator - INFO - Starting Filesystem Watcher: python filesystem_watcher.py
+2026-01-14 13:59:39,741 - Orchestrator - INFO - [OK] Filesystem Watcher started (PID: 8968)
+2026-01-14 13:59:39,741 - Orchestrator - INFO - [OK] Filesystem Watcher restarted successfully
+2026-01-14 13:59:39,741 - Orchestrator - INFO - Health check complete
+2026-01-14 14:00:39,742 - Orchestrator - INFO - Running health check...
+2026-01-14 14:00:39,742 - Orchestrator - WARNING - Filesystem Watcher is not running!
+2026-01-14 14:00:39,743 - Orchestrator - INFO - Auto-restarting Filesystem Watcher...
+2026-01-14 14:00:39,743 - Orchestrator - INFO - Starting Filesystem Watcher: python filesystem_watcher.py
+2026-01-14 14:00:39,749 - Orchestrator - INFO - [OK] Filesystem Watcher started (PID: 3184)
+2026-01-14 14:00:39,750 - Orchestrator - INFO - [OK] Filesystem Watcher restarted successfully
+2026-01-14 14:00:39,751 - Orchestrator - INFO - Health check complete
+2026-01-14 14:01:39,752 - Orchestrator - INFO - Running health check...
+2026-01-14 14:01:39,753 - Orchestrator - WARNING - Filesystem Watcher is not running!
+2026-01-14 14:01:39,753 - Orchestrator - INFO - Auto-restarting Filesystem Watcher...
+2026-01-14 14:01:39,753 - Orchestrator - INFO - Starting Filesystem Watcher: python filesystem_watcher.py
+2026-01-14 14:01:39,760 - Orchestrator - INFO - [OK] Filesystem Watcher started (PID: 15652)
+2026-01-14 14:01:39,761 - Orchestrator - INFO - [OK] Filesystem Watcher restarted successfully
+2026-01-14 14:01:39,761 - Orchestrator - INFO - Health check complete
+2026-01-14 14:02:39,762 - Orchestrator - INFO - Running health check...
+2026-01-14 14:02:39,763 - Orchestrator - WARNING - Filesystem Watcher is not running!
+2026-01-14 14:02:39,763 - Orchestrator - INFO - Auto-restarting Filesystem Watcher...
+2026-01-14 14:02:39,763 - Orchestrator - INFO - Starting Filesystem Watcher: python filesystem_watcher.py
+2026-01-14 14:02:39,767 - Orchestrator - INFO - [OK] Filesystem Watcher started (PID: 2464)
+2026-01-14 14:02:39,768 - Orchestrator - INFO - [OK] Filesystem Watcher restarted successfully
+2026-01-14 14:02:39,768 - Orchestrator - INFO - Health check complete
+2026-01-14 14:03:39,769 - Orchestrator - INFO - Running health check...
+2026-01-14 14:03:39,770 - Orchestrator - WARNING - Filesystem Watcher is not running!
+2026-01-14 14:03:39,770 - Orchestrator - INFO - Auto-restarting Filesystem Watcher...
+2026-01-14 14:03:39,770 - Orchestrator - INFO - Starting Filesystem Watcher: python filesystem_watcher.py
+2026-01-14 14:03:39,775 - Orchestrator - INFO - [OK] Filesystem Watcher started (PID: 12036)
+2026-01-14 14:03:39,775 - Orchestrator - INFO - [OK] Filesystem Watcher restarted successfully
+2026-01-14 14:03:39,776 - Orchestrator - INFO - Health check complete
+2026-01-14 14:04:39,776 - Orchestrator - INFO - Running health check...
+2026-01-14 14:04:39,777 - Orchestrator - WARNING - Filesystem Watcher is not running!
+2026-01-14 14:04:39,777 - Orchestrator - INFO - Auto-restarting Filesystem Watcher...
+2026-01-14 14:04:39,778 - Orchestrator - INFO - Starting Filesystem Watcher: python filesystem_watcher.py
+2026-01-14 14:04:39,782 - Orchestrator - INFO - [OK] Filesystem Watcher started (PID: 7276)
+2026-01-14 14:04:39,782 - Orchestrator - INFO - [OK] Filesystem Watcher restarted successfully
+2026-01-14 14:04:39,783 - Orchestrator - INFO - Health check complete
+2026-01-14 14:05:39,783 - Orchestrator - INFO - Running health check...
+2026-01-14 14:05:39,784 - Orchestrator - WARNING - Filesystem Watcher is not running!
+2026-01-14 14:05:39,784 - Orchestrator - INFO - Auto-restarting Filesystem Watcher...
+2026-01-14 14:05:39,784 - Orchestrator - INFO - Starting Filesystem Watcher: python filesystem_watcher.py
+2026-01-14 14:05:39,786 - Orchestrator - INFO - [OK] Filesystem Watcher started (PID: 12764)
+2026-01-14 14:05:39,786 - Orchestrator - INFO - [OK] Filesystem Watcher restarted successfully
+2026-01-14 14:05:39,786 - Orchestrator - INFO - Health check complete
+2026-01-14 14:06:39,787 - Orchestrator - INFO - Running health check...
+2026-01-14 14:06:39,787 - Orchestrator - WARNING - Filesystem Watcher is not running!
+2026-01-14 14:06:39,788 - Orchestrator - INFO - Auto-restarting Filesystem Watcher...
+2026-01-14 14:06:39,788 - Orchestrator - INFO - Starting Filesystem Watcher: python filesystem_watcher.py
+2026-01-14 14:06:39,792 - Orchestrator - INFO - [OK] Filesystem Watcher started (PID: 14452)
+2026-01-14 14:06:39,793 - Orchestrator - INFO - [OK] Filesystem Watcher restarted successfully
+2026-01-14 14:06:39,793 - Orchestrator - INFO - Health check complete
+2026-01-14 14:07:39,794 - Orchestrator - INFO - Running health check...
+2026-01-14 14:07:39,794 - Orchestrator - WARNING - Filesystem Watcher is not running!
+2026-01-14 14:07:39,795 - Orchestrator - INFO - Auto-restarting Filesystem Watcher...
+2026-01-14 14:07:39,795 - Orchestrator - INFO - Starting Filesystem Watcher: python filesystem_watcher.py
+2026-01-14 14:07:39,799 - Orchestrator - INFO - [OK] Filesystem Watcher started (PID: 15068)
+2026-01-14 14:07:39,800 - Orchestrator - INFO - [OK] Filesystem Watcher restarted successfully
+2026-01-14 14:07:39,800 - Orchestrator - INFO - Health check complete
+2026-01-14 14:08:39,801 - Orchestrator - INFO - Running health check...
+2026-01-14 14:08:39,802 - Orchestrator - WARNING - Filesystem Watcher is not running!
+2026-01-14 14:08:39,802 - Orchestrator - INFO - Auto-restarting Filesystem Watcher...
+2026-01-14 14:08:39,802 - Orchestrator - INFO - Starting Filesystem Watcher: python filesystem_watcher.py
+2026-01-14 14:08:39,807 - Orchestrator - INFO - [OK] Filesystem Watcher started (PID: 436)
+2026-01-14 14:08:39,807 - Orchestrator - INFO - [OK] Filesystem Watcher restarted successfully
+2026-01-14 14:08:39,807 - Orchestrator - INFO - Health check complete
+2026-01-14 14:09:39,809 - Orchestrator - INFO - Running health check...
+2026-01-14 14:09:39,809 - Orchestrator - WARNING - Filesystem Watcher is not running!
+2026-01-14 14:09:39,810 - Orchestrator - INFO - Auto-restarting Filesystem Watcher...
+2026-01-14 14:09:39,810 - Orchestrator - INFO - Starting Filesystem Watcher: python filesystem_watcher.py
+2026-01-14 14:09:39,814 - Orchestrator - INFO - [OK] Filesystem Watcher started (PID: 17476)
+2026-01-14 14:09:39,815 - Orchestrator - INFO - [OK] Filesystem Watcher restarted successfully
+2026-01-14 14:09:39,815 - Orchestrator - INFO - Health check complete
+2026-01-14 14:10:39,816 - Orchestrator - INFO - Running health check...
+2026-01-14 14:10:39,817 - Orchestrator - WARNING - Filesystem Watcher is not running!
+2026-01-14 14:10:39,817 - Orchestrator - INFO - Auto-restarting Filesystem Watcher...
+2026-01-14 14:10:39,817 - Orchestrator - INFO - Starting Filesystem Watcher: python filesystem_watcher.py
+2026-01-14 14:10:39,821 - Orchestrator - INFO - [OK] Filesystem Watcher started (PID: 5920)
+2026-01-14 14:10:39,822 - Orchestrator - INFO - [OK] Filesystem Watcher restarted successfully
+2026-01-14 14:10:39,822 - Orchestrator - INFO - Health check complete
+2026-01-14 14:11:39,823 - Orchestrator - INFO - Running health check...
+2026-01-14 14:11:39,824 - Orchestrator - WARNING - Filesystem Watcher is not running!
+2026-01-14 14:11:39,824 - Orchestrator - INFO - Auto-restarting Filesystem Watcher...
+2026-01-14 14:11:39,824 - Orchestrator - INFO - Starting Filesystem Watcher: python filesystem_watcher.py
+2026-01-14 14:11:39,829 - Orchestrator - INFO - [OK] Filesystem Watcher started (PID: 9424)
+2026-01-14 14:11:39,829 - Orchestrator - INFO - [OK] Filesystem Watcher restarted successfully
+2026-01-14 14:11:39,829 - Orchestrator - INFO - Health check complete
+2026-01-14 14:12:39,830 - Orchestrator - INFO - Running health check...
+2026-01-14 14:12:39,831 - Orchestrator - WARNING - Filesystem Watcher is not running!
+2026-01-14 14:12:39,831 - Orchestrator - INFO - Auto-restarting Filesystem Watcher...
+2026-01-14 14:12:39,831 - Orchestrator - INFO - Starting Filesystem Watcher: python filesystem_watcher.py
+2026-01-14 14:12:39,833 - Orchestrator - INFO - [OK] Filesystem Watcher started (PID: 12680)
+2026-01-14 14:12:39,833 - Orchestrator - INFO - [OK] Filesystem Watcher restarted successfully
+2026-01-14 14:12:39,833 - Orchestrator - INFO - Health check complete
+2026-01-14 14:13:39,834 - Orchestrator - INFO - Running health check...
+2026-01-14 14:13:39,834 - Orchestrator - WARNING - Filesystem Watcher is not running!
+2026-01-14 14:13:39,835 - Orchestrator - INFO - Auto-restarting Filesystem Watcher...
+2026-01-14 14:13:39,835 - Orchestrator - INFO - Starting Filesystem Watcher: python filesystem_watcher.py
+2026-01-14 14:13:39,839 - Orchestrator - INFO - [OK] Filesystem Watcher started (PID: 17736)
+2026-01-14 14:13:39,839 - Orchestrator - INFO - [OK] Filesystem Watcher restarted successfully
+2026-01-14 14:13:39,840 - Orchestrator - INFO - Health check complete
+2026-01-14 14:14:39,841 - Orchestrator - INFO - Running health check...
+2026-01-14 14:14:39,842 - Orchestrator - WARNING - Filesystem Watcher is not running!
+2026-01-14 14:14:39,842 - Orchestrator - INFO - Auto-restarting Filesystem Watcher...
+2026-01-14 14:14:39,842 - Orchestrator - INFO - Starting Filesystem Watcher: python filesystem_watcher.py
+2026-01-14 14:14:39,847 - Orchestrator - INFO - [OK] Filesystem Watcher started (PID: 12944)
+2026-01-14 14:14:39,847 - Orchestrator - INFO - [OK] Filesystem Watcher restarted successfully
+2026-01-14 14:14:39,847 - Orchestrator - INFO - Health check complete
+2026-01-14 14:15:39,848 - Orchestrator - INFO - Running health check...
+2026-01-14 14:15:39,849 - Orchestrator - WARNING - Filesystem Watcher is not running!
+2026-01-14 14:15:39,849 - Orchestrator - INFO - Auto-restarting Filesystem Watcher...
+2026-01-14 14:15:39,849 - Orchestrator - INFO - Starting Filesystem Watcher: python filesystem_watcher.py
+2026-01-14 14:15:39,854 - Orchestrator - INFO - [OK] Filesystem Watcher started (PID: 3768)
+2026-01-14 14:15:39,854 - Orchestrator - INFO - [OK] Filesystem Watcher restarted successfully
+2026-01-14 14:15:39,854 - Orchestrator - INFO - Health check complete
+2026-01-14 14:16:39,855 - Orchestrator - INFO - Running health check...
+2026-01-14 14:16:39,856 - Orchestrator - WARNING - Filesystem Watcher is not running!
+2026-01-14 14:16:39,856 - Orchestrator - INFO - Auto-restarting Filesystem Watcher...
+2026-01-14 14:16:39,856 - Orchestrator - INFO - Starting Filesystem Watcher: python filesystem_watcher.py
+2026-01-14 14:16:39,861 - Orchestrator - INFO - [OK] Filesystem Watcher started (PID: 16128)
+2026-01-14 14:16:39,861 - Orchestrator - INFO - [OK] Filesystem Watcher restarted successfully
+2026-01-14 14:16:39,862 - Orchestrator - INFO - Health check complete
+2026-01-14 14:17:39,862 - Orchestrator - INFO - Running health check...
+2026-01-14 14:17:39,863 - Orchestrator - WARNING - Filesystem Watcher is not running!
+2026-01-14 14:17:39,863 - Orchestrator - INFO - Auto-restarting Filesystem Watcher...
+2026-01-14 14:17:39,865 - Orchestrator - INFO - Starting Filesystem Watcher: python filesystem_watcher.py
+2026-01-14 14:17:39,874 - Orchestrator - INFO - [OK] Filesystem Watcher started (PID: 14044)
+2026-01-14 14:17:39,876 - Orchestrator - INFO - [OK] Filesystem Watcher restarted successfully
+2026-01-14 14:17:39,876 - Orchestrator - INFO - Health check complete
+2026-01-14 14:18:39,877 - Orchestrator - INFO - Running health check...
+2026-01-14 14:18:39,879 - Orchestrator - WARNING - Filesystem Watcher is not running!
+2026-01-14 14:18:39,879 - Orchestrator - INFO - Auto-restarting Filesystem Watcher...
+2026-01-14 14:18:39,879 - Orchestrator - INFO - Starting Filesystem Watcher: python filesystem_watcher.py
+2026-01-14 14:18:39,884 - Orchestrator - INFO - [OK] Filesystem Watcher started (PID: 17120)
+2026-01-14 14:18:39,885 - Orchestrator - INFO - [OK] Filesystem Watcher restarted successfully
+2026-01-14 14:18:39,885 - Orchestrator - INFO - Health check complete
+2026-01-14 14:19:39,886 - Orchestrator - INFO - Running health check...
+2026-01-14 14:19:39,887 - Orchestrator - WARNING - Filesystem Watcher is not running!
+2026-01-14 14:19:39,887 - Orchestrator - INFO - Auto-restarting Filesystem Watcher...
+2026-01-14 14:19:39,887 - Orchestrator - INFO - Starting Filesystem Watcher: python filesystem_watcher.py
+2026-01-14 14:19:39,891 - Orchestrator - INFO - [OK] Filesystem Watcher started (PID: 15664)
+2026-01-14 14:19:39,891 - Orchestrator - INFO - [OK] Filesystem Watcher restarted successfully
+2026-01-14 14:19:39,891 - Orchestrator - INFO - Health check complete
+2026-01-14 14:20:39,892 - Orchestrator - INFO - Running health check...
+2026-01-14 14:20:39,892 - Orchestrator - WARNING - Filesystem Watcher is not running!
+2026-01-14 14:20:39,893 - Orchestrator - INFO - Auto-restarting Filesystem Watcher...
+2026-01-14 14:20:39,893 - Orchestrator - INFO - Starting Filesystem Watcher: python filesystem_watcher.py
+2026-01-14 14:20:39,896 - Orchestrator - INFO - [OK] Filesystem Watcher started (PID: 13264)
+2026-01-14 14:20:39,896 - Orchestrator - INFO - [OK] Filesystem Watcher restarted successfully
+2026-01-14 14:20:39,896 - Orchestrator - INFO - Health check complete
+2026-01-14 14:21:39,897 - Orchestrator - INFO - Running health check...
+2026-01-14 14:21:39,898 - Orchestrator - WARNING - Filesystem Watcher is not running!
+2026-01-14 14:21:39,898 - Orchestrator - INFO - Auto-restarting Filesystem Watcher...
+2026-01-14 14:21:39,898 - Orchestrator - INFO - Starting Filesystem Watcher: python filesystem_watcher.py
+2026-01-14 14:21:39,902 - Orchestrator - INFO - [OK] Filesystem Watcher started (PID: 14428)
+2026-01-14 14:21:39,902 - Orchestrator - INFO - [OK] Filesystem Watcher restarted successfully
+2026-01-14 14:21:39,902 - Orchestrator - INFO - Health check complete
+2026-01-14 14:22:39,903 - Orchestrator - INFO - Running health check...
+2026-01-14 14:22:39,904 - Orchestrator - WARNING - Filesystem Watcher is not running!
+2026-01-14 14:22:39,904 - Orchestrator - INFO - Auto-restarting Filesystem Watcher...
+2026-01-14 14:22:39,904 - Orchestrator - INFO - Starting Filesystem Watcher: python filesystem_watcher.py
+2026-01-14 14:22:39,908 - Orchestrator - INFO - [OK] Filesystem Watcher started (PID: 11184)
+2026-01-14 14:22:39,908 - Orchestrator - INFO - [OK] Filesystem Watcher restarted successfully
+2026-01-14 14:22:39,908 - Orchestrator - INFO - Health check complete
+2026-01-14 14:23:39,909 - Orchestrator - INFO - Running health check...
+2026-01-14 14:23:39,910 - Orchestrator - WARNING - Filesystem Watcher is not running!
+2026-01-14 14:23:39,910 - Orchestrator - INFO - Auto-restarting Filesystem Watcher...
+2026-01-14 14:23:39,910 - Orchestrator - INFO - Starting Filesystem Watcher: python filesystem_watcher.py
+2026-01-14 14:23:39,914 - Orchestrator - INFO - [OK] Filesystem Watcher started (PID: 2272)
+2026-01-14 14:23:39,914 - Orchestrator - INFO - [OK] Filesystem Watcher restarted successfully
+2026-01-14 14:23:39,914 - Orchestrator - INFO - Health check complete
+2026-01-14 14:24:39,915 - Orchestrator - INFO - Running health check...
+2026-01-14 14:24:39,915 - Orchestrator - WARNING - Filesystem Watcher is not running!
+2026-01-14 14:24:39,916 - Orchestrator - INFO - Auto-restarting Filesystem Watcher...
+2026-01-14 14:24:39,916 - Orchestrator - INFO - Starting Filesystem Watcher: python filesystem_watcher.py
+2026-01-14 14:24:39,919 - Orchestrator - INFO - [OK] Filesystem Watcher started (PID: 3104)
+2026-01-14 14:24:39,919 - Orchestrator - INFO - [OK] Filesystem Watcher restarted successfully
+2026-01-14 14:24:39,920 - Orchestrator - INFO - Health check complete
+2026-01-14 14:25:39,921 - Orchestrator - INFO - Running health check...
+2026-01-14 14:25:39,921 - Orchestrator - WARNING - Filesystem Watcher is not running!
+2026-01-14 14:25:39,921 - Orchestrator - INFO - Auto-restarting Filesystem Watcher...
+2026-01-14 14:25:39,922 - Orchestrator - INFO - Starting Filesystem Watcher: python filesystem_watcher.py
+2026-01-14 14:25:39,926 - Orchestrator - INFO - [OK] Filesystem Watcher started (PID: 10604)
+2026-01-14 14:25:39,926 - Orchestrator - INFO - [OK] Filesystem Watcher restarted successfully
+2026-01-14 14:25:39,926 - Orchestrator - INFO - Health check complete
+2026-01-14 14:26:39,928 - Orchestrator - INFO - Running health check...
+2026-01-14 14:26:39,928 - Orchestrator - WARNING - Filesystem Watcher is not running!
+2026-01-14 14:26:39,928 - Orchestrator - INFO - Auto-restarting Filesystem Watcher...
+2026-01-14 14:26:39,929 - Orchestrator - INFO - Starting Filesystem Watcher: python filesystem_watcher.py
+2026-01-14 14:26:39,933 - Orchestrator - INFO - [OK] Filesystem Watcher started (PID: 4320)
+2026-01-14 14:26:39,934 - Orchestrator - INFO - [OK] Filesystem Watcher restarted successfully
+2026-01-14 14:26:39,934 - Orchestrator - INFO - Health check complete
+2026-01-14 14:27:39,935 - Orchestrator - INFO - Running health check...
+2026-01-14 14:27:39,935 - Orchestrator - WARNING - Filesystem Watcher is not running!
+2026-01-14 14:27:39,935 - Orchestrator - INFO - Auto-restarting Filesystem Watcher...
+2026-01-14 14:27:39,935 - Orchestrator - INFO - Starting Filesystem Watcher: python filesystem_watcher.py
+2026-01-14 14:27:39,939 - Orchestrator - INFO - [OK] Filesystem Watcher started (PID: 14788)
+2026-01-14 14:27:39,939 - Orchestrator - INFO - [OK] Filesystem Watcher restarted successfully
+2026-01-14 14:27:39,939 - Orchestrator - INFO - Health check complete
+2026-01-14 14:28:39,941 - Orchestrator - INFO - Running health check...
+2026-01-14 14:28:39,941 - Orchestrator - WARNING - Filesystem Watcher is not running!
+2026-01-14 14:28:39,941 - Orchestrator - INFO - Auto-restarting Filesystem Watcher...
+2026-01-14 14:28:39,942 - Orchestrator - INFO - Starting Filesystem Watcher: python filesystem_watcher.py
+2026-01-14 14:28:39,946 - Orchestrator - INFO - [OK] Filesystem Watcher started (PID: 3132)
+2026-01-14 14:28:39,947 - Orchestrator - INFO - [OK] Filesystem Watcher restarted successfully
+2026-01-14 14:28:39,947 - Orchestrator - INFO - Health check complete
+2026-01-14 14:29:39,947 - Orchestrator - INFO - Running health check...
+2026-01-14 14:29:39,948 - Orchestrator - WARNING - Filesystem Watcher is not running!
+2026-01-14 14:29:39,948 - Orchestrator - INFO - Auto-restarting Filesystem Watcher...
+2026-01-14 14:29:39,949 - Orchestrator - INFO - Starting Filesystem Watcher: python filesystem_watcher.py
+2026-01-14 14:29:39,953 - Orchestrator - INFO - [OK] Filesystem Watcher started (PID: 764)
+2026-01-14 14:29:39,953 - Orchestrator - INFO - [OK] Filesystem Watcher restarted successfully
+2026-01-14 14:29:39,953 - Orchestrator - INFO - Health check complete
+2026-01-14 14:30:39,954 - Orchestrator - INFO - Running health check...
+2026-01-14 14:30:39,955 - Orchestrator - WARNING - Filesystem Watcher is not running!
+2026-01-14 14:30:39,955 - Orchestrator - INFO - Auto-restarting Filesystem Watcher...
+2026-01-14 14:30:39,955 - Orchestrator - INFO - Starting Filesystem Watcher: python filesystem_watcher.py
+2026-01-14 14:30:39,960 - Orchestrator - INFO - [OK] Filesystem Watcher started (PID: 11808)
+2026-01-14 14:30:39,960 - Orchestrator - INFO - [OK] Filesystem Watcher restarted successfully
+2026-01-14 14:30:39,960 - Orchestrator - INFO - Health check complete
+2026-01-14 14:31:39,961 - Orchestrator - INFO - Running health check...
+2026-01-14 14:31:39,962 - Orchestrator - WARNING - Filesystem Watcher is not running!
+2026-01-14 14:31:39,962 - Orchestrator - INFO - Auto-restarting Filesystem Watcher...
+2026-01-14 14:31:39,962 - Orchestrator - INFO - Starting Filesystem Watcher: python filesystem_watcher.py
+2026-01-14 14:31:39,966 - Orchestrator - INFO - [OK] Filesystem Watcher started (PID: 10216)
+2026-01-14 14:31:39,966 - Orchestrator - INFO - [OK] Filesystem Watcher restarted successfully
+2026-01-14 14:31:39,966 - Orchestrator - INFO - Health check complete
+2026-01-14 14:32:39,967 - Orchestrator - INFO - Running health check...
+2026-01-14 14:32:39,967 - Orchestrator - WARNING - Filesystem Watcher is not running!
+2026-01-14 14:32:39,967 - Orchestrator - INFO - Auto-restarting Filesystem Watcher...
+2026-01-14 14:32:39,968 - Orchestrator - INFO - Starting Filesystem Watcher: python filesystem_watcher.py
+2026-01-14 14:32:39,969 - Orchestrator - INFO - [OK] Filesystem Watcher started (PID: 10688)
+2026-01-14 14:32:39,970 - Orchestrator - INFO - [OK] Filesystem Watcher restarted successfully
+2026-01-14 14:32:39,970 - Orchestrator - INFO - Health check complete
+2026-01-14 14:33:39,971 - Orchestrator - INFO - Running health check...
+2026-01-14 14:33:39,972 - Orchestrator - WARNING - Filesystem Watcher is not running!
+2026-01-14 14:33:39,972 - Orchestrator - INFO - Auto-restarting Filesystem Watcher...
+2026-01-14 14:33:39,973 - Orchestrator - INFO - Starting Filesystem Watcher: python filesystem_watcher.py
+2026-01-14 14:33:39,979 - Orchestrator - INFO - [OK] Filesystem Watcher started (PID: 9620)
+2026-01-14 14:33:39,979 - Orchestrator - INFO - [OK] Filesystem Watcher restarted successfully
+2026-01-14 14:33:39,980 - Orchestrator - INFO - Health check complete
+2026-01-14 14:34:39,981 - Orchestrator - INFO - Running health check...
+2026-01-14 14:34:39,982 - Orchestrator - WARNING - Filesystem Watcher is not running!
+2026-01-14 14:34:39,982 - Orchestrator - INFO - Auto-restarting Filesystem Watcher...
+2026-01-14 14:34:39,982 - Orchestrator - INFO - Starting Filesystem Watcher: python filesystem_watcher.py
+2026-01-14 14:34:39,987 - Orchestrator - INFO - [OK] Filesystem Watcher started (PID: 3504)
+2026-01-14 14:34:39,987 - Orchestrator - INFO - [OK] Filesystem Watcher restarted successfully
+2026-01-14 14:34:39,987 - Orchestrator - INFO - Health check complete
+2026-01-14 14:35:39,989 - Orchestrator - INFO - Running health check...
+2026-01-14 14:35:39,989 - Orchestrator - WARNING - Filesystem Watcher is not running!
+2026-01-14 14:35:39,990 - Orchestrator - INFO - Auto-restarting Filesystem Watcher...
+2026-01-14 14:35:39,990 - Orchestrator - INFO - Starting Filesystem Watcher: python filesystem_watcher.py
+2026-01-14 14:35:39,994 - Orchestrator - INFO - [OK] Filesystem Watcher started (PID: 11636)
+2026-01-14 14:35:39,994 - Orchestrator - INFO - [OK] Filesystem Watcher restarted successfully
+2026-01-14 14:35:39,995 - Orchestrator - INFO - Health check complete
+2026-01-14 14:36:39,996 - Orchestrator - INFO - Running health check...
+2026-01-14 14:36:39,996 - Orchestrator - WARNING - Filesystem Watcher is not running!
+2026-01-14 14:36:39,996 - Orchestrator - INFO - Auto-restarting Filesystem Watcher...
+2026-01-14 14:36:39,997 - Orchestrator - INFO - Starting Filesystem Watcher: python filesystem_watcher.py
+2026-01-14 14:36:40,001 - Orchestrator - INFO - [OK] Filesystem Watcher started (PID: 5284)
+2026-01-14 14:36:40,001 - Orchestrator - INFO - [OK] Filesystem Watcher restarted successfully
+2026-01-14 14:36:40,002 - Orchestrator - INFO - Health check complete
+2026-01-14 14:37:40,002 - Orchestrator - INFO - Running health check...
+2026-01-14 14:37:40,002 - Orchestrator - WARNING - Filesystem Watcher is not running!
+2026-01-14 14:37:40,003 - Orchestrator - INFO - Auto-restarting Filesystem Watcher...
+2026-01-14 14:37:40,003 - Orchestrator - INFO - Starting Filesystem Watcher: python filesystem_watcher.py
+2026-01-14 14:37:40,004 - Orchestrator - INFO - [OK] Filesystem Watcher started (PID: 11028)
+2026-01-14 14:37:40,004 - Orchestrator - INFO - [OK] Filesystem Watcher restarted successfully
+2026-01-14 14:37:40,004 - Orchestrator - INFO - Health check complete
+2026-01-14 14:38:40,005 - Orchestrator - INFO - Running health check...
+2026-01-14 14:38:40,005 - Orchestrator - WARNING - Filesystem Watcher is not running!
+2026-01-14 14:38:40,005 - Orchestrator - INFO - Auto-restarting Filesystem Watcher...
+2026-01-14 14:38:40,006 - Orchestrator - INFO - Starting Filesystem Watcher: python filesystem_watcher.py
+2026-01-14 14:38:40,010 - Orchestrator - INFO - [OK] Filesystem Watcher started (PID: 9520)
+2026-01-14 14:38:40,010 - Orchestrator - INFO - [OK] Filesystem Watcher restarted successfully
+2026-01-14 14:38:40,010 - Orchestrator - INFO - Health check complete
+2026-01-14 14:39:40,011 - Orchestrator - INFO - Running health check...
+2026-01-14 14:39:40,011 - Orchestrator - WARNING - Filesystem Watcher is not running!
+2026-01-14 14:39:40,011 - Orchestrator - INFO - Auto-restarting Filesystem Watcher...
+2026-01-14 14:39:40,012 - Orchestrator - INFO - Starting Filesystem Watcher: python filesystem_watcher.py
+2026-01-14 14:39:40,015 - Orchestrator - INFO - [OK] Filesystem Watcher started (PID: 2452)
+2026-01-14 14:39:40,016 - Orchestrator - INFO - [OK] Filesystem Watcher restarted successfully
+2026-01-14 14:39:40,016 - Orchestrator - INFO - Health check complete
+2026-01-14 14:40:40,017 - Orchestrator - INFO - Running health check...
+2026-01-14 14:40:40,017 - Orchestrator - WARNING - Filesystem Watcher is not running!
+2026-01-14 14:40:40,018 - Orchestrator - INFO - Auto-restarting Filesystem Watcher...
+2026-01-14 14:40:40,018 - Orchestrator - INFO - Starting Filesystem Watcher: python filesystem_watcher.py
+2026-01-14 14:40:40,022 - Orchestrator - INFO - [OK] Filesystem Watcher started (PID: 18148)
+2026-01-14 14:40:40,022 - Orchestrator - INFO - [OK] Filesystem Watcher restarted successfully
+2026-01-14 14:40:40,022 - Orchestrator - INFO - Health check complete
+2026-01-14 14:41:40,023 - Orchestrator - INFO - Running health check...
+2026-01-14 14:41:40,024 - Orchestrator - WARNING - Filesystem Watcher is not running!
+2026-01-14 14:41:40,024 - Orchestrator - INFO - Auto-restarting Filesystem Watcher...
+2026-01-14 14:41:40,024 - Orchestrator - INFO - Starting Filesystem Watcher: python filesystem_watcher.py
+2026-01-14 14:41:40,028 - Orchestrator - INFO - [OK] Filesystem Watcher started (PID: 3640)
+2026-01-14 14:41:40,028 - Orchestrator - INFO - [OK] Filesystem Watcher restarted successfully
+2026-01-14 14:41:40,028 - Orchestrator - INFO - Health check complete
+2026-01-14 14:42:40,029 - Orchestrator - INFO - Running health check...
+2026-01-14 14:42:40,030 - Orchestrator - WARNING - Filesystem Watcher is not running!
+2026-01-14 14:42:40,030 - Orchestrator - INFO - Auto-restarting Filesystem Watcher...
+2026-01-14 14:42:40,030 - Orchestrator - INFO - Starting Filesystem Watcher: python filesystem_watcher.py
+2026-01-14 14:42:40,033 - Orchestrator - INFO - [OK] Filesystem Watcher started (PID: 11384)
+2026-01-14 14:42:40,034 - Orchestrator - INFO - [OK] Filesystem Watcher restarted successfully
+2026-01-14 14:42:40,034 - Orchestrator - INFO - Health check complete
+2026-01-14 14:43:40,035 - Orchestrator - INFO - Running health check...
+2026-01-14 14:43:40,036 - Orchestrator - WARNING - Filesystem Watcher is not running!
+2026-01-14 14:43:40,036 - Orchestrator - INFO - Auto-restarting Filesystem Watcher...
+2026-01-14 14:43:40,036 - Orchestrator - INFO - Starting Filesystem Watcher: python filesystem_watcher.py
+2026-01-14 14:43:40,040 - Orchestrator - INFO - [OK] Filesystem Watcher started (PID: 1140)
+2026-01-14 14:43:40,040 - Orchestrator - INFO - [OK] Filesystem Watcher restarted successfully
+2026-01-14 14:43:40,040 - Orchestrator - INFO - Health check complete
+2026-01-14 14:44:40,041 - Orchestrator - INFO - Running health check...
+2026-01-14 14:44:40,042 - Orchestrator - WARNING - Filesystem Watcher is not running!
+2026-01-14 14:44:40,042 - Orchestrator - INFO - Auto-restarting Filesystem Watcher...
+2026-01-14 14:44:40,042 - Orchestrator - INFO - Starting Filesystem Watcher: python filesystem_watcher.py
+2026-01-14 14:44:40,046 - Orchestrator - INFO - [OK] Filesystem Watcher started (PID: 3312)
+2026-01-14 14:44:40,046 - Orchestrator - INFO - [OK] Filesystem Watcher restarted successfully
+2026-01-14 14:44:40,047 - Orchestrator - INFO - Health check complete
+2026-01-14 14:45:40,047 - Orchestrator - INFO - Running health check...
+2026-01-14 14:45:40,048 - Orchestrator - WARNING - Filesystem Watcher is not running!
+2026-01-14 14:45:40,048 - Orchestrator - INFO - Auto-restarting Filesystem Watcher...
+2026-01-14 14:45:40,048 - Orchestrator - INFO - Starting Filesystem Watcher: python filesystem_watcher.py
+2026-01-14 14:45:40,052 - Orchestrator - INFO - [OK] Filesystem Watcher started (PID: 10272)
+2026-01-14 14:45:40,053 - Orchestrator - INFO - [OK] Filesystem Watcher restarted successfully
+2026-01-14 14:45:40,053 - Orchestrator - INFO - Health check complete
+2026-01-14 14:46:40,054 - Orchestrator - INFO - Running health check...
+2026-01-14 14:46:40,054 - Orchestrator - WARNING - Filesystem Watcher is not running!
+2026-01-14 14:46:40,055 - Orchestrator - INFO - Auto-restarting Filesystem Watcher...
+2026-01-14 14:46:40,056 - Orchestrator - INFO - Starting Filesystem Watcher: python filesystem_watcher.py
+2026-01-14 14:46:40,060 - Orchestrator - INFO - [OK] Filesystem Watcher started (PID: 2688)
+2026-01-14 14:46:40,061 - Orchestrator - INFO - [OK] Filesystem Watcher restarted successfully
+2026-01-14 14:46:40,061 - Orchestrator - INFO - Health check complete
+2026-01-14 14:47:40,062 - Orchestrator - INFO - Running health check...
+2026-01-14 14:47:40,062 - Orchestrator - WARNING - Filesystem Watcher is not running!
+2026-01-14 14:47:40,062 - Orchestrator - INFO - Auto-restarting Filesystem Watcher...
+2026-01-14 14:47:40,062 - Orchestrator - INFO - Starting Filesystem Watcher: python filesystem_watcher.py
+2026-01-14 14:47:40,064 - Orchestrator - INFO - [OK] Filesystem Watcher started (PID: 6992)
+2026-01-14 14:47:40,064 - Orchestrator - INFO - [OK] Filesystem Watcher restarted successfully
+2026-01-14 14:47:40,064 - Orchestrator - INFO - Health check complete
+2026-01-14 14:48:40,065 - Orchestrator - INFO - Running health check...
+2026-01-14 14:48:40,066 - Orchestrator - WARNING - Filesystem Watcher is not running!
+2026-01-14 14:48:40,066 - Orchestrator - INFO - Auto-restarting Filesystem Watcher...
+2026-01-14 14:48:40,066 - Orchestrator - INFO - Starting Filesystem Watcher: python filesystem_watcher.py
+2026-01-14 14:48:40,071 - Orchestrator - INFO - [OK] Filesystem Watcher started (PID: 16056)
+2026-01-14 14:48:40,071 - Orchestrator - INFO - [OK] Filesystem Watcher restarted successfully
+2026-01-14 14:48:40,071 - Orchestrator - INFO - Health check complete
+2026-01-14 14:49:40,072 - Orchestrator - INFO - Running health check...
+2026-01-14 14:49:40,073 - Orchestrator - WARNING - Filesystem Watcher is not running!
+2026-01-14 14:49:40,073 - Orchestrator - INFO - Auto-restarting Filesystem Watcher...
+2026-01-14 14:49:40,073 - Orchestrator - INFO - Starting Filesystem Watcher: python filesystem_watcher.py
+2026-01-14 14:49:40,077 - Orchestrator - INFO - [OK] Filesystem Watcher started (PID: 4956)
+2026-01-14 14:49:40,077 - Orchestrator - INFO - [OK] Filesystem Watcher restarted successfully
+2026-01-14 14:49:40,078 - Orchestrator - INFO - Health check complete
+2026-01-14 14:50:40,078 - Orchestrator - INFO - Running health check...
+2026-01-14 14:50:40,079 - Orchestrator - WARNING - Filesystem Watcher is not running!
+2026-01-14 14:50:40,079 - Orchestrator - INFO - Auto-restarting Filesystem Watcher...
+2026-01-14 14:50:40,080 - Orchestrator - INFO - Starting Filesystem Watcher: python filesystem_watcher.py
+2026-01-14 14:50:40,086 - Orchestrator - INFO - [OK] Filesystem Watcher started (PID: 14780)
+2026-01-14 14:50:40,086 - Orchestrator - INFO - [OK] Filesystem Watcher restarted successfully
+2026-01-14 14:50:40,086 - Orchestrator - INFO - Health check complete
+2026-01-14 14:51:40,087 - Orchestrator - INFO - Running health check...
+2026-01-14 14:51:40,088 - Orchestrator - WARNING - Filesystem Watcher is not running!
+2026-01-14 14:51:40,088 - Orchestrator - INFO - Auto-restarting Filesystem Watcher...
+2026-01-14 14:51:40,088 - Orchestrator - INFO - Starting Filesystem Watcher: python filesystem_watcher.py
+2026-01-14 14:51:40,093 - Orchestrator - INFO - [OK] Filesystem Watcher started (PID: 14768)
+2026-01-14 14:51:40,093 - Orchestrator - INFO - [OK] Filesystem Watcher restarted successfully
+2026-01-14 14:51:40,094 - Orchestrator - INFO - Health check complete
+2026-01-14 14:52:40,094 - Orchestrator - INFO - Running health check...
+2026-01-14 14:52:40,094 - Orchestrator - WARNING - Filesystem Watcher is not running!
+2026-01-14 14:52:40,095 - Orchestrator - INFO - Auto-restarting Filesystem Watcher...
+2026-01-14 14:52:40,095 - Orchestrator - INFO - Starting Filesystem Watcher: python filesystem_watcher.py
+2026-01-14 14:52:40,097 - Orchestrator - INFO - [OK] Filesystem Watcher started (PID: 15564)
+2026-01-14 14:52:40,097 - Orchestrator - INFO - [OK] Filesystem Watcher restarted successfully
+2026-01-14 14:52:40,097 - Orchestrator - INFO - Health check complete
+2026-01-14 14:53:40,099 - Orchestrator - INFO - Running health check...
+2026-01-14 14:53:40,099 - Orchestrator - WARNING - Filesystem Watcher is not running!
+2026-01-14 14:53:40,099 - Orchestrator - INFO - Auto-restarting Filesystem Watcher...
+2026-01-14 14:53:40,100 - Orchestrator - INFO - Starting Filesystem Watcher: python filesystem_watcher.py
+2026-01-14 14:53:40,104 - Orchestrator - INFO - [OK] Filesystem Watcher started (PID: 8808)
+2026-01-14 14:53:40,104 - Orchestrator - INFO - [OK] Filesystem Watcher restarted successfully
+2026-01-14 14:53:40,105 - Orchestrator - INFO - Health check complete
+2026-01-14 14:54:40,106 - Orchestrator - INFO - Running health check...
+2026-01-14 14:54:40,106 - Orchestrator - WARNING - Filesystem Watcher is not running!
+2026-01-14 14:54:40,106 - Orchestrator - INFO - Auto-restarting Filesystem Watcher...
+2026-01-14 14:54:40,106 - Orchestrator - INFO - Starting Filesystem Watcher: python filesystem_watcher.py
+2026-01-14 14:54:40,108 - Orchestrator - INFO - [OK] Filesystem Watcher started (PID: 8836)
+2026-01-14 14:54:40,108 - Orchestrator - INFO - [OK] Filesystem Watcher restarted successfully
+2026-01-14 14:54:40,108 - Orchestrator - INFO - Health check complete
+2026-01-14 14:55:40,109 - Orchestrator - INFO - Running health check...
+2026-01-14 14:55:40,109 - Orchestrator - WARNING - Filesystem Watcher is not running!
+2026-01-14 14:55:40,110 - Orchestrator - INFO - Auto-restarting Filesystem Watcher...
+2026-01-14 14:55:40,110 - Orchestrator - INFO - Starting Filesystem Watcher: python filesystem_watcher.py
+2026-01-14 14:55:40,119 - Orchestrator - INFO - [OK] Filesystem Watcher started (PID: 5332)
+2026-01-14 14:55:40,119 - Orchestrator - INFO - [OK] Filesystem Watcher restarted successfully
+2026-01-14 14:55:40,120 - Orchestrator - INFO - Health check complete
+2026-01-14 14:56:40,120 - Orchestrator - INFO - Running health check...
+2026-01-14 14:56:40,121 - Orchestrator - WARNING - Filesystem Watcher is not running!
+2026-01-14 14:56:40,121 - Orchestrator - INFO - Auto-restarting Filesystem Watcher...
+2026-01-14 14:56:40,121 - Orchestrator - INFO - Starting Filesystem Watcher: python filesystem_watcher.py
+2026-01-14 14:56:40,127 - Orchestrator - INFO - [OK] Filesystem Watcher started (PID: 13228)
+2026-01-14 14:56:40,127 - Orchestrator - INFO - [OK] Filesystem Watcher restarted successfully
+2026-01-14 14:56:40,127 - Orchestrator - INFO - Health check complete
+2026-01-14 14:57:40,128 - Orchestrator - INFO - Running health check...
+2026-01-14 14:57:40,129 - Orchestrator - WARNING - Filesystem Watcher is not running!
+2026-01-14 14:57:40,129 - Orchestrator - INFO - Auto-restarting Filesystem Watcher...
+2026-01-14 14:57:40,129 - Orchestrator - INFO - Starting Filesystem Watcher: python filesystem_watcher.py
+2026-01-14 14:57:40,134 - Orchestrator - INFO - [OK] Filesystem Watcher started (PID: 4980)
+2026-01-14 14:57:40,135 - Orchestrator - INFO - [OK] Filesystem Watcher restarted successfully
+2026-01-14 14:57:40,135 - Orchestrator - INFO - Health check complete
+2026-01-14 14:58:40,136 - Orchestrator - INFO - Running health check...
+2026-01-14 14:58:40,137 - Orchestrator - WARNING - Filesystem Watcher is not running!
+2026-01-14 14:58:40,137 - Orchestrator - INFO - Auto-restarting Filesystem Watcher...
+2026-01-14 14:58:40,137 - Orchestrator - INFO - Starting Filesystem Watcher: python filesystem_watcher.py
+2026-01-14 14:58:40,142 - Orchestrator - INFO - [OK] Filesystem Watcher started (PID: 13200)
+2026-01-14 14:58:40,142 - Orchestrator - INFO - [OK] Filesystem Watcher restarted successfully
+2026-01-14 14:58:40,142 - Orchestrator - INFO - Health check complete
+2026-01-14 14:59:40,143 - Orchestrator - INFO - Running health check...
+2026-01-14 14:59:40,144 - Orchestrator - WARNING - Filesystem Watcher is not running!
+2026-01-14 14:59:40,144 - Orchestrator - INFO - Auto-restarting Filesystem Watcher...
+2026-01-14 14:59:40,144 - Orchestrator - INFO - Starting Filesystem Watcher: python filesystem_watcher.py
+2026-01-14 14:59:40,149 - Orchestrator - INFO - [OK] Filesystem Watcher started (PID: 16172)
+2026-01-14 14:59:40,149 - Orchestrator - INFO - [OK] Filesystem Watcher restarted successfully
+2026-01-14 14:59:40,149 - Orchestrator - INFO - Health check complete
+2026-01-14 15:00:40,150 - Orchestrator - INFO - Running health check...
+2026-01-14 15:00:40,151 - Orchestrator - WARNING - Filesystem Watcher is not running!
+2026-01-14 15:00:40,151 - Orchestrator - INFO - Auto-restarting Filesystem Watcher...
+2026-01-14 15:00:40,151 - Orchestrator - INFO - Starting Filesystem Watcher: python filesystem_watcher.py
+2026-01-14 15:00:40,155 - Orchestrator - INFO - [OK] Filesystem Watcher started (PID: 10996)
+2026-01-14 15:00:40,155 - Orchestrator - INFO - [OK] Filesystem Watcher restarted successfully
+2026-01-14 15:00:40,155 - Orchestrator - INFO - Health check complete
+2026-01-14 15:01:40,156 - Orchestrator - INFO - Running health check...
+2026-01-14 15:01:40,157 - Orchestrator - WARNING - Filesystem Watcher is not running!
+2026-01-14 15:01:40,157 - Orchestrator - INFO - Auto-restarting Filesystem Watcher...
+2026-01-14 15:01:40,157 - Orchestrator - INFO - Starting Filesystem Watcher: python filesystem_watcher.py
+2026-01-14 15:01:40,160 - Orchestrator - INFO - [OK] Filesystem Watcher started (PID: 3256)
+2026-01-14 15:01:40,160 - Orchestrator - INFO - [OK] Filesystem Watcher restarted successfully
+2026-01-14 15:01:40,160 - Orchestrator - INFO - Health check complete
+2026-01-14 15:02:40,161 - Orchestrator - INFO - Running health check...
+2026-01-14 15:02:40,161 - Orchestrator - WARNING - Filesystem Watcher is not running!
+2026-01-14 15:02:40,162 - Orchestrator - INFO - Auto-restarting Filesystem Watcher...
+2026-01-14 15:02:40,162 - Orchestrator - INFO - Starting Filesystem Watcher: python filesystem_watcher.py
+2026-01-14 15:02:40,166 - Orchestrator - INFO - [OK] Filesystem Watcher started (PID: 5992)
+2026-01-14 15:02:40,167 - Orchestrator - INFO - [OK] Filesystem Watcher restarted successfully
+2026-01-14 15:02:40,167 - Orchestrator - INFO - Health check complete
+2026-01-14 15:03:40,168 - Orchestrator - INFO - Running health check...
+2026-01-14 15:03:40,168 - Orchestrator - WARNING - Filesystem Watcher is not running!
+2026-01-14 15:03:40,169 - Orchestrator - INFO - Auto-restarting Filesystem Watcher...
+2026-01-14 15:03:40,169 - Orchestrator - INFO - Starting Filesystem Watcher: python filesystem_watcher.py
+2026-01-14 15:03:40,173 - Orchestrator - INFO - [OK] Filesystem Watcher started (PID: 10728)
+2026-01-14 15:03:40,173 - Orchestrator - INFO - [OK] Filesystem Watcher restarted successfully
+2026-01-14 15:03:40,174 - Orchestrator - INFO - Health check complete
+2026-01-14 15:04:40,175 - Orchestrator - INFO - Running health check...
+2026-01-14 15:04:40,176 - Orchestrator - WARNING - Filesystem Watcher is not running!
+2026-01-14 15:04:40,176 - Orchestrator - INFO - Auto-restarting Filesystem Watcher...
+2026-01-14 15:04:40,176 - Orchestrator - INFO - Starting Filesystem Watcher: python filesystem_watcher.py
+2026-01-14 15:04:40,180 - Orchestrator - INFO - [OK] Filesystem Watcher started (PID: 18192)
+2026-01-14 15:04:40,180 - Orchestrator - INFO - [OK] Filesystem Watcher restarted successfully
+2026-01-14 15:04:40,181 - Orchestrator - INFO - Health check complete
+2026-01-14 15:05:40,182 - Orchestrator - INFO - Running health check...
+2026-01-14 15:05:40,182 - Orchestrator - WARNING - Filesystem Watcher is not running!
+2026-01-14 15:05:40,183 - Orchestrator - INFO - Auto-restarting Filesystem Watcher...
+2026-01-14 15:05:40,183 - Orchestrator - INFO - Starting Filesystem Watcher: python filesystem_watcher.py
+2026-01-14 15:05:40,188 - Orchestrator - INFO - [OK] Filesystem Watcher started (PID: 7440)
+2026-01-14 15:05:40,188 - Orchestrator - INFO - [OK] Filesystem Watcher restarted successfully
+2026-01-14 15:05:40,188 - Orchestrator - INFO - Health check complete
+2026-01-14 15:06:40,189 - Orchestrator - INFO - Running health check...
+2026-01-14 15:06:40,189 - Orchestrator - WARNING - Filesystem Watcher is not running!
+2026-01-14 15:06:40,190 - Orchestrator - INFO - Auto-restarting Filesystem Watcher...
+2026-01-14 15:06:40,190 - Orchestrator - INFO - Starting Filesystem Watcher: python filesystem_watcher.py
+2026-01-14 15:06:40,194 - Orchestrator - INFO - [OK] Filesystem Watcher started (PID: 14940)
+2026-01-14 15:06:40,195 - Orchestrator - INFO - [OK] Filesystem Watcher restarted successfully
+2026-01-14 15:06:40,195 - Orchestrator - INFO - Health check complete
+2026-01-14 15:07:40,195 - Orchestrator - INFO - Running health check...
+2026-01-14 15:07:40,201 - Orchestrator - WARNING - Filesystem Watcher is not running!
+2026-01-14 15:07:40,201 - Orchestrator - INFO - Auto-restarting Filesystem Watcher...
+2026-01-14 15:07:40,201 - Orchestrator - INFO - Starting Filesystem Watcher: python filesystem_watcher.py
+2026-01-14 15:07:40,203 - Orchestrator - INFO - [OK] Filesystem Watcher started (PID: 17144)
+2026-01-14 15:07:40,203 - Orchestrator - INFO - [OK] Filesystem Watcher restarted successfully
+2026-01-14 15:07:40,203 - Orchestrator - INFO - Health check complete
+2026-01-14 15:08:40,204 - Orchestrator - INFO - Running health check...
+2026-01-14 15:08:40,205 - Orchestrator - WARNING - Filesystem Watcher is not running!
+2026-01-14 15:08:40,205 - Orchestrator - INFO - Auto-restarting Filesystem Watcher...
+2026-01-14 15:08:40,205 - Orchestrator - INFO - Starting Filesystem Watcher: python filesystem_watcher.py
+2026-01-14 15:08:40,210 - Orchestrator - INFO - [OK] Filesystem Watcher started (PID: 4780)
+2026-01-14 15:08:40,210 - Orchestrator - INFO - [OK] Filesystem Watcher restarted successfully
+2026-01-14 15:08:40,210 - Orchestrator - INFO - Health check complete
+2026-01-14 15:09:40,212 - Orchestrator - INFO - Running health check...
+2026-01-14 15:09:40,212 - Orchestrator - WARNING - Filesystem Watcher is not running!
+2026-01-14 15:09:40,212 - Orchestrator - INFO - Auto-restarting Filesystem Watcher...
+2026-01-14 15:09:40,213 - Orchestrator - INFO - Starting Filesystem Watcher: python filesystem_watcher.py
+2026-01-14 15:09:40,217 - Orchestrator - INFO - [OK] Filesystem Watcher started (PID: 13604)
+2026-01-14 15:09:40,218 - Orchestrator - INFO - [OK] Filesystem Watcher restarted successfully
+2026-01-14 15:09:40,218 - Orchestrator - INFO - Health check complete
+2026-01-14 15:10:40,219 - Orchestrator - INFO - Running health check...
+2026-01-14 15:10:40,219 - Orchestrator - WARNING - Filesystem Watcher is not running!
+2026-01-14 15:10:40,219 - Orchestrator - INFO - Auto-restarting Filesystem Watcher...
+2026-01-14 15:10:40,220 - Orchestrator - INFO - Starting Filesystem Watcher: python filesystem_watcher.py
+2026-01-14 15:10:40,224 - Orchestrator - INFO - [OK] Filesystem Watcher started (PID: 15828)
+2026-01-14 15:10:40,225 - Orchestrator - INFO - [OK] Filesystem Watcher restarted successfully
+2026-01-14 15:10:40,225 - Orchestrator - INFO - Health check complete
+2026-01-14 15:11:40,226 - Orchestrator - INFO - Running health check...
+2026-01-14 15:11:40,226 - Orchestrator - WARNING - Filesystem Watcher is not running!
+2026-01-14 15:11:40,226 - Orchestrator - INFO - Auto-restarting Filesystem Watcher...
+2026-01-14 15:11:40,226 - Orchestrator - INFO - Starting Filesystem Watcher: python filesystem_watcher.py
+2026-01-14 15:11:40,227 - Orchestrator - INFO - [OK] Filesystem Watcher started (PID: 13968)
+2026-01-14 15:11:40,227 - Orchestrator - INFO - [OK] Filesystem Watcher restarted successfully
+2026-01-14 15:11:40,228 - Orchestrator - INFO - Health check complete
+2026-01-14 15:12:40,228 - Orchestrator - INFO - Running health check...
+2026-01-14 15:12:40,229 - Orchestrator - WARNING - Filesystem Watcher is not running!
+2026-01-14 15:12:40,229 - Orchestrator - INFO - Auto-restarting Filesystem Watcher...
+2026-01-14 15:12:40,230 - Orchestrator - INFO - Starting Filesystem Watcher: python filesystem_watcher.py
+2026-01-14 15:12:40,235 - Orchestrator - INFO - [OK] Filesystem Watcher started (PID: 1252)
+2026-01-14 15:12:40,236 - Orchestrator - INFO - [OK] Filesystem Watcher restarted successfully
+2026-01-14 15:12:40,236 - Orchestrator - INFO - Health check complete
+2026-01-14 15:13:40,237 - Orchestrator - INFO - Running health check...
+2026-01-14 15:13:40,238 - Orchestrator - WARNING - Filesystem Watcher is not running!
+2026-01-14 15:13:40,238 - Orchestrator - INFO - Auto-restarting Filesystem Watcher...
+2026-01-14 15:13:40,238 - Orchestrator - INFO - Starting Filesystem Watcher: python filesystem_watcher.py
+2026-01-14 15:13:40,245 - Orchestrator - INFO - [OK] Filesystem Watcher started (PID: 18404)
+2026-01-14 15:13:40,246 - Orchestrator - INFO - [OK] Filesystem Watcher restarted successfully
+2026-01-14 15:13:40,246 - Orchestrator - INFO - Health check complete
+2026-01-14 15:14:40,247 - Orchestrator - INFO - Running health check...
+2026-01-14 15:14:40,248 - Orchestrator - WARNING - Filesystem Watcher is not running!
+2026-01-14 15:14:40,248 - Orchestrator - INFO - Auto-restarting Filesystem Watcher...
+2026-01-14 15:14:40,248 - Orchestrator - INFO - Starting Filesystem Watcher: python filesystem_watcher.py
+2026-01-14 15:14:40,253 - Orchestrator - INFO - [OK] Filesystem Watcher started (PID: 13832)
+2026-01-14 15:14:40,254 - Orchestrator - INFO - [OK] Filesystem Watcher restarted successfully
+2026-01-14 15:14:40,254 - Orchestrator - INFO - Health check complete
+2026-01-14 15:15:40,254 - Orchestrator - INFO - Running health check...
+2026-01-14 15:15:40,255 - Orchestrator - WARNING - Filesystem Watcher is not running!
+2026-01-14 15:15:40,255 - Orchestrator - INFO - Auto-restarting Filesystem Watcher...
+2026-01-14 15:15:40,255 - Orchestrator - INFO - Starting Filesystem Watcher: python filesystem_watcher.py
+2026-01-14 15:15:40,260 - Orchestrator - INFO - [OK] Filesystem Watcher started (PID: 11080)
+2026-01-14 15:15:40,260 - Orchestrator - INFO - [OK] Filesystem Watcher restarted successfully
+2026-01-14 15:15:40,260 - Orchestrator - INFO - Health check complete
+2026-01-14 15:16:40,261 - Orchestrator - INFO - Running health check...
+2026-01-14 15:16:40,262 - Orchestrator - WARNING - Filesystem Watcher is not running!
+2026-01-14 15:16:40,262 - Orchestrator - INFO - Auto-restarting Filesystem Watcher...
+2026-01-14 15:16:40,262 - Orchestrator - INFO - Starting Filesystem Watcher: python filesystem_watcher.py
+2026-01-14 15:16:40,267 - Orchestrator - INFO - [OK] Filesystem Watcher started (PID: 13732)
+2026-01-14 15:16:40,267 - Orchestrator - INFO - [OK] Filesystem Watcher restarted successfully
+2026-01-14 15:16:40,267 - Orchestrator - INFO - Health check complete
+2026-01-14 15:17:40,268 - Orchestrator - INFO - Running health check...
+2026-01-14 15:17:40,269 - Orchestrator - WARNING - Filesystem Watcher is not running!
+2026-01-14 15:17:40,269 - Orchestrator - INFO - Auto-restarting Filesystem Watcher...
+2026-01-14 15:17:40,269 - Orchestrator - INFO - Starting Filesystem Watcher: python filesystem_watcher.py
+2026-01-14 15:17:40,273 - Orchestrator - INFO - [OK] Filesystem Watcher started (PID: 13376)
+2026-01-14 15:17:40,274 - Orchestrator - INFO - [OK] Filesystem Watcher restarted successfully
+2026-01-14 15:17:40,274 - Orchestrator - INFO - Health check complete
+2026-01-14 15:18:40,275 - Orchestrator - INFO - Running health check...
+2026-01-14 15:18:40,275 - Orchestrator - WARNING - Filesystem Watcher is not running!
+2026-01-14 15:18:40,276 - Orchestrator - INFO - Auto-restarting Filesystem Watcher...
+2026-01-14 15:18:40,276 - Orchestrator - INFO - Starting Filesystem Watcher: python filesystem_watcher.py
+2026-01-14 15:18:40,284 - Orchestrator - INFO - [OK] Filesystem Watcher started (PID: 14824)
+2026-01-14 15:18:40,284 - Orchestrator - INFO - [OK] Filesystem Watcher restarted successfully
+2026-01-14 15:18:40,284 - Orchestrator - INFO - Health check complete
+2026-01-14 15:19:40,285 - Orchestrator - INFO - Running health check...
+2026-01-14 15:19:40,285 - Orchestrator - WARNING - Filesystem Watcher is not running!
+2026-01-14 15:19:40,285 - Orchestrator - INFO - Auto-restarting Filesystem Watcher...
+2026-01-14 15:19:40,291 - Orchestrator - INFO - Starting Filesystem Watcher: python filesystem_watcher.py
+2026-01-14 15:19:40,292 - Orchestrator - INFO - [OK] Filesystem Watcher started (PID: 5044)
+2026-01-14 15:19:40,293 - Orchestrator - INFO - [OK] Filesystem Watcher restarted successfully
+2026-01-14 15:19:40,293 - Orchestrator - INFO - Health check complete
+2026-01-14 15:20:40,293 - Orchestrator - INFO - Running health check...
+2026-01-14 15:20:40,294 - Orchestrator - WARNING - Filesystem Watcher is not running!
+2026-01-14 15:20:40,294 - Orchestrator - INFO - Auto-restarting Filesystem Watcher...
+2026-01-14 15:20:40,294 - Orchestrator - INFO - Starting Filesystem Watcher: python filesystem_watcher.py
+2026-01-14 15:20:40,298 - Orchestrator - INFO - [OK] Filesystem Watcher started (PID: 15944)
+2026-01-14 15:20:40,298 - Orchestrator - INFO - [OK] Filesystem Watcher restarted successfully
+2026-01-14 15:20:40,298 - Orchestrator - INFO - Health check complete
+2026-01-14 15:21:40,299 - Orchestrator - INFO - Running health check...
+2026-01-14 15:21:40,299 - Orchestrator - WARNING - Filesystem Watcher is not running!
+2026-01-14 15:21:40,299 - Orchestrator - INFO - Auto-restarting Filesystem Watcher...
+2026-01-14 15:21:40,300 - Orchestrator - INFO - Starting Filesystem Watcher: python filesystem_watcher.py
+2026-01-14 15:21:40,303 - Orchestrator - INFO - [OK] Filesystem Watcher started (PID: 17672)
+2026-01-14 15:21:40,303 - Orchestrator - INFO - [OK] Filesystem Watcher restarted successfully
+2026-01-14 15:21:40,303 - Orchestrator - INFO - Health check complete
+2026-01-14 15:22:40,304 - Orchestrator - INFO - Running health check...
+2026-01-14 15:22:40,304 - Orchestrator - WARNING - Filesystem Watcher is not running!
+2026-01-14 15:22:40,304 - Orchestrator - INFO - Auto-restarting Filesystem Watcher...
+2026-01-14 15:22:40,304 - Orchestrator - INFO - Starting Filesystem Watcher: python filesystem_watcher.py
+2026-01-14 15:22:40,308 - Orchestrator - INFO - [OK] Filesystem Watcher started (PID: 2108)
+2026-01-14 15:22:40,309 - Orchestrator - INFO - [OK] Filesystem Watcher restarted successfully
+2026-01-14 15:22:40,309 - Orchestrator - INFO - Health check complete
+2026-01-14 15:23:40,310 - Orchestrator - INFO - Running health check...
+2026-01-14 15:23:40,310 - Orchestrator - WARNING - Filesystem Watcher is not running!
+2026-01-14 15:23:40,310 - Orchestrator - INFO - Auto-restarting Filesystem Watcher...
+2026-01-14 15:23:40,310 - Orchestrator - INFO - Starting Filesystem Watcher: python filesystem_watcher.py
+2026-01-14 15:23:40,312 - Orchestrator - INFO - [OK] Filesystem Watcher started (PID: 11464)
+2026-01-14 15:23:40,312 - Orchestrator - INFO - [OK] Filesystem Watcher restarted successfully
+2026-01-14 15:23:40,312 - Orchestrator - INFO - Health check complete
+2026-01-14 15:24:40,313 - Orchestrator - INFO - Running health check...
+2026-01-14 15:24:40,313 - Orchestrator - WARNING - Filesystem Watcher is not running!
+2026-01-14 15:24:40,313 - Orchestrator - INFO - Auto-restarting Filesystem Watcher...
+2026-01-14 15:24:40,314 - Orchestrator - INFO - Starting Filesystem Watcher: python filesystem_watcher.py
+2026-01-14 15:24:40,317 - Orchestrator - INFO - [OK] Filesystem Watcher started (PID: 16016)
+2026-01-14 15:24:40,317 - Orchestrator - INFO - [OK] Filesystem Watcher restarted successfully
+2026-01-14 15:24:40,317 - Orchestrator - INFO - Health check complete
+2026-01-14 15:25:40,318 - Orchestrator - INFO - Running health check...
+2026-01-14 15:25:40,318 - Orchestrator - WARNING - Filesystem Watcher is not running!
+2026-01-14 15:25:40,319 - Orchestrator - INFO - Auto-restarting Filesystem Watcher...
+2026-01-14 15:25:40,319 - Orchestrator - INFO - Starting Filesystem Watcher: python filesystem_watcher.py
+2026-01-14 15:25:40,322 - Orchestrator - INFO - [OK] Filesystem Watcher started (PID: 1360)
+2026-01-14 15:25:40,323 - Orchestrator - INFO - [OK] Filesystem Watcher restarted successfully
+2026-01-14 15:25:40,323 - Orchestrator - INFO - Health check complete
+2026-01-14 15:26:40,324 - Orchestrator - INFO - Running health check...
+2026-01-14 15:26:40,324 - Orchestrator - WARNING - Filesystem Watcher is not running!
+2026-01-14 15:26:40,325 - Orchestrator - INFO - Auto-restarting Filesystem Watcher...
+2026-01-14 15:26:40,325 - Orchestrator - INFO - Starting Filesystem Watcher: python filesystem_watcher.py
+2026-01-14 15:26:40,328 - Orchestrator - INFO - [OK] Filesystem Watcher started (PID: 16068)
+2026-01-14 15:26:40,329 - Orchestrator - INFO - [OK] Filesystem Watcher restarted successfully
+2026-01-14 15:26:40,329 - Orchestrator - INFO - Health check complete
+2026-01-14 15:27:40,330 - Orchestrator - INFO - Running health check...
+2026-01-14 15:27:40,330 - Orchestrator - WARNING - Filesystem Watcher is not running!
+2026-01-14 15:27:40,330 - Orchestrator - INFO - Auto-restarting Filesystem Watcher...
+2026-01-14 15:27:40,330 - Orchestrator - INFO - Starting Filesystem Watcher: python filesystem_watcher.py
+2026-01-14 15:27:40,334 - Orchestrator - INFO - [OK] Filesystem Watcher started (PID: 13140)
+2026-01-14 15:27:40,334 - Orchestrator - INFO - [OK] Filesystem Watcher restarted successfully
+2026-01-14 15:27:40,334 - Orchestrator - INFO - Health check complete
+2026-01-14 15:28:40,335 - Orchestrator - INFO - Running health check...
+2026-01-14 15:28:40,335 - Orchestrator - WARNING - Filesystem Watcher is not running!
+2026-01-14 15:28:40,336 - Orchestrator - INFO - Auto-restarting Filesystem Watcher...
+2026-01-14 15:28:40,336 - Orchestrator - INFO - Starting Filesystem Watcher: python filesystem_watcher.py
+2026-01-14 15:28:40,340 - Orchestrator - INFO - [OK] Filesystem Watcher started (PID: 16324)
+2026-01-14 15:28:40,340 - Orchestrator - INFO - [OK] Filesystem Watcher restarted successfully
+2026-01-14 15:28:40,340 - Orchestrator - INFO - Health check complete
+2026-01-14 15:29:40,341 - Orchestrator - INFO - Running health check...
+2026-01-14 15:29:40,342 - Orchestrator - WARNING - Filesystem Watcher is not running!
+2026-01-14 15:29:40,342 - Orchestrator - INFO - Auto-restarting Filesystem Watcher...
+2026-01-14 15:29:40,342 - Orchestrator - INFO - Starting Filesystem Watcher: python filesystem_watcher.py
+2026-01-14 15:29:40,346 - Orchestrator - INFO - [OK] Filesystem Watcher started (PID: 17536)
+2026-01-14 15:29:40,346 - Orchestrator - INFO - [OK] Filesystem Watcher restarted successfully
+2026-01-14 15:29:40,346 - Orchestrator - INFO - Health check complete
+2026-01-14 15:30:40,347 - Orchestrator - INFO - Running health check...
+2026-01-14 15:30:40,348 - Orchestrator - WARNING - Filesystem Watcher is not running!
+2026-01-14 15:30:40,348 - Orchestrator - INFO - Auto-restarting Filesystem Watcher...
+2026-01-14 15:30:40,348 - Orchestrator - INFO - Starting Filesystem Watcher: python filesystem_watcher.py
+2026-01-14 15:30:40,352 - Orchestrator - INFO - [OK] Filesystem Watcher started (PID: 11280)
+2026-01-14 15:30:40,352 - Orchestrator - INFO - [OK] Filesystem Watcher restarted successfully
+2026-01-14 15:30:40,353 - Orchestrator - INFO - Health check complete
+2026-01-14 15:31:40,353 - Orchestrator - INFO - Running health check...
+2026-01-14 15:31:40,354 - Orchestrator - WARNING - Filesystem Watcher is not running!
+2026-01-14 15:31:40,354 - Orchestrator - INFO - Auto-restarting Filesystem Watcher...
+2026-01-14 15:31:40,354 - Orchestrator - INFO - Starting Filesystem Watcher: python filesystem_watcher.py
+2026-01-14 15:31:40,358 - Orchestrator - INFO - [OK] Filesystem Watcher started (PID: 13620)
+2026-01-14 15:31:40,358 - Orchestrator - INFO - [OK] Filesystem Watcher restarted successfully
+2026-01-14 15:31:40,358 - Orchestrator - INFO - Health check complete
+2026-01-14 15:32:40,359 - Orchestrator - INFO - Running health check...
+2026-01-14 15:32:40,360 - Orchestrator - WARNING - Filesystem Watcher is not running!
+2026-01-14 15:32:40,360 - Orchestrator - INFO - Auto-restarting Filesystem Watcher...
+2026-01-14 15:32:40,360 - Orchestrator - INFO - Starting Filesystem Watcher: python filesystem_watcher.py
+2026-01-14 15:32:40,363 - Orchestrator - INFO - [OK] Filesystem Watcher started (PID: 15736)
+2026-01-14 15:32:40,363 - Orchestrator - INFO - [OK] Filesystem Watcher restarted successfully
+2026-01-14 15:32:40,363 - Orchestrator - INFO - Health check complete
+2026-01-14 15:33:40,364 - Orchestrator - INFO - Running health check...
+2026-01-14 15:33:40,364 - Orchestrator - WARNING - Filesystem Watcher is not running!
+2026-01-14 15:33:40,364 - Orchestrator - INFO - Auto-restarting Filesystem Watcher...
+2026-01-14 15:33:40,364 - Orchestrator - INFO - Starting Filesystem Watcher: python filesystem_watcher.py
+2026-01-14 15:33:40,366 - Orchestrator - INFO - [OK] Filesystem Watcher started (PID: 18176)
+2026-01-14 15:33:40,366 - Orchestrator - INFO - [OK] Filesystem Watcher restarted successfully
+2026-01-14 15:33:40,366 - Orchestrator - INFO - Health check complete
+2026-01-14 15:34:40,367 - Orchestrator - INFO - Running health check...
+2026-01-14 15:34:40,368 - Orchestrator - WARNING - Filesystem Watcher is not running!
+2026-01-14 15:34:40,368 - Orchestrator - INFO - Auto-restarting Filesystem Watcher...
+2026-01-14 15:34:40,368 - Orchestrator - INFO - Starting Filesystem Watcher: python filesystem_watcher.py
+2026-01-14 15:34:40,372 - Orchestrator - INFO - [OK] Filesystem Watcher started (PID: 16888)
+2026-01-14 15:34:40,372 - Orchestrator - INFO - [OK] Filesystem Watcher restarted successfully
+2026-01-14 15:34:40,373 - Orchestrator - INFO - Health check complete
+2026-01-14 15:35:40,373 - Orchestrator - INFO - Running health check...
+2026-01-14 15:35:40,374 - Orchestrator - WARNING - Filesystem Watcher is not running!
+2026-01-14 15:35:40,374 - Orchestrator - INFO - Auto-restarting Filesystem Watcher...
+2026-01-14 15:35:40,374 - Orchestrator - INFO - Starting Filesystem Watcher: python filesystem_watcher.py
+2026-01-14 15:35:40,377 - Orchestrator - INFO - [OK] Filesystem Watcher started (PID: 9624)
+2026-01-14 15:35:40,378 - Orchestrator - INFO - [OK] Filesystem Watcher restarted successfully
+2026-01-14 15:35:40,378 - Orchestrator - INFO - Health check complete
+2026-01-14 15:36:40,379 - Orchestrator - INFO - Running health check...
+2026-01-14 15:36:40,379 - Orchestrator - WARNING - Filesystem Watcher is not running!
+2026-01-14 15:36:40,379 - Orchestrator - INFO - Auto-restarting Filesystem Watcher...
+2026-01-14 15:36:40,380 - Orchestrator - INFO - Starting Filesystem Watcher: python filesystem_watcher.py
+2026-01-14 15:36:40,383 - Orchestrator - INFO - [OK] Filesystem Watcher started (PID: 13240)
+2026-01-14 15:36:40,384 - Orchestrator - INFO - [OK] Filesystem Watcher restarted successfully
+2026-01-14 15:36:40,384 - Orchestrator - INFO - Health check complete
+2026-01-14 15:37:40,385 - Orchestrator - INFO - Running health check...
+2026-01-14 15:37:40,385 - Orchestrator - WARNING - Filesystem Watcher is not running!
+2026-01-14 15:37:40,385 - Orchestrator - INFO - Auto-restarting Filesystem Watcher...
+2026-01-14 15:37:40,386 - Orchestrator - INFO - Starting Filesystem Watcher: python filesystem_watcher.py
+2026-01-14 15:37:40,390 - Orchestrator - INFO - [OK] Filesystem Watcher started (PID: 5336)
+2026-01-14 15:37:40,391 - Orchestrator - INFO - [OK] Filesystem Watcher restarted successfully
+2026-01-14 15:37:40,391 - Orchestrator - INFO - Health check complete
+2026-01-14 15:38:40,392 - Orchestrator - INFO - Running health check...
+2026-01-14 15:38:40,392 - Orchestrator - WARNING - Filesystem Watcher is not running!
+2026-01-14 15:38:40,392 - Orchestrator - INFO - Auto-restarting Filesystem Watcher...
+2026-01-14 15:38:40,392 - Orchestrator - INFO - Starting Filesystem Watcher: python filesystem_watcher.py
+2026-01-14 15:38:40,394 - Orchestrator - INFO - [OK] Filesystem Watcher started (PID: 17424)
+2026-01-14 15:38:40,394 - Orchestrator - INFO - [OK] Filesystem Watcher restarted successfully
+2026-01-14 15:38:40,394 - Orchestrator - INFO - Health check complete
+2026-01-14 15:39:40,395 - Orchestrator - INFO - Running health check...
+2026-01-14 15:39:40,395 - Orchestrator - WARNING - Filesystem Watcher is not running!
+2026-01-14 15:39:40,395 - Orchestrator - INFO - Auto-restarting Filesystem Watcher...
+2026-01-14 15:39:40,396 - Orchestrator - INFO - Starting Filesystem Watcher: python filesystem_watcher.py
+2026-01-14 15:39:40,398 - Orchestrator - INFO - [OK] Filesystem Watcher started (PID: 1224)
+2026-01-14 15:39:40,398 - Orchestrator - INFO - [OK] Filesystem Watcher restarted successfully
+2026-01-14 15:39:40,398 - Orchestrator - INFO - Health check complete
+2026-01-14 15:40:40,399 - Orchestrator - INFO - Running health check...
+2026-01-14 15:40:40,399 - Orchestrator - WARNING - Filesystem Watcher is not running!
+2026-01-14 15:40:40,399 - Orchestrator - INFO - Auto-restarting Filesystem Watcher...
+2026-01-14 15:40:40,400 - Orchestrator - INFO - Starting Filesystem Watcher: python filesystem_watcher.py
+2026-01-14 15:40:40,403 - Orchestrator - INFO - [OK] Filesystem Watcher started (PID: 17536)
+2026-01-14 15:40:40,403 - Orchestrator - INFO - [OK] Filesystem Watcher restarted successfully
+2026-01-14 15:40:40,403 - Orchestrator - INFO - Health check complete
+2026-01-14 15:41:40,404 - Orchestrator - INFO - Running health check...
+2026-01-14 15:41:40,405 - Orchestrator - WARNING - Filesystem Watcher is not running!
+2026-01-14 15:41:40,405 - Orchestrator - INFO - Auto-restarting Filesystem Watcher...
+2026-01-14 15:41:40,405 - Orchestrator - INFO - Starting Filesystem Watcher: python filesystem_watcher.py
+2026-01-14 15:41:40,408 - Orchestrator - INFO - [OK] Filesystem Watcher started (PID: 8292)
+2026-01-14 15:41:40,409 - Orchestrator - INFO - [OK] Filesystem Watcher restarted successfully
+2026-01-14 15:41:40,409 - Orchestrator - INFO - Health check complete
+2026-01-14 15:42:40,411 - Orchestrator - INFO - Running health check...
+2026-01-14 15:42:40,411 - Orchestrator - WARNING - Filesystem Watcher is not running!
+2026-01-14 15:42:40,412 - Orchestrator - INFO - Auto-restarting Filesystem Watcher...
+2026-01-14 15:42:40,412 - Orchestrator - INFO - Starting Filesystem Watcher: python filesystem_watcher.py
+2026-01-14 15:42:40,413 - Orchestrator - INFO - [OK] Filesystem Watcher started (PID: 13620)
+2026-01-14 15:42:40,413 - Orchestrator - INFO - [OK] Filesystem Watcher restarted successfully
+2026-01-14 15:42:40,413 - Orchestrator - INFO - Health check complete
+2026-01-14 15:43:40,414 - Orchestrator - INFO - Running health check...
+2026-01-14 15:43:40,414 - Orchestrator - WARNING - Filesystem Watcher is not running!
+2026-01-14 15:43:40,415 - Orchestrator - INFO - Auto-restarting Filesystem Watcher...
+2026-01-14 15:43:40,415 - Orchestrator - INFO - Starting Filesystem Watcher: python filesystem_watcher.py
+2026-01-14 15:43:40,419 - Orchestrator - INFO - [OK] Filesystem Watcher started (PID: 5856)
+2026-01-14 15:43:40,419 - Orchestrator - INFO - [OK] Filesystem Watcher restarted successfully
+2026-01-14 15:43:40,419 - Orchestrator - INFO - Health check complete
+2026-01-14 15:44:40,419 - Orchestrator - INFO - Running health check...
+2026-01-14 15:44:40,420 - Orchestrator - WARNING - Filesystem Watcher is not running!
+2026-01-14 15:44:40,420 - Orchestrator - INFO - Auto-restarting Filesystem Watcher...
+2026-01-14 15:44:40,420 - Orchestrator - INFO - Starting Filesystem Watcher: python filesystem_watcher.py
+2026-01-14 15:44:40,425 - Orchestrator - INFO - [OK] Filesystem Watcher started (PID: 12776)
+2026-01-14 15:44:40,425 - Orchestrator - INFO - [OK] Filesystem Watcher restarted successfully
+2026-01-14 15:44:40,425 - Orchestrator - INFO - Health check complete
+2026-01-14 15:45:40,426 - Orchestrator - INFO - Running health check...
+2026-01-14 15:45:40,427 - Orchestrator - WARNING - Filesystem Watcher is not running!
+2026-01-14 15:45:40,427 - Orchestrator - INFO - Auto-restarting Filesystem Watcher...
+2026-01-14 15:45:40,427 - Orchestrator - INFO - Starting Filesystem Watcher: python filesystem_watcher.py
+2026-01-14 15:45:40,432 - Orchestrator - INFO - [OK] Filesystem Watcher started (PID: 2752)
+2026-01-14 15:45:40,432 - Orchestrator - INFO - [OK] Filesystem Watcher restarted successfully
+2026-01-14 15:45:40,432 - Orchestrator - INFO - Health check complete
+2026-01-14 15:46:40,433 - Orchestrator - INFO - Running health check...
+2026-01-14 15:46:40,433 - Orchestrator - WARNING - Filesystem Watcher is not running!
+2026-01-14 15:46:40,434 - Orchestrator - INFO - Auto-restarting Filesystem Watcher...
+2026-01-14 15:46:40,434 - Orchestrator - INFO - Starting Filesystem Watcher: python filesystem_watcher.py
+2026-01-14 15:46:40,438 - Orchestrator - INFO - [OK] Filesystem Watcher started (PID: 11836)
+2026-01-14 15:46:40,439 - Orchestrator - INFO - [OK] Filesystem Watcher restarted successfully
+2026-01-14 15:46:40,439 - Orchestrator - INFO - Health check complete
+2026-01-14 15:47:40,440 - Orchestrator - INFO - Running health check...
+2026-01-14 15:47:40,440 - Orchestrator - WARNING - Filesystem Watcher is not running!
+2026-01-14 15:47:40,441 - Orchestrator - INFO - Auto-restarting Filesystem Watcher...
+2026-01-14 15:47:40,441 - Orchestrator - INFO - Starting Filesystem Watcher: python filesystem_watcher.py
+2026-01-14 15:47:40,446 - Orchestrator - INFO - [OK] Filesystem Watcher started (PID: 11808)
+2026-01-14 15:47:40,446 - Orchestrator - INFO - [OK] Filesystem Watcher restarted successfully
+2026-01-14 15:47:40,446 - Orchestrator - INFO - Health check complete
+2026-01-14 15:48:40,447 - Orchestrator - INFO - Running health check...
+2026-01-14 15:48:40,448 - Orchestrator - WARNING - Filesystem Watcher is not running!
+2026-01-14 15:48:40,448 - Orchestrator - INFO - Auto-restarting Filesystem Watcher...
+2026-01-14 15:48:40,448 - Orchestrator - INFO - Starting Filesystem Watcher: python filesystem_watcher.py
+2026-01-14 15:48:40,458 - Orchestrator - INFO - [OK] Filesystem Watcher started (PID: 9548)
+2026-01-14 15:48:40,459 - Orchestrator - INFO - [OK] Filesystem Watcher restarted successfully
+2026-01-14 15:48:40,459 - Orchestrator - INFO - Health check complete
+2026-01-14 15:49:40,460 - Orchestrator - INFO - Running health check...
+2026-01-14 15:49:40,460 - Orchestrator - WARNING - Filesystem Watcher is not running!
+2026-01-14 15:49:40,461 - Orchestrator - INFO - Auto-restarting Filesystem Watcher...
+2026-01-14 15:49:40,461 - Orchestrator - INFO - Starting Filesystem Watcher: python filesystem_watcher.py
+2026-01-14 15:49:40,465 - Orchestrator - INFO - [OK] Filesystem Watcher started (PID: 11476)
+2026-01-14 15:49:40,465 - Orchestrator - INFO - [OK] Filesystem Watcher restarted successfully
+2026-01-14 15:49:40,465 - Orchestrator - INFO - Health check complete
+2026-01-14 15:50:40,466 - Orchestrator - INFO - Running health check...
+2026-01-14 15:50:40,466 - Orchestrator - WARNING - Filesystem Watcher is not running!
+2026-01-14 15:50:40,466 - Orchestrator - INFO - Auto-restarting Filesystem Watcher...
+2026-01-14 15:50:40,467 - Orchestrator - INFO - Starting Filesystem Watcher: python filesystem_watcher.py
+2026-01-14 15:50:40,469 - Orchestrator - INFO - [OK] Filesystem Watcher started (PID: 10936)
+2026-01-14 15:50:40,469 - Orchestrator - INFO - [OK] Filesystem Watcher restarted successfully
+2026-01-14 15:50:40,470 - Orchestrator - INFO - Health check complete
+2026-01-14 15:51:40,470 - Orchestrator - INFO - Running health check...
+2026-01-14 15:51:40,470 - Orchestrator - WARNING - Filesystem Watcher is not running!
+2026-01-14 15:51:40,470 - Orchestrator - INFO - Auto-restarting Filesystem Watcher...
+2026-01-14 15:51:40,470 - Orchestrator - INFO - Starting Filesystem Watcher: python filesystem_watcher.py
+2026-01-14 15:51:40,472 - Orchestrator - INFO - [OK] Filesystem Watcher started (PID: 7680)
+2026-01-14 15:51:40,472 - Orchestrator - INFO - [OK] Filesystem Watcher restarted successfully
+2026-01-14 15:51:40,472 - Orchestrator - INFO - Health check complete
+2026-01-14 15:52:40,473 - Orchestrator - INFO - Running health check...
+2026-01-14 15:52:40,473 - Orchestrator - WARNING - Filesystem Watcher is not running!
+2026-01-14 15:52:40,474 - Orchestrator - INFO - Auto-restarting Filesystem Watcher...
+2026-01-14 15:52:40,474 - Orchestrator - INFO - Starting Filesystem Watcher: python filesystem_watcher.py
+2026-01-14 15:52:40,481 - Orchestrator - INFO - [OK] Filesystem Watcher started (PID: 5304)
+2026-01-14 15:52:40,481 - Orchestrator - INFO - [OK] Filesystem Watcher restarted successfully
+2026-01-14 15:52:40,481 - Orchestrator - INFO - Health check complete
+2026-01-14 15:53:40,482 - Orchestrator - INFO - Running health check...
+2026-01-14 15:53:40,483 - Orchestrator - WARNING - Filesystem Watcher is not running!
+2026-01-14 15:53:40,483 - Orchestrator - INFO - Auto-restarting Filesystem Watcher...
+2026-01-14 15:53:40,483 - Orchestrator - INFO - Starting Filesystem Watcher: python filesystem_watcher.py
+2026-01-14 15:53:40,488 - Orchestrator - INFO - [OK] Filesystem Watcher started (PID: 17888)
+2026-01-14 15:53:40,488 - Orchestrator - INFO - [OK] Filesystem Watcher restarted successfully
+2026-01-14 15:53:40,488 - Orchestrator - INFO - Health check complete
+2026-01-14 15:54:40,489 - Orchestrator - INFO - Running health check...
+2026-01-14 15:54:40,490 - Orchestrator - WARNING - Filesystem Watcher is not running!
+2026-01-14 15:54:40,490 - Orchestrator - INFO - Auto-restarting Filesystem Watcher...
+2026-01-14 15:54:40,490 - Orchestrator - INFO - Starting Filesystem Watcher: python filesystem_watcher.py
+2026-01-14 15:54:40,494 - Orchestrator - INFO - [OK] Filesystem Watcher started (PID: 17412)
+2026-01-14 15:54:40,495 - Orchestrator - INFO - [OK] Filesystem Watcher restarted successfully
+2026-01-14 15:54:40,495 - Orchestrator - INFO - Health check complete
+2026-01-14 15:55:40,496 - Orchestrator - INFO - Running health check...
+2026-01-14 15:55:40,497 - Orchestrator - WARNING - Filesystem Watcher is not running!
+2026-01-14 15:55:40,497 - Orchestrator - INFO - Auto-restarting Filesystem Watcher...
+2026-01-14 15:55:40,497 - Orchestrator - INFO - Starting Filesystem Watcher: python filesystem_watcher.py
+2026-01-14 15:55:40,502 - Orchestrator - INFO - [OK] Filesystem Watcher started (PID: 2412)
+2026-01-14 15:55:40,503 - Orchestrator - INFO - [OK] Filesystem Watcher restarted successfully
+2026-01-14 15:55:40,503 - Orchestrator - INFO - Health check complete
+2026-01-14 15:56:40,503 - Orchestrator - INFO - Running health check...
+2026-01-14 15:56:40,504 - Orchestrator - WARNING - Filesystem Watcher is not running!
+2026-01-14 15:56:40,504 - Orchestrator - INFO - Auto-restarting Filesystem Watcher...
+2026-01-14 15:56:40,505 - Orchestrator - INFO - Starting Filesystem Watcher: python filesystem_watcher.py
+2026-01-14 15:56:40,509 - Orchestrator - INFO - [OK] Filesystem Watcher started (PID: 13920)
+2026-01-14 15:56:40,509 - Orchestrator - INFO - [OK] Filesystem Watcher restarted successfully
+2026-01-14 15:56:40,509 - Orchestrator - INFO - Health check complete
+2026-01-14 15:57:40,511 - Orchestrator - INFO - Running health check...
+2026-01-14 15:57:40,511 - Orchestrator - WARNING - Filesystem Watcher is not running!
+2026-01-14 15:57:40,511 - Orchestrator - INFO - Auto-restarting Filesystem Watcher...
+2026-01-14 15:57:40,512 - Orchestrator - INFO - Starting Filesystem Watcher: python filesystem_watcher.py
+2026-01-14 15:57:40,515 - Orchestrator - INFO - [OK] Filesystem Watcher started (PID: 10768)
+2026-01-14 15:57:40,516 - Orchestrator - INFO - [OK] Filesystem Watcher restarted successfully
+2026-01-14 15:57:40,516 - Orchestrator - INFO - Health check complete
+2026-01-14 15:58:40,517 - Orchestrator - INFO - Running health check...
+2026-01-14 15:58:40,517 - Orchestrator - WARNING - Filesystem Watcher is not running!
+2026-01-14 15:58:40,517 - Orchestrator - INFO - Auto-restarting Filesystem Watcher...
+2026-01-14 15:58:40,518 - Orchestrator - INFO - Starting Filesystem Watcher: python filesystem_watcher.py
+2026-01-14 15:58:40,520 - Orchestrator - INFO - [OK] Filesystem Watcher started (PID: 6356)
+2026-01-14 15:58:40,521 - Orchestrator - INFO - [OK] Filesystem Watcher restarted successfully
+2026-01-14 15:58:40,521 - Orchestrator - INFO - Health check complete
+2026-01-14 15:59:40,521 - Orchestrator - INFO - Running health check...
+2026-01-14 15:59:40,522 - Orchestrator - WARNING - Filesystem Watcher is not running!
+2026-01-14 15:59:40,522 - Orchestrator - INFO - Auto-restarting Filesystem Watcher...
+2026-01-14 15:59:40,522 - Orchestrator - INFO - Starting Filesystem Watcher: python filesystem_watcher.py
+2026-01-14 15:59:40,524 - Orchestrator - INFO - [OK] Filesystem Watcher started (PID: 14888)
+2026-01-14 15:59:40,524 - Orchestrator - INFO - [OK] Filesystem Watcher restarted successfully
+2026-01-14 15:59:40,524 - Orchestrator - INFO - Health check complete
+2026-01-14 16:00:40,525 - Orchestrator - INFO - Running health check...
+2026-01-14 16:00:40,526 - Orchestrator - WARNING - Filesystem Watcher is not running!
+2026-01-14 16:00:40,526 - Orchestrator - INFO - Auto-restarting Filesystem Watcher...
+2026-01-14 16:00:40,526 - Orchestrator - INFO - Starting Filesystem Watcher: python filesystem_watcher.py
+2026-01-14 16:00:40,530 - Orchestrator - INFO - [OK] Filesystem Watcher started (PID: 3024)
+2026-01-14 16:00:40,530 - Orchestrator - INFO - [OK] Filesystem Watcher restarted successfully
+2026-01-14 16:00:40,530 - Orchestrator - INFO - Health check complete
+2026-01-14 16:01:40,531 - Orchestrator - INFO - Running health check...
+2026-01-14 16:01:40,532 - Orchestrator - WARNING - Filesystem Watcher is not running!
+2026-01-14 16:01:40,532 - Orchestrator - INFO - Auto-restarting Filesystem Watcher...
+2026-01-14 16:01:40,532 - Orchestrator - INFO - Starting Filesystem Watcher: python filesystem_watcher.py
+2026-01-14 16:01:40,536 - Orchestrator - INFO - [OK] Filesystem Watcher started (PID: 16516)
+2026-01-14 16:01:40,536 - Orchestrator - INFO - [OK] Filesystem Watcher restarted successfully
+2026-01-14 16:01:40,536 - Orchestrator - INFO - Health check complete
+2026-01-14 16:02:40,537 - Orchestrator - INFO - Running health check...
+2026-01-14 16:02:40,537 - Orchestrator - WARNING - Filesystem Watcher is not running!
+2026-01-14 16:02:40,537 - Orchestrator - INFO - Auto-restarting Filesystem Watcher...
+2026-01-14 16:02:40,538 - Orchestrator - INFO - Starting Filesystem Watcher: python filesystem_watcher.py
+2026-01-14 16:02:40,542 - Orchestrator - INFO - [OK] Filesystem Watcher started (PID: 14044)
+2026-01-14 16:02:40,542 - Orchestrator - INFO - [OK] Filesystem Watcher restarted successfully
+2026-01-14 16:02:40,543 - Orchestrator - INFO - Health check complete
+2026-01-14 16:03:40,543 - Orchestrator - INFO - Running health check...
+2026-01-14 16:03:40,544 - Orchestrator - WARNING - Filesystem Watcher is not running!
+2026-01-14 16:03:40,544 - Orchestrator - INFO - Auto-restarting Filesystem Watcher...
+2026-01-14 16:03:40,544 - Orchestrator - INFO - Starting Filesystem Watcher: python filesystem_watcher.py
+2026-01-14 16:03:40,549 - Orchestrator - INFO - [OK] Filesystem Watcher started (PID: 9332)
+2026-01-14 16:03:40,549 - Orchestrator - INFO - [OK] Filesystem Watcher restarted successfully
+2026-01-14 16:03:40,549 - Orchestrator - INFO - Health check complete
+2026-01-14 16:04:40,550 - Orchestrator - INFO - Running health check...
+2026-01-14 16:04:40,551 - Orchestrator - WARNING - Filesystem Watcher is not running!
+2026-01-14 16:04:40,551 - Orchestrator - INFO - Auto-restarting Filesystem Watcher...
+2026-01-14 16:04:40,551 - Orchestrator - INFO - Starting Filesystem Watcher: python filesystem_watcher.py
+2026-01-14 16:04:40,556 - Orchestrator - INFO - [OK] Filesystem Watcher started (PID: 12784)
+2026-01-14 16:04:40,556 - Orchestrator - INFO - [OK] Filesystem Watcher restarted successfully
+2026-01-14 16:04:40,557 - Orchestrator - INFO - Health check complete
+2026-01-14 16:05:40,557 - Orchestrator - INFO - Running health check...
+2026-01-14 16:05:40,558 - Orchestrator - WARNING - Filesystem Watcher is not running!
+2026-01-14 16:05:40,558 - Orchestrator - INFO - Auto-restarting Filesystem Watcher...
+2026-01-14 16:05:40,559 - Orchestrator - INFO - Starting Filesystem Watcher: python filesystem_watcher.py
+2026-01-14 16:05:40,564 - Orchestrator - INFO - [OK] Filesystem Watcher started (PID: 6356)
+2026-01-14 16:05:40,564 - Orchestrator - INFO - [OK] Filesystem Watcher restarted successfully
+2026-01-14 16:05:40,564 - Orchestrator - INFO - Health check complete
+2026-01-14 16:06:40,565 - Orchestrator - INFO - Running health check...
+2026-01-14 16:06:40,566 - Orchestrator - WARNING - Filesystem Watcher is not running!
+2026-01-14 16:06:40,566 - Orchestrator - INFO - Auto-restarting Filesystem Watcher...
+2026-01-14 16:06:40,566 - Orchestrator - INFO - Starting Filesystem Watcher: python filesystem_watcher.py
+2026-01-14 16:06:40,571 - Orchestrator - INFO - [OK] Filesystem Watcher started (PID: 3756)
+2026-01-14 16:06:40,571 - Orchestrator - INFO - [OK] Filesystem Watcher restarted successfully
+2026-01-14 16:06:40,571 - Orchestrator - INFO - Health check complete
+2026-01-14 16:07:40,572 - Orchestrator - INFO - Running health check...
+2026-01-14 16:07:40,573 - Orchestrator - WARNING - Filesystem Watcher is not running!
+2026-01-14 16:07:40,573 - Orchestrator - INFO - Auto-restarting Filesystem Watcher...
+2026-01-14 16:07:40,574 - Orchestrator - INFO - Starting Filesystem Watcher: python filesystem_watcher.py
+2026-01-14 16:07:40,578 - Orchestrator - INFO - [OK] Filesystem Watcher started (PID: 1364)
+2026-01-14 16:07:40,579 - Orchestrator - INFO - [OK] Filesystem Watcher restarted successfully
+2026-01-14 16:07:40,579 - Orchestrator - INFO - Health check complete
+2026-01-14 16:08:40,580 - Orchestrator - INFO - Running health check...
+2026-01-14 16:08:40,581 - Orchestrator - WARNING - Filesystem Watcher is not running!
+2026-01-14 16:08:40,581 - Orchestrator - INFO - Auto-restarting Filesystem Watcher...
+2026-01-14 16:08:40,582 - Orchestrator - INFO - Starting Filesystem Watcher: python filesystem_watcher.py
+2026-01-14 16:08:40,589 - Orchestrator - INFO - [OK] Filesystem Watcher started (PID: 1504)
+2026-01-14 16:08:40,590 - Orchestrator - INFO - [OK] Filesystem Watcher restarted successfully
+2026-01-14 16:08:40,590 - Orchestrator - INFO - Health check complete
+2026-01-14 16:09:40,591 - Orchestrator - INFO - Running health check...
+2026-01-14 16:09:40,592 - Orchestrator - WARNING - Filesystem Watcher is not running!
+2026-01-14 16:09:40,592 - Orchestrator - INFO - Auto-restarting Filesystem Watcher...
+2026-01-14 16:09:40,592 - Orchestrator - INFO - Starting Filesystem Watcher: python filesystem_watcher.py
+2026-01-14 16:09:40,596 - Orchestrator - INFO - [OK] Filesystem Watcher started (PID: 16436)
+2026-01-14 16:09:40,597 - Orchestrator - INFO - [OK] Filesystem Watcher restarted successfully
+2026-01-14 16:09:40,597 - Orchestrator - INFO - Health check complete

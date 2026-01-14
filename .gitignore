@@ -1,0 +1,141 @@
+# Personal AI Employee - Git Ignore
+
+# Gmail API Credentials (NEVER COMMIT THESE)
+watchers/credentials/*.json
+watchers/credentials/*.pickle
+watchers/credentials/token.pickle
+
+# Gmail client secret files (in any location)
+client_secret*.json
+credentials.json
+token.pickle
+
+# Environment variables
+.env
+.env.local
+
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+*.egg-info/
+.installed.cfg
+*.egg
+
+# Virtual environments
+venv/
+ENV/
+env/
+.venv
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# OS
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# Logs (optional - comment out if you want to commit logs)
+Logs/*.log
+Logs/*.json
+
+# Temporary files
+*.tmp
+*.temp
+~*
+tmpclaude-*
+
+# Obsidian workspace (personal preferences)
+.obsidian/workspace.json
+.obsidian/workspace-mobile.json
+
+# Personal data folders (optional - comment out if you want to commit)
+# Inbox/
+# Needs_Action/
+# Plans/
+# Done/
+# Pending_Approval/
+# Approved/
+# Rejected/
+
+# Backup files
+*.bak
+*.backup
+
+# ==========================================
+# Social Media Poster Session Data (NEVER COMMIT)
+# ==========================================
+
+# X/Twitter Playwright persistent browser session
+.claude/skills/x-poster/assets/session/*
+!.claude/skills/x-poster/assets/session/.gitkeep
+
+# LinkedIn Playwright persistent browser session
+.claude/skills/linkedin-poster/assets/session/*
+!.claude/skills/linkedin-poster/assets/session/.gitkeep
+
+# Instagram Playwright persistent browser session
+.claude/skills/instagram-poster/assets/session/*
+!.claude/skills/instagram-poster/assets/session/.gitkeep
+
+# Facebook Playwright persistent browser session
+.claude/skills/facebook-poster/assets/session/*
+!.claude/skills/facebook-poster/assets/session/.gitkeep
+
+# WhatsApp Watcher Playwright persistent browser session
+watchers/whatsapp_session/
+
+# ==========================================
+# MCP Servers Security (CRITICAL)
+# ==========================================
+
+# Gmail MCP Credentials (NEVER COMMIT)
+mcp-servers/gmail-mcp/credentials.json
+mcp-servers/gmail-mcp/token.json
+mcp-servers/gmail-mcp/.env
+
+# LinkedIn MCP Credentials (NEVER COMMIT)
+mcp-servers/linkedin-mcp/linkedin_token.json
+mcp-servers/linkedin-mcp/.env
+
+# MCP Server Build Output
+mcp-servers/**/dist/
+mcp-servers/**/node_modules/
+mcp-servers/**/*.js
+mcp-servers/**/*.js.map
+mcp-servers/**/*.d.ts
+
+# MCP Server Logs
+mcp-servers/**/logs/
+mcp-servers/**/*.log
+
+# All credentials and tokens (comprehensive)
+**/credentials.json
+**/token.json
+**/linkedin_token.json
+**/.env
+**/.env.*
+!**/.env.example
+
+# Claude Code MCP Config (contains credentials)
+# Comment out if you want to commit (after removing credentials)
+.config/claude-code/mcp.json

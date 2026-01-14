@@ -1,0 +1,71 @@
+{
+  "project": "AI Employee",
+  "branchName": "ralph/email-workflow",
+  "description": "Email Approval Workflow - Implement HITL approval for email sending via Gmail MCP",
+  "userStories": [
+    {
+      "id": "US-001",
+      "title": "Create email approval request file structure",
+      "description": "As the AI Employee, I need to create structured approval requests for emails detected in /Needs_Action.",
+      "acceptanceCriteria": [
+        "Create template EMAIL_APPROVAL_{recipient}_{timestamp}.md in /Pending_Approval",
+        "Include frontmatter fields: type, status, created, expires, email_to, email_subject, email_body",
+        "Add email body preview section in markdown",
+        "Include approval instructions: Move to /Approved to send",
+        "Include rejection instructions: Move to /Rejected to cancel",
+        "Set expiration to 24 hours from creation"
+      ],
+      "priority": 1,
+      "passes": false,
+      "notes": ""
+    },
+    {
+      "id": "US-002",
+      "title": "Create approval monitoring script",
+      "description": "As the AI Employee, I need to detect when humans approve email send requests.",
+      "acceptanceCriteria": [
+        "Create monitor_approved.py in email-sender skill scripts folder",
+        "Monitor /Approved folder using watchdog library",
+        "Detect EMAIL_APPROVAL_*.md files when they appear",
+        "Parse YAML frontmatter for email metadata",
+        "Validate expiration time (reject if > 24 hours old)",
+        "Log monitoring activity to /Logs/approval_monitor_YYYY-MM-DD.json"
+      ],
+      "priority": 2,
+      "passes": false,
+      "notes": ""
+    },
+    {
+      "id": "US-003",
+      "title": "Implement email send execution",
+      "description": "As the AI Employee, I need to send emails via Gmail MCP after approval.",
+      "acceptanceCriteria": [
+        "Create execute_email.py in email-sender skill scripts folder",
+        "Extract email metadata from approval file frontmatter",
+        "Call Gmail MCP send_email function with metadata",
+        "Handle MCP errors gracefully (log and notify)",
+        "On success: move approval file from /Approved to /Done",
+        "On failure: move approval file back to /Pending_Approval with error notes",
+        "Log all send attempts to /Logs/actions_YYYY-MM-DD.json"
+      ],
+      "priority": 3,
+      "passes": false,
+      "notes": ""
+    },
+    {
+      "id": "US-004",
+      "title": "Update Dashboard with approval statistics",
+      "description": "As a user, I want to see email approval workflow statistics on the Dashboard.",
+      "acceptanceCriteria": [
+        "Add Pending Email Approvals count to Dashboard.md",
+        "Show last 5 email approval actions in Recent Activity section",
+        "Display approval/rejection ratio for the day",
+        "Update Dashboard after each approval or rejection",
+        "Format using existing Dashboard.md structure"
+      ],
+      "priority": 4,
+      "passes": false,
+      "notes": ""
+    }
+  ]
+}

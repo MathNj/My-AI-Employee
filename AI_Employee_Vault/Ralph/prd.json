@@ -1,0 +1,22 @@
+{
+  "project": "AI Employee",
+  "branchName": "ralph/test-loop",
+  "description": "Ralph Loop Test - Verify autonomous task completion works correctly",
+  "userStories": [
+    {
+      "id": "US-001",
+      "title": "Create test completion file",
+      "description": "As a test, I want to create a test file in /Done to verify Ralph Loop works.",
+      "acceptanceCriteria": [
+        "Create file TEST_ralph_loop_success.md in AI_Employee_Vault/Done",
+        "Include YAML frontmatter with: type: test, status: completed, created: current timestamp",
+        "Include section '## Test Results' with message 'Ralph Loop test successful! ✅'",
+        "Include section '## Verification' with current date and time",
+        "File must be valid markdown format"
+      ],
+      "priority": 1,
+      "passes": true,
+      "notes": "Completed successfully in iteration 1. Test file created with all acceptance criteria met."
+    }
+  ]
+}

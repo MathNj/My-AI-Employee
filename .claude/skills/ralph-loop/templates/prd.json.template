@@ -1,0 +1,35 @@
+{
+  "project": "AI Employee",
+  "branchName": "ralph/feature-name",
+  "description": "Brief description of the feature being implemented",
+  "userStories": [
+    {
+      "id": "US-001",
+      "title": "Story title - what needs to be done",
+      "description": "As [user/system], I want [feature] so that [benefit]",
+      "acceptanceCriteria": [
+        "Create specific file in specific location",
+        "Include specific frontmatter fields: field1, field2",
+        "Follow AI Employee pattern for file naming",
+        "Update Dashboard.md with new information"
+      ],
+      "priority": 1,
+      "passes": false,
+      "notes": ""
+    },
+    {
+      "id": "US-002",
+      "title": "Next story - builds on US-001",
+      "description": "As [user/system], I want [feature] so that [benefit]",
+      "acceptanceCriteria": [
+        "Create monitoring script in skill folder",
+        "Check target folder every N seconds",
+        "Parse file frontmatter for metadata",
+        "Log actions to /Logs/YYYY-MM-DD.json"
+      ],
+      "priority": 2,
+      "passes": false,
+      "notes": ""
+    }
+  ]
+}

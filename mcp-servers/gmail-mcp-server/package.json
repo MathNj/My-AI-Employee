@@ -1,0 +1,39 @@
+{
+  "name": "@personal-ai-employee/gmail-mcp-server",
+  "version": "1.0.0",
+  "description": "Model Context Protocol server for Gmail integration with HITL approval workflow",
+  "type": "module",
+  "main": "dist/index.js",
+  "bin": {
+    "gmail-mcp-server": "./dist/index.js"
+  },
+  "scripts": {
+    "build": "tsc",
+    "watch": "tsc --watch",
+    "start": "node dist/index.js",
+    "dev": "tsc && node dist/index.js",
+    "prepare": "npm run build"
+  },
+  "keywords": [
+    "mcp",
+    "gmail",
+    "email",
+    "automation",
+    "ai-employee"
+  ],
+  "author": "Personal AI Employee Team",
+  "license": "MIT",
+  "dependencies": {
+    "@modelcontextprotocol/sdk": "^1.0.0",
+    "googleapis": "^140.0.1",
+    "dotenv": "^16.4.5",
+    "zod": "^3.22.4"
+  },
+  "devDependencies": {
+    "@types/node": "^20.11.16",
+    "typescript": "^5.3.3"
+  },
+  "engines": {
+    "node": ">=18.0.0"
+  }
+}

@@ -1,0 +1,23 @@
+{
+  "monitored_channels": ["C0A8FMJJ2QM"],
+  "keywords": [
+    "urgent",
+    "important",
+    "help",
+    "issue",
+    "problem",
+    "asap",
+    "critical",
+    "emergency",
+    "bug",
+    "broken",
+    "test"
+  ],
+  "monitor_dms": true,
+  "monitor_mentions": true,
+  "monitor_files": true,
+  "monitor_threads": true,
+  "ignore_bots": true,
+  "min_message_length": 10,
+  "reaction_triggers": ["eyes", "point_up", "fire"]
+}

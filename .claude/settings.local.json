@@ -1,0 +1,16 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(python:*)",
+      "Bash(cat:*)",
+      "Bash(chmod:*)",
+      "Bash(findstr:*)",
+      "Skill(skill-creator)",
+      "Bash(taskkill /F /FI \"WINDOWTITLE eq whatsapp_watcher.py\")",
+      "Bash(find:*)",
+      "Bash(ls:*)",
+      "Bash(dir \"AI_Employee_Vault\\\\Logs\")",
+      "Bash(dir /B *.md)"
+    ]
+  }
+}

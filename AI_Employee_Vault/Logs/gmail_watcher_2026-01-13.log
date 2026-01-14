@@ -1,0 +1,50 @@
+2026-01-13 01:23:31,358 - INFO - Gmail Watcher initialized
+2026-01-13 01:23:31,358 - INFO -   Vault: C:\Users\Najma-LP\Desktop\My Vault
+2026-01-13 01:23:31,358 - INFO -   Output to: C:\Users\Najma-LP\Desktop\My Vault\Needs_Action
+2026-01-13 01:23:31,358 - ERROR - Credentials file not found: C:\Users\Najma-LP\Desktop\My Vault\watchers\credentials\credentials.json
+2026-01-13 01:23:31,358 - ERROR - Please set up Gmail API credentials first.
+2026-01-13 01:23:31,359 - ERROR - See watchers/GMAIL_SETUP.md for instructions.
+2026-01-13 01:23:31,359 - ERROR - Authentication failed. Exiting.
+2026-01-13 02:13:42,720 - INFO - Gmail Watcher initialized
+2026-01-13 02:13:42,720 - INFO -   Vault: C:\Users\Najma-LP\Desktop\My Vault
+2026-01-13 02:13:42,720 - INFO -   Output to: C:\Users\Najma-LP\Desktop\My Vault\Needs_Action
+2026-01-13 02:13:42,720 - INFO - Starting OAuth2 flow...
+2026-01-13 02:19:52,331 - INFO - "GET /?state=Xxb5ET3xwqqzshvYADWWo4xH3m925P&code=4/0ASc3gC12I0IbhP5LyVpvQW9IG0fFHeBJRHrWlnU_mj2sdWIz4WbRiA8Cbkc6G0Dyh1tqjw&scope=https://www.googleapis.com/auth/gmail.readonly HTTP/1.1" 200 65
+2026-01-13 02:19:52,899 - INFO - Credentials saved
+2026-01-13 02:19:52,912 - INFO - file_cache is only supported with oauth2client<4.0.0
+2026-01-13 02:19:52,931 - INFO - ============================================================
+2026-01-13 02:19:52,931 - INFO - Gmail Watcher started
+2026-01-13 02:19:52,932 - INFO - Check interval: 120 seconds (2 minutes)
+2026-01-13 02:19:52,932 - INFO - Monitoring for: unread important emails
+2026-01-13 02:19:52,932 - INFO - Press Ctrl+C to stop
+2026-01-13 02:19:52,932 - INFO - ============================================================
+2026-01-13 02:19:54,521 - INFO - Found 100 new important email(s)
+2026-01-13 02:35:06,525 - INFO - Loaded 100 processed message IDs
+2026-01-13 02:35:06,525 - INFO - Gmail Watcher initialized
+2026-01-13 02:35:06,526 - INFO -   Vault: C:\Users\Najma-LP\Desktop\My Vault
+2026-01-13 02:35:06,526 - INFO -   Output to: C:\Users\Najma-LP\Desktop\My Vault\Needs_Action
+2026-01-13 02:35:06,528 - INFO - file_cache is only supported with oauth2client<4.0.0
+2026-01-13 02:35:06,532 - INFO - ============================================================
+2026-01-13 02:35:06,532 - INFO - Gmail Watcher started
+2026-01-13 02:35:06,532 - INFO - Check interval: 120 seconds (2 minutes)
+2026-01-13 02:35:06,532 - INFO - Monitoring for: unread important emails
+2026-01-13 02:35:06,532 - INFO - Press Ctrl+C to stop
+2026-01-13 02:35:06,532 - INFO - ============================================================
+2026-01-13 02:40:24,996 - INFO - Found 1 new important email(s)
+2026-01-13 02:41:08,400 - INFO - Found 1 new important email(s)
+2026-01-13 02:42:25,887 - INFO - Found 1 new important email(s)
+2026-01-13 02:43:06,770 - INFO - Loaded 102 processed message IDs
+2026-01-13 02:43:06,770 - INFO - Gmail Watcher initialized
+2026-01-13 02:43:06,770 - INFO -   Vault: C:\Users\Najma-LP\Desktop\My Vault
+2026-01-13 02:43:06,770 - INFO -   Output to: C:\Users\Najma-LP\Desktop\My Vault\Needs_Action
+2026-01-13 02:43:06,773 - INFO - file_cache is only supported with oauth2client<4.0.0
+2026-01-13 02:43:06,776 - INFO - ============================================================
+2026-01-13 02:43:06,776 - INFO - Gmail Watcher started
+2026-01-13 02:43:06,776 - INFO - Check interval: 120 seconds (2 minutes)
+2026-01-13 02:43:06,777 - INFO - Monitoring for: unread important emails
+2026-01-13 02:43:06,777 - INFO - Press Ctrl+C to stop
+2026-01-13 02:43:06,777 - INFO - ============================================================
+2026-01-13 02:43:08,843 - INFO - Found 1 new important email(s)
+2026-01-13 02:44:26,334 - INFO - Found 3 new important email(s)
+2026-01-13 02:45:07,895 - INFO - Found 3 new important email(s)
+2026-01-13 02:45:09,262 - INFO - Found 3 new important email(s)

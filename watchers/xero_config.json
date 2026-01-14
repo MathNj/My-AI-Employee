@@ -1,0 +1,9 @@
+{
+  "large_transaction_threshold": 500.00,
+  "overdue_alert_days": 7,
+  "monitor_invoices": true,
+  "monitor_bills": true,
+  "monitor_payments": true,
+  "monitor_bank_transactions": true,
+  "monitor_overdue": true
+}

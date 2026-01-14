@@ -1,0 +1,23 @@
+# Ralph Progress Log
+Started: YYYY-MM-DD HH:MM:SS
+
+## Codebase Patterns
+(Add reusable patterns here as you discover them)
+- AI Employee uses /Needs_Action → /Approved → /Done workflow
+- All actions require HITL approval in /Pending_Approval
+- Logs stored in /Logs/YYYY-MM-DD.json format
+- Frontmatter required for all .md files with type, status, created fields
+- MCP servers configured in .claude/mcp.json
+
+---
+
+## YYYY-MM-DD HH:MM - US-XXX
+- What was implemented
+- Files created/changed:
+  - path/to/file1.py (new/updated)
+  - path/to/file2.md (new)
+- **Learnings for future iterations:**
+  - Pattern discovered
+  - Gotcha encountered
+  - Useful context
+---

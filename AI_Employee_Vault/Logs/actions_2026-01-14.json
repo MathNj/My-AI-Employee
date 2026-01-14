@@ -1,0 +1,89 @@
+[
+  {
+    "timestamp": "2026-01-14T05:15:09.480818",
+    "watcher": "SlackWatcher",
+    "action": "slack_direct_message",
+    "details": {
+      "event_id": "dm_001",
+      "type": "direct_message",
+      "user": "U12345",
+      "channel": "D12345",
+      "text_preview": "Hey, can you help me with the quarterly report?"
+    },
+    "task_file": "slack_direct_message_20260114_051509.md"
+  },
+  {
+    "timestamp": "2026-01-14T05:15:09.493072",
+    "watcher": "SlackWatcher",
+    "action": "slack_mention",
+    "details": {
+      "event_id": "mention_001",
+      "type": "mention",
+      "user": "U23456",
+      "channel": "C12345",
+      "text_preview": "Hey @ai-employee, urgent issue with the deployment!"
+    },
+    "task_file": "slack_mention_20260114_051509.md"
+  },
+  {
+    "timestamp": "2026-01-14T05:15:09.496428",
+    "watcher": "SlackWatcher",
+    "action": "slack_file_upload",
+    "details": {
+      "event_id": "file_001",
+      "type": "file_upload",
+      "user": null,
+      "channel": null,
+      "text_preview": ""
+    },
+    "task_file": "slack_file_upload_20260114_051509.md"
+  },
+  {
+    "timestamp": "2026-01-14T12:19:14.077844",
+    "watcher": "CalendarWatcher",
+    "action": "calendar_event_detected",
+    "details": {
+      "event_id": "23bf7gsquhuh9d9oqj85hqgm03",
+      "summary": "Test",
+      "start_time": "2026-01-15T07:30:00",
+      "hours_until": 19,
+      "location": "",
+      "attendees_count": 0,
+      "priority": "medium"
+    },
+    "task_file": "CALENDAR_23bf7gsquhuh9d9oqj85hqgm03_20260114_121914_Test.md"
+  },
+  {
+    "timestamp": "2026-01-14T12:30:17.792671",
+    "watcher": "SlackWatcher",
+    "action": "slack_keyword_match",
+    "details": {
+      "event_id": "C0A8FMJJ2QM_1768375796.395179",
+      "type": "keyword_match",
+      "user": "U0A8NNB4BTN",
+      "channel": "C0A8FMJJ2QM",
+      "text_preview": "test"
+    },
+    "task_file": "slack_keyword_match_20260114_123016.md"
+  },
+  {
+    "timestamp": "2026-01-14T12:32:34.666031",
+    "action": "email_detected",
+    "details": {
+      "from": "\"Phil @ ZipRecruiter\" <phil@ziprecruiter.com>",
+      "subject": "MATHS, I think this job might be right for you!",
+      "task_created": "EMAIL_19bb83c1aeab66ce.md",
+      "watcher": "gmail_watcher"
+    }
+  },
+  {
+    "timestamp": "2026-01-14T13:02:35.000219",
+    "action": "email_detected",
+    "details": {
+      "from": "Vikram Bagga <no-reply@turing.com>",
+      "subject": "Your login link is ready: Complete your Turing assessment on desktop",
+      "task_created": "EMAIL_19bbb8712023a107.md",
+      "watcher": "gmail_watcher"
+    }
+  }
+]
