@@ -1,0 +1,225 @@
+#!/usr/bin/env python3
+"""
+Task Processor - Processes tasks from Needs_Action folder
+Monitors folder, creates plans, tracks progress
+"""
+
+import sys
+import time
+import logging
+from pathlib import Path
+from datetime import datetime
+import traceback
+
+# Fix encoding for Windows
+if sys.platform == 'win32':
+    try:
+        sys.stdout.reconfigure(encoding='utf-8')
+    except:
+        pass
+
+# Configuration
+VAULT_PATH = Path(__file__).parent.parent
+NEEDS_ACTION_PATH = VAULT_PATH / "Needs_Action"
+PLANS_PATH = VAULT_PATH / "Plans"
+DONE_PATH = VAULT_PATH / "Done"
+LOGS_PATH = VAULT_PATH / "Logs"
+
+# Setup logging
+LOGS_PATH.mkdir(exist_ok=True)
+logging.basicConfig(
+    level=logging.INFO,
+    format='%(asctime)s - TaskProcessor - %(levelname)s - %(message)s',
+    handlers=[
+        logging.FileHandler(LOGS_PATH / 'task_processor.log'),
+        logging.StreamHandler()
+    ]
+)
+logger = logging.getLogger(__name__)
+
+
+class TaskProcessor:
+    """Process tasks from Needs_Action folder"""
+
+    def __init__(self):
+        self.needs_action = NEEDS_ACTION_PATH
+        self.plans = PLANS_PATH
+        self.done = DONE_PATH
+
+        # Ensure directories exist
+        self.needs_action.mkdir(exist_ok=True)
+        self.plans.mkdir(exist_ok=True)
+        self.done.mkdir(exist_ok=True)
+
+        logger.info("TaskProcessor initialized")
+        logger.info(f"  Monitoring: {self.needs_action}")
+        logger.info(f"  Plans: {self.plans}")
+        logger.info(f"  Done: {self.done}")
+
+    def get_pending_tasks(self):
+        """Get all task files from Needs_Action"""
+        try:
+            task_files = list(self.needs_action.glob('*.md'))
+            return sorted(task_files, key=lambda x: x.stat().st_mtime)
+        except Exception as e:
+            logger.error(f"Error reading tasks: {e}")
+            return []
+
+    def process_task(self, task_file):
+        """Process a single task file"""
+        try:
+            logger.info(f"Processing task: {task_file.name}")
+
+            # Read task content
+            content = task_file.read_text(encoding='utf-8')
+
+            # Parse frontmatter
+            metadata = self.parse_frontmatter(content)
+
+            task_type = metadata.get('type', 'unknown')
+            priority = metadata.get('priority', 'medium')
+
+            logger.info(f"  Type: {task_type}, Priority: {priority}")
+
+            # Create plan or process directly
+            if task_type in ['email', 'linkedin_post', 'x_post', 'facebook_post', 'instagram_post']:
+                # These need approval - move to Pending_Approval
+                self.create_approval_request(task_file, metadata, content)
+            else:
+                # Create plan for complex tasks
+                self.create_plan(task_file, metadata, content)
+
+            # Move original task to Plans (processed)
+            plan_file = self.plans / task_file.name
+            task_file.rename(plan_file)
+            logger.info(f"  Moved to Plans: {plan_file.name}")
+
+            return True
+
+        except Exception as e:
+            logger.error(f"Error processing {task_file.name}: {e}")
+            traceback.print_exc()
+            return False
+
+    def parse_frontmatter(self, content):
+        """Parse YAML frontmatter"""
+        metadata = {}
+        if content.startswith('---'):
+            parts = content.split('---', 2)
+            if len(parts) >= 2:
+                frontmatter = parts[1].strip()
+                for line in frontmatter.split('\n'):
+                    if ':' in line:
+                        key, value = line.split(':', 1)
+                        metadata[key.strip()] = value.strip()
+        return metadata
+
+    def create_approval_request(self, task_file, metadata, content):
+        """Create approval request in Pending_Approval"""
+        pending_path = VAULT_PATH / "Pending_Approval"
+        pending_path.mkdir(exist_ok=True)
+
+        # Create approval file
+        approval_file = pending_path / task_file.name
+
+        if not approval_file.exists():
+            approval_file.write_text(content, encoding='utf-8')
+            logger.info(f"  Created approval request: {approval_file.name}")
+        else:
+            logger.info(f"  Approval request already exists")
+
+    def create_plan(self, task_file, metadata, content):
+        """Create execution plan"""
+        timestamp = datetime.now().isoformat()
+        plan_name = f"PLAN_{task_file.stem}_{datetime.now().strftime('%Y%m%d_%H%M%S')}.md"
+        plan_path = self.plans / plan_name
+
+        task_type = metadata.get('type', 'unknown')
+        priority = metadata.get('priority', 'medium')
+
+        plan_content = f"""---
+task_id: {task_file.name}
+created: {timestamp}
+status: pending
+task_type: {task_type}
+priority: {priority}
+---
+
+# Execution Plan: {task_file.stem}
+
+## Task Summary
+Type: {task_type}
+Priority: {priority}
+
+## Original Task
+{content[:500]}...
+
+## Next Steps
+1. Review task details
+2. Determine required actions
+3. Execute or request approval
+4. Mark complete
+
+---
+*Generated by TaskProcessor*
+"""
+
+        plan_path.write_text(plan_content, encoding='utf-8')
+        logger.info(f"  Created plan: {plan_name}")
+
+    def run_once(self):
+        """Run one processing cycle"""
+        logger.info("Checking for tasks...")
+
+        tasks = self.get_pending_tasks()
+
+        if not tasks:
+            logger.info("No pending tasks found")
+            return
+
+        logger.info(f"Found {len(tasks)} task(s)")
+
+        processed = 0
+        for task_file in tasks:
+            if self.process_task(task_file):
+                processed += 1
+
+        logger.info(f"Processed {processed}/{len(tasks)} tasks")
+
+    def run(self, interval=60):
+        """Run continuously"""
+        logger.info("TaskProcessor started")
+        logger.info(f"Check interval: {interval} seconds")
+
+        try:
+            while True:
+                self.run_once()
+                logger.info(f"Waiting {interval} seconds...")
+                time.sleep(interval)
+
+        except KeyboardInterrupt:
+            logger.info("TaskProcessor stopped by user")
+
+
+def main():
+    """Main entry point"""
+    import argparse
+
+    parser = argparse.ArgumentParser(description='Task Processor')
+    parser.add_argument('--interval', type=int, default=60,
+                       help='Check interval in seconds')
+    parser.add_argument('--once', action='store_true',
+                       help='Run once and exit')
+
+    args = parser.parse_args()
+
+    processor = TaskProcessor()
+
+    if args.once:
+        processor.run_once()
+    else:
+        processor.run(args.interval)
+
+
+if __name__ == "__main__":
+    main()

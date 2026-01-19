@@ -1,0 +1,30 @@
+{
+  "synced_at": "2026-01-18T01:30:00Z",
+  "count": 3,
+  "customers": [
+    {
+      "id": 1,
+      "name": "Acme Corporation",
+      "email": "billing@acme.com",
+      "phone": "+1-555-555-5555",
+      "customer_rank": 1,
+      "supplier_rank": 0
+    },
+    {
+      "id": 2,
+      "name": "Tech Solutions Inc",
+      "email": "accounts@techsolutions.com",
+      "phone": "+1-555-555-5556",
+      "customer_rank": 1,
+      "supplier_rank": 0
+    },
+    {
+      "id": 3,
+      "name": "Global Services LLC",
+      "email": "finance@globalservices.com",
+      "phone": "+1-555-555-5557",
+      "customer_rank": 1,
+      "supplier_rank": 0
+    }
+  ]
+}

@@ -1,0 +1,63 @@
+{
+  "month": "2026-01",
+  "synced_at": "2026-01-18T01:30:00Z",
+  "count": 4,
+  "invoices": [
+    {
+      "id": 1,
+      "name": "INV/2026/0001",
+      "move_type": "out_invoice",
+      "state": "posted",
+      "payment_state": "paid",
+      "invoice_date": "2026-01-05",
+      "invoice_date_due": "2026-01-20",
+      "partner_id": "Acme Corporation",
+      "amount_total": 2500.0,
+      "amount_residual": 0.0,
+      "create_date": "2026-01-05T10:00:00Z",
+      "write_date": "2026-01-05T10:00:00Z"
+    },
+    {
+      "id": 2,
+      "name": "INV/2026/0002",
+      "move_type": "out_invoice",
+      "state": "posted",
+      "payment_state": "not_paid",
+      "invoice_date": "2026-01-10",
+      "invoice_date_due": "2026-02-10",
+      "partner_id": "Tech Solutions Inc",
+      "amount_total": 4500.0,
+      "amount_residual": 4500.0,
+      "create_date": "2026-01-10T14:30:00Z",
+      "write_date": "2026-01-10T14:30:00Z"
+    },
+    {
+      "id": 3,
+      "name": "INV/2026/0003",
+      "move_type": "in_invoice",
+      "state": "posted",
+      "payment_state": "paid",
+      "invoice_date": "2026-01-08",
+      "invoice_date_due": "2026-02-07",
+      "partner_id": "Office Depot",
+      "amount_total": 150.0,
+      "amount_residual": 0.0,
+      "create_date": "2026-01-08T11:20:00Z",
+      "create_date": "2026-01-08T11:20:00Z"
+    },
+    {
+      "id": 4,
+      "name": "INV/2026/0004",
+      "move_type": "in_invoice",
+      "state": "posted",
+      "payment_state": "not_paid",
+      "invoice_date": "2026-01-12",
+      "invoice_date_due": "2026-02-11",
+      "partner_id": "Staples Inc",
+      "amount_total": 250.0,
+      "amount_residual": 250.0,
+      "create_date": "2026-01-12T09:45:00Z",
+      "create_date": "2026-01-12T09:45:00Z"
+    }
+  ]
+}

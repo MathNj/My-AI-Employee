@@ -1,0 +1,211 @@
+{
+  "categories": [
+    {
+      "name": "Software Expenses",
+      "account_code": "6000",
+      "description": "Software licenses, SaaS subscriptions, cloud services",
+      "keywords": [
+        "software",
+        "saas",
+        "subscription",
+        "license",
+        "cloud",
+        "azure",
+        "aws",
+        "github",
+        "atlassian",
+        "adobe",
+        "microsoft",
+        "google workspace"
+      ],
+      "vendors": [
+        "microsoft.com",
+        "google.com",
+        "adobe.com",
+        "amazon aws",
+        "github.com",
+        "atlassian.com",
+        "dropbox.com",
+        "zoom.us",
+        "slack.com",
+        "notion.so"
+      ]
+    },
+    {
+      "name": "Office Supplies",
+      "account_code": "6050",
+      "description": "Office supplies, stationery, and consumables",
+      "keywords": [
+        "office",
+        "supplies",
+        "stationery",
+        "paper",
+        "ink",
+        "toner",
+        "printer",
+        "furniture",
+        "desk",
+        "chair"
+      ],
+      "vendors": [
+        "staples.com",
+        "office depot",
+        "amazon.com"
+      ]
+    },
+    {
+      "name": "Travel Expenses",
+      "account_code": "6100",
+      "description": "Business travel, accommodation, and transportation",
+      "keywords": [
+        "travel",
+        "hotel",
+        "airline",
+        "flight",
+        "rental car",
+        "uber",
+        "lyft",
+        "taxi",
+        "expedia",
+        "booking.com",
+        "airbnb"
+      ],
+      "vendors": [
+        "expedia.com",
+        "airbnb.com",
+        "uber.com",
+        "lyft.com",
+        "booking.com",
+        "delta.com",
+        "united.com"
+      ]
+    },
+    {
+      "name": "Marketing & Advertising",
+      "account_code": "6200",
+      "description": "Marketing, advertising, and promotional expenses",
+      "keywords": [
+        "marketing",
+        "advertising",
+        "promotion",
+        "social media",
+        "facebook ads",
+        "google ads",
+        "linkedin ads",
+        "twitter ads",
+        "influencer",
+        "campaign"
+      ],
+      "vendors": [
+        "facebook.com",
+        "google.com",
+        "linkedin.com",
+        "twitter.com",
+        "mailchimp.com"
+      ]
+    },
+    {
+      "name": "Professional Services",
+      "account_code": "6300",
+      "description": "Professional services, consulting, legal, and accounting",
+      "keywords": [
+        "consulting",
+        "legal",
+        "accounting",
+        "professional",
+        "attorney",
+        "lawyer",
+        "cpa",
+        "audit",
+        "tax preparation"
+      ],
+      "vendors": []
+    },
+    {
+      "name": "Utilities",
+      "account_code": "6400",
+      "description": "Electricity, water, gas, internet, and phone services",
+      "keywords": [
+        "electric",
+        "water",
+        "gas",
+        "internet",
+        "phone",
+        "utility",
+        "power",
+        "verizon",
+        "at&t",
+        "comcast"
+      ],
+      "vendors": [
+        "comcast.com",
+        "verizon.com",
+        "at&t.com"
+      ]
+    },
+    {
+      "name": "Insurance",
+      "account_code": "6500",
+      "description": "Business insurance premiums",
+      "keywords": [
+        "insurance",
+        "liability",
+        "workers comp",
+        "professional liability",
+        "premium"
+      ],
+      "vendors": []
+    },
+    {
+      "name": "Rent & Facilities",
+      "account_code": "6600",
+      "description": "Office rent, facilities, and maintenance",
+      "keywords": [
+        "rent",
+        "lease",
+        "facilities",
+        "maintenance",
+        "cleaning",
+        "janitorial",
+        "property management"
+      ],
+      "vendors": []
+    },
+    {
+      "name": "Banking & Fees",
+      "account_code": "6700",
+      "description": "Bank charges, transaction fees, and interest",
+      "keywords": [
+        "bank fee",
+        "transaction fee",
+        "interest",
+        "wire transfer",
+        "ach",
+        "nsf fee"
+      ],
+      "vendors": []
+    },
+    {
+      "name": "Education & Training",
+      "account_code": "6800",
+      "description": "Employee education, training, and development",
+      "keywords": [
+        "training",
+        "education",
+        "course",
+        "certification",
+        "workshop",
+        "udemy",
+        "coursera",
+        "linkedin learning"
+      ],
+      "vendors": [
+        "udemy.com",
+        "coursera.com",
+        "linkedin.com"
+      ]
+    }
+  ],
+  "version": "1.0.0",
+  "last_updated": "2026-01-18"
+}

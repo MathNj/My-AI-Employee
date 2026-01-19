@@ -1,0 +1,13 @@
+2026-01-19 18:53:43 - CalendarWatcher - INFO - CalendarWatcher initialized
+2026-01-19 18:53:43 - CalendarWatcher - INFO -   Vault: C:\Users\Najma-LP\Desktop\AI_Employee_Vault\watchers
+2026-01-19 18:53:43 - CalendarWatcher - INFO -   Output: C:\Users\Najma-LP\Desktop\AI_Employee_Vault\watchers\Needs_Action
+2026-01-19 18:53:43 - CalendarWatcher - INFO -   Check interval: 300s
+2026-01-19 18:53:43 - CalendarWatcher - INFO - Starting OAuth 2.0 flow...
+2026-01-19 18:53:43 - CalendarWatcher - INFO - Your browser will open for authentication...
+2026-01-19 18:58:49 - CalendarWatcher - INFO - CalendarWatcher initialized
+2026-01-19 18:58:49 - CalendarWatcher - INFO -   Vault: C:\Users\Najma-LP\Desktop\AI_Employee_Vault\watchers
+2026-01-19 18:58:49 - CalendarWatcher - INFO -   Output: C:\Users\Najma-LP\Desktop\AI_Employee_Vault\watchers\Needs_Action
+2026-01-19 18:58:49 - CalendarWatcher - INFO -   Check interval: 300s
+2026-01-19 18:58:49 - CalendarWatcher - INFO - Starting OAuth 2.0 flow...
+2026-01-19 18:58:49 - CalendarWatcher - INFO - Your browser will open for authentication...
+2026-01-19 19:04:20 - CalendarWatcher - ERROR - OAuth 2.0 flow failed: Scope has changed from "https://www.googleapis.com/auth/calendar https://www.googleapis.com/auth/calendar.events" to "https://www.googleapis.com/auth/calendar.events".

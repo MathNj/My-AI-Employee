@@ -1,0 +1,260 @@
+# Action File Schema - Bronze Tier Foundation
+# Defines YAML frontmatter structure for action files
+
+version: "1.0.0"
+description: "Schema for action files created by watchers and processed by Claude Code"
+
+# Root schema
+action_file:
+  type: object
+  required:
+    - type
+    - source
+    - timestamp
+    - status
+    - payload
+  properties:
+
+    type:
+      type: string
+      enum: [email, file, scheduled]
+      description: "Category of event that triggered this action file"
+      examples:
+        - email
+        - file
+        - scheduled
+
+    source:
+      type: string
+      enum: [Gmail, FileSystem, Manual]
+      description: "Watcher that created this action file"
+      examples:
+        - Gmail
+        - FileSystem
+        - Manual
+
+    timestamp:
+      type: string
+      format: iso8601
+      description: "When event was detected (ISO 8601 with timezone)"
+      examples:
+        - "2026-01-17T14:30:00Z"
+        - "2026-01-17T09:15:30-05:00"
+
+    status:
+      type: string
+      enum: [pending, processing, complete, error]
+      description: "Current processing state"
+      default: pending
+      examples:
+        - pending
+        - processing
+        - complete
+        - error
+
+    payload:
+      type: object
+      description: "Event-specific data (schema varies by type)"
+      oneOf:
+        - $ref: "#/payload_schemas/email"
+        - $ref: "#/payload_schemas/file"
+        - $ref: "#/payload_schemas/scheduled"
+
+    processing_metadata:
+      type: object
+      description: "Added by task-processor skill during processing"
+      properties:
+        started_at:
+          type: string
+          format: iso8601
+          nullable: true
+        completed_at:
+          type: string
+          format: iso8601
+          nullable: true
+        processing_time_sec:
+          type: integer
+          minimum: 0
+          nullable: true
+        claude_model:
+          type: string
+          nullable: true
+          examples:
+            - "claude-sonnet-4-5"
+        outcome:
+          type: string
+          description: "Human-readable summary of processing result"
+          nullable: true
+          examples:
+            - "Email categorized as invoice, flagged for payment"
+            - "File moved to accounting folder"
+
+# Payload schemas by type
+payload_schemas:
+
+  email:
+    type: object
+    required:
+      - sender
+      - subject
+      - message_id
+    properties:
+      sender:
+        type: string
+        format: email
+        description: "Email address of sender"
+      subject:
+        type: string
+        description: "Email subject line"
+      message_id:
+        type: string
+        description: "Unique identifier from email provider"
+      snippet:
+        type: string
+        description: "First 100-200 characters of email body"
+        maxLength: 200
+      labels:
+        type: array
+        items:
+          type: string
+        description: "Gmail labels (e.g., INBOX, IMPORTANT, STARRED)"
+        examples:
+          - ["INBOX", "IMPORTANT"]
+      has_attachments:
+        type: boolean
+        default: false
+      thread_id:
+        type: string
+        description: "Gmail thread ID for conversation tracking"
+        nullable: true
+
+  file:
+    type: object
+    required:
+      - filename
+      - path
+      - size_bytes
+    properties:
+      filename:
+        type: string
+        description: "Name of detected file"
+        examples:
+          - "invoice_jan_2026.pdf"
+      path:
+        type: string
+        description: "Absolute path to file"
+        examples:
+          - "/vault/Inbox/invoice_jan_2026.pdf"
+      size_bytes:
+        type: integer
+        minimum: 0
+        description: "File size in bytes"
+      mime_type:
+        type: string
+        description: "MIME type (if detectable)"
+        examples:
+          - "application/pdf"
+          - "text/plain"
+          - "application/vnd.openxmlformats-officedocument.wordprocessingml.document"
+        nullable: true
+      created_at:
+        type: string
+        format: iso8601
+        description: "File creation timestamp"
+      modified_at:
+        type: string
+        format: iso8601
+        description: "File last modified timestamp"
+        nullable: true
+
+  scheduled:
+    type: object
+    required:
+      - task_description
+      - priority
+    properties:
+      task_description:
+        type: string
+        description: "Human-readable task description"
+        minLength: 10
+        maxLength: 500
+      priority:
+        type: string
+        enum: [high, medium, low]
+        default: medium
+      due_date:
+        type: string
+        format: date
+        description: "Task due date (YYYY-MM-DD)"
+        nullable: true
+      context:
+        type: string
+        description: "Additional context or background information"
+        maxLength: 1000
+        nullable: true
+      tags:
+        type: array
+        items:
+          type: string
+        description: "Categorization tags"
+        examples:
+          - ["client-work", "urgent"]
+
+# File naming convention
+naming_convention:
+  pattern: "{SOURCE}_{TIMESTAMP}_{IDENTIFIER}.md"
+  description: "Action file naming format"
+  components:
+    SOURCE:
+      description: "Source system (EMAIL, FILE, MANUAL)"
+      examples: ["EMAIL", "FILE", "MANUAL"]
+    TIMESTAMP:
+      description: "YYYYMMDD_HHMMSS format"
+      examples: ["20260117_143000"]
+    IDENTIFIER:
+      description: "Unique identifier (message ID, filename slug, task ID)"
+      examples: ["abc123xyz", "invoice-pdf", "client-followup"]
+  examples:
+    - "EMAIL_20260117_143000_abc123.md"
+    - "FILE_20260117_091530_invoice-jan.md"
+    - "MANUAL_20260117_120000_followup.md"
+
+# Validation rules
+validation:
+  - rule: "All required fields must be present in frontmatter"
+  - rule: "Type must match payload schema"
+  - rule: "Timestamp must be valid ISO 8601 format"
+  - rule: "Status must be valid enum value"
+  - rule: "Filename must match naming convention"
+  - rule: "Processing metadata is optional for pending files, required for complete files"
+
+# Example complete action file
+example:
+  filename: "EMAIL_20260117_143000_abc123.md"
+  frontmatter:
+    type: email
+    source: Gmail
+    timestamp: "2026-01-17T14:30:00Z"
+    status: pending
+    payload:
+      sender: "client@example.com"
+      subject: "Invoice #1234"
+      message_id: "abc123xyz"
+      snippet: "Hi, attached is the invoice for January services..."
+      labels: ["INBOX", "IMPORTANT"]
+      has_attachments: true
+    processing_metadata:
+      started_at: null
+      completed_at: null
+      processing_time_sec: null
+      claude_model: null
+      outcome: null
+  body: |
+    # Email from client@example.com
+
+    **Subject**: Invoice #1234
+
+    **Received**: 2026-01-17 14:30 UTC
+
+    **Body**:
+    Hi, attached is the invoice for January services...

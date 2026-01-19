@@ -1,0 +1,45 @@
+2026-01-18 01:25:58,204 | INFO | ============================================================
+2026-01-18 01:25:58,204 | INFO | Odoo Sync - Starting
+2026-01-18 01:25:58,204 | INFO | ============================================================
+2026-01-18 01:25:58,205 | INFO | DRY RUN MODE - No files will be modified
+2026-01-18 01:25:58,205 | INFO | Syncing partners...
+2026-01-18 01:26:02,491 | INFO | Syncing invoices...
+2026-01-18 01:26:04,642 | WARNING | No invoices found or error occurred
+2026-01-18 01:26:04,646 | INFO | Syncing payments...
+2026-01-18 01:26:06,814 | WARNING | No payments found or error occurred
+2026-01-18 01:26:06,822 | INFO | ============================================================
+2026-01-18 01:26:06,822 | INFO | Sync completed in 8.6 seconds
+2026-01-18 01:26:06,823 | INFO | ============================================================
+2026-01-18 01:26:06,823 | ERROR | Sync failed: 'charmap' codec can't encode character '\U0001f4ca' in position 2: character maps to <undefined>
+2026-01-18 01:26:34,584 | INFO | Syncing partners...
+2026-01-18 01:26:48,018 | INFO | Generating Profit & Loss statement...
+2026-01-18 01:26:52,361 | INFO | Profit & Loss saved to 20260118_012652_Profit_Loss.md
+2026-01-18 01:26:52,361 | INFO | Report saved to: Accounting\Reports\20260118_012652_Profit_Loss.md
+2026-01-18 02:14:00,664 | INFO | ============================================================
+2026-01-18 02:14:00,665 | INFO | Odoo Sync - Starting
+2026-01-18 02:14:00,665 | INFO | ============================================================
+2026-01-18 02:14:00,665 | INFO | Syncing partners...
+2026-01-18 02:14:04,987 | INFO | [OK] Partners: 0 customers, 0 vendors
+2026-01-18 02:14:04,988 | INFO | Syncing invoices...
+2026-01-18 02:14:07,081 | WARNING | No invoices found or error occurred
+2026-01-18 02:14:07,081 | INFO | [OK] Invoices: 0 synced
+2026-01-18 02:14:07,081 | INFO | Syncing payments...
+2026-01-18 02:14:09,157 | WARNING | No payments found or error occurred
+2026-01-18 02:14:09,157 | INFO | [OK] Payments: 0 synced
+2026-01-18 02:14:09,158 | INFO | ============================================================
+2026-01-18 02:14:09,158 | INFO | Sync completed in 8.5 seconds
+2026-01-18 02:14:09,158 | INFO | ============================================================
+2026-01-18 02:16:03,595 | INFO | ============================================================
+2026-01-18 02:16:03,596 | INFO | Odoo Sync - Starting
+2026-01-18 02:16:03,596 | INFO | ============================================================
+2026-01-18 02:16:03,596 | INFO | Syncing partners...
+2026-01-18 02:16:07,937 | INFO | [OK] Partners: 0 customers, 0 vendors
+2026-01-18 02:16:07,938 | INFO | Syncing invoices...
+2026-01-18 02:16:10,093 | WARNING | No invoices found or error occurred
+2026-01-18 02:16:10,093 | INFO | [OK] Invoices: 0 synced
+2026-01-18 02:16:10,093 | INFO | Syncing payments...
+2026-01-18 02:16:12,209 | WARNING | No payments found or error occurred
+2026-01-18 02:16:12,209 | INFO | [OK] Payments: 0 synced
+2026-01-18 02:16:12,210 | INFO | ============================================================
+2026-01-18 02:16:12,210 | INFO | Sync completed in 8.6 seconds
+2026-01-18 02:16:12,210 | INFO | ============================================================

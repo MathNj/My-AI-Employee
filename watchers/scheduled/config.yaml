@@ -1,0 +1,61 @@
+# Scheduled Automation Configuration
+# Silver Tier T081, T082
+
+# Scheduled task schema (T082)
+# Each task must have: name, schedule, command, log_file, enabled
+tasks:
+  # Daily briefing task (T083)
+  - name: daily_briefing
+    description: Generate daily business briefing
+    schedule: "0 8 * * *"  # 8:00 AM daily
+    command: "python scripts/daily_briefing.py"
+    log_file: "Logs/scheduled_daily_briefing.log"
+    enabled: true
+    timeout: 300  # 5 minutes max
+
+  # Weekly audit task (T084)
+  - name: weekly_audit
+    description: Weekly business audit and metrics
+    schedule: "0 9 * * 1"  # 9:00 AM every Monday
+    command: "python scripts/weekly_audit.py"
+    log_file: "Logs/scheduled_weekly_audit.log"
+    enabled: true
+    timeout: 600  # 10 minutes max
+
+  # Monthly cleanup task (T085)
+  - name: monthly_cleanup
+    description: Monthly log cleanup and archiving
+    schedule: "0 2 1 * *"  # 2:00 AM on 1st of month
+    command: "python scripts/monthly_cleanup.py"
+    log_file: "Logs/scheduled_monthly_cleanup.log"
+    enabled: true
+    timeout: 900  # 15 minutes max
+
+# Global settings
+settings:
+  # Log retention (days)
+  log_retention_days: 90
+
+  # Retry failed tasks
+  retry_failed: true
+  max_retries: 3
+  retry_delay: 60  # seconds
+
+  # Error notifications
+  notify_on_error: true
+  notification_email: "admin@example.com"
+
+# Platform-specific configuration
+platforms:
+  linux:
+    scheduler: "cron"
+    cron_dir: "/etc/cron.d/ai-employee"
+
+  windows:
+    scheduler: "task_scheduler"
+    task_folder: "AI Employee"
+    user: "SYSTEM"
+
+  macos:
+    scheduler: "launchd"
+    plist_dir: "/Library/LaunchDaemons"

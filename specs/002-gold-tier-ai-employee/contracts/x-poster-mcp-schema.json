@@ -1,0 +1,98 @@
+{
+  "mcp_server": "x-poster",
+  "version": "1.0.0",
+  "description": "Twitter/X posting MCP server using Playwright browser automation (no official API due to cost/restrictions). Requires visible browser window with authenticated session.",
+  "transport": "stdio",
+  "runtime": "nodejs",
+  "tools": [
+    {
+      "name": "post_tweet",
+      "description": "Post tweet to Twitter/X using Playwright browser automation",
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "content": {
+            "type": "string",
+            "description": "Tweet content (max 280 characters)"
+          },
+          "image_path": {
+            "type": "string",
+            "description": "Local image file path to attach (optional, max 4 images)",
+            "optional": true
+          },
+          "reply_to_tweet_id": {
+            "type": "string",
+            "description": "Tweet ID to reply to (optional)",
+            "optional": true
+          }
+        },
+        "required": ["content"]
+      },
+      "outputSchema": {
+        "type": "object",
+        "properties": {
+          "success": {
+            "type": "boolean",
+            "description": "True if tweet posted successfully, false otherwise"
+          },
+          "tweet_id": {
+            "type": "string",
+            "description": "Twitter/X tweet ID (returned on success)",
+            "optional": true
+          },
+          "tweet_url": {
+            "type": "string",
+            "description": "Tweet URL (returned on success)",
+            "optional": true
+          },
+          "character_count": {
+            "type": "number",
+            "description": "Character count of posted tweet",
+            "optional": true
+          },
+          "error": {
+            "type": "string",
+            "description": "Error message (returned on failure)",
+            "optional": true
+          },
+          "retry_possible": {
+            "type": "boolean",
+            "description": "True if error is transient and retry is possible",
+            "optional": true
+          }
+        },
+        "required": ["success"]
+      }
+    }
+  ],
+  "authentication": {
+    "type": "Session-based (Playwright)",
+    "description": "User must authenticate via Twitter/X in browser (visible mode). Session persisted in browser profile.",
+    "auth_method": "Playwright persistent context with user data directory",
+    "session_persistence": "Browser profile directory (./twitter_profile)",
+    "requires_visible_browser": true,
+    "reauth_prompt": "If session expired, user must log in via Twitter/X in browser window"
+  },
+  "logging": {
+    "log_file": "/Logs/mcp_actions_YYYY-MM-DD.json",
+    "log_format": "json",
+    "log_fields": ["timestamp", "action_type", "actor", "target", "parameters", "approval_status", "result", "error"]
+  },
+  "error_handling": {
+    "transient_errors": ["RATE_LIMIT_EXCEEDED", "NETWORK_ERROR", "SESSION_EXPIRED", "ELEMENT_NOT_FOUND"],
+    "retry_attempts": 3,
+    "retry_backoff_seconds": [1, 2, 4],
+    "rate_limit": {
+      "tweets_per_day": 2400,
+      "rate_limit_429_handling": "Extract Retry-After header, wait, then retry"
+    },
+    "session_expiry_handling": "Detect login page, create alert in /Needs_Action, prompt user to re-authenticate"
+  },
+  "browser_automation": {
+    "browser": "chromium",
+    "mode": "persistent_context (visible)",
+    "user_data_dir": "./twitter_profile",
+    "headless": false,
+    "base_url": "https://x.com"
+  }
+}

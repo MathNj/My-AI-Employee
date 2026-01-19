@@ -1,0 +1,94 @@
+{
+  "mcp_server": "linkedin-mcp",
+  "version": "1.0.0",
+  "description": "LinkedIn posting MCP server for posting updates to LinkedIn via LinkedIn Marketing Developer Platform API with OAuth 2.0 authentication",
+  "transport": "stdio",
+  "runtime": "nodejs",
+  "tools": [
+    {
+      "name": "post_linkedin",
+      "description": "Post business update to LinkedIn",
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "content": {
+            "type": "string",
+            "description": "Post content (markdown supported, will be converted to LinkedIn text format)"
+          },
+          "visibility": {
+            "type": "string",
+            "enum": ["PUBLIC", "CONNECTIONS"],
+            "description": "Post visibility: PUBLIC (anyone can see) or CONNECTIONS (only connections)",
+            "optional": true
+          },
+          "image_url": {
+            "type": "string",
+            "description": "Image URL to attach (optional)",
+            "optional": true
+          },
+          "comment": {
+            "type": "string",
+            "description": "Comment to add to post (optional)",
+            "optional": true
+          }
+        },
+        "required": ["content"]
+      },
+      "outputSchema": {
+        "type": "object",
+        "properties": {
+          "success": {
+            "type": "boolean",
+            "description": "True if post published successfully, false otherwise"
+          },
+          "post_id": {
+            "type": "string",
+            "description": "LinkedIn post ID (urn:li:activity:..., returned on success)",
+            "optional": true
+          },
+          "post_url": {
+            "type": "string",
+            "description": "LinkedIn post URL (returned on success)",
+            "optional": true
+          },
+          "error": {
+            "type": "string",
+            "description": "Error message (returned on failure)",
+            "optional": true
+          },
+          "retry_possible": {
+            "type": "boolean",
+            "description": "True if error is transient and retry is possible",
+            "optional": true
+          }
+        },
+        "required": ["success"]
+      }
+    }
+  ],
+  "authentication": {
+    "type": "OAuth 2.0",
+    "flow": "authorization_code",
+    "scopes": [
+      "w_member_social",
+      "r_liteprofile"
+    ],
+    "token_endpoint": "https://www.linkedin.com/oauth/v2/accessToken",
+    "auth_endpoint": "https://www.linkedin.com/oauth/v2/authorization",
+    "refresh_interval_minutes": 60
+  },
+  "logging": {
+    "log_file": "/Logs/mcp_actions_YYYY-MM-DD.json",
+    "log_format": "json",
+    "log_fields": ["timestamp", "action_type", "actor", "target", "parameters", "approval_status", "result", "error"]
+  },
+  "error_handling": {
+    "transient_errors": ["RATE_LIMIT_EXCEEDED", "TEMPORARY_FAILURE", "NETWORK_ERROR"],
+    "retry_attempts": 3,
+    "retry_backoff_seconds": [1, 2, 4],
+    "rate_limit": {
+      "posts_per_day": 100,
+      "retry_after_header": "X-RateLimit-Reset"
+    }
+  }
+}

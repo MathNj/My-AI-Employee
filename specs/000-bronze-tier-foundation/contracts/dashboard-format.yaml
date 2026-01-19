@@ -1,0 +1,242 @@
+# Dashboard Format Specification - Bronze Tier Foundation
+# Defines Dashboard.md structure and update protocol
+
+version: "1.0.0"
+description: "Schema for Dashboard.md structure and activity log format"
+
+# Dashboard.md structure
+dashboard_structure:
+  sections:
+    - name: "YAML Frontmatter"
+      required: true
+      position: 1
+      schema:
+        last_updated:
+          type: string
+          format: iso8601
+          description: "Timestamp of last Dashboard update"
+        vault_version:
+          type: string
+          description: "Bronze tier version identifier"
+          example: "bronze_tier_v1"
+
+    - name: "AI Employee Dashboard"
+      required: true
+      position: 2
+      type: heading_1
+      description: "Main title"
+
+    - name: "Current Status"
+      required: true
+      position: 3
+      type: heading_2
+      schema:
+        watcher_status:
+          format: "**Watcher**: {status} (last check: {timestamp})"
+          status_values: ["Running", "Stopped", "Error", "Unknown"]
+          examples:
+            - "**Watcher**: Running (last check: 2026-01-17 14:30)"
+        pending_tasks:
+          format: "**Pending Tasks**: {count} files in /Needs_Action"
+          examples:
+            - "**Pending Tasks**: 3 files in /Needs_Action"
+        completed_today:
+          format: "**Completed Today**: {count} tasks"
+          examples:
+            - "**Completed Today**: 12 tasks"
+        error_rate:
+          format: "**Error Rate**: {errors}/{total} ({percentage}%)"
+          examples:
+            - "**Error Rate**: 1/13 (7.7%)"
+
+    - name: "Activity Log"
+      required: true
+      position: 4
+      type: heading_2
+      description: "Chronological task completion log (newest first)"
+      entry_format:
+        pattern: "- {timestamp} | {task_type} | {summary} | {status_icon} {outcome}"
+        components:
+          timestamp:
+            format: "YYYY-MM-DD HH:MM"
+            description: "Local time, 24-hour format"
+          task_type:
+            values: ["EMAIL", "FILE", "MANUAL", "SCHEDULED"]
+            width: 5  # Fixed width for alignment
+          summary:
+            length: [50, 100]
+            description: "Human-readable task description"
+          status_icon:
+            values:
+              complete: "✅"
+              error: "❌"
+              pending_approval: "⏸️"
+          outcome:
+            description: "Brief result description"
+        examples:
+          - "- 2026-01-17 14:32 | EMAIL | Invoice #1234 processed → reply drafted | ✅ Complete"
+          - "- 2026-01-17 13:15 | FILE  | invoice_jan_2026.pdf categorized | ✅ Complete"
+          - "- 2026-01-17 10:05 | EMAIL | Meeting request from Client A | ❌ Error: No calendar access"
+
+    - name: "Task Summary (Last 24 Hours)"
+      required: true
+      position: 5
+      type: heading_2
+      schema:
+        table_format:
+          columns: ["Type", "Count", "Success Rate"]
+          rows:
+            - type: "EMAIL"
+              count: integer
+              success_rate: "percentage%"
+          examples:
+            - type: "EMAIL"
+              count: 8
+              success_rate: "100%"
+            - type: "FILE"
+              count: 4
+              success_rate: "75%"
+
+    - name: "Footer Note"
+      required: true
+      position: 6
+      type: horizontal_rule
+      content: "*Dashboard managed by dashboard-updater skill. Archive entries when log exceeds 1000 lines.*"
+
+# Update protocol
+update_protocol:
+  append_activity_entry:
+    method: "insert after ## Activity Log marker"
+    order: "newest first (prepend)"
+    steps:
+      - "Read entire Dashboard.md file"
+      - "Find '## Activity Log' marker"
+      - "Skip blank line after marker"
+      - "Insert new entry line"
+      - "Write atomically (entire file)"
+    pseudocode: |
+      def append_activity_entry(dashboard_path, entry):
+          content = dashboard_path.read_text()
+          marker = "## Activity Log"
+          insert_pos = content.find(marker)
+          # Skip marker line + blank line
+          insert_pos = content.find("\n", insert_pos) + 1
+          new_entry = f"\n- {entry.format()}\n"
+          updated = content[:insert_pos] + new_entry + content[insert_pos:]
+          dashboard_path.write_text(updated)
+
+  update_current_status:
+    method: "replace section content"
+    steps:
+      - "Read entire Dashboard.md file"
+      - "Find '## Current Status' marker"
+      - "Parse watcher log for last check timestamp"
+      - "Count files in /Needs_Action"
+      - "Count activity log entries with today's date"
+      - "Calculate error rate from activity log"
+      - "Replace status section with new values"
+      - "Write atomically"
+
+  update_task_summary:
+    method: "replace table content"
+    steps:
+      - "Read activity log entries from last 24 hours"
+      - "Group by task_type"
+      - "Calculate count and success rate per type"
+      - "Regenerate markdown table"
+      - "Replace table in Dashboard.md"
+
+# Activity log entry parsing
+activity_log_parsing:
+  pattern: "- (\\d{4}-\\d{2}-\\d{2} \\d{2}:\\d{2}) \\| (\\w+)\\s* \\| (.+?) \\| ([✅❌⏸️]) (.+)"
+  groups:
+    1: timestamp
+    2: task_type
+    3: summary
+    4: status_icon
+    5: outcome
+  example_match:
+    input: "- 2026-01-17 14:32 | EMAIL | Invoice #1234 processed | ✅ Complete"
+    groups:
+      timestamp: "2026-01-17 14:32"
+      task_type: "EMAIL"
+      summary: "Invoice #1234 processed"
+      status_icon: "✅"
+      outcome: "Complete"
+
+# Archiving protocol
+archiving:
+  trigger: "Activity log exceeds 1000 entries"
+  process:
+    - "Create archive file: Logs/dashboard_archive_YYYY-MM-DD.md"
+    - "Copy old entries (keep most recent 100 in Dashboard.md)"
+    - "Paste old entries into archive file"
+    - "Update Dashboard.md to remove archived entries"
+    - "Add archive reference comment"
+  archive_file_format:
+    filename: "dashboard_archive_YYYY-MM-DD.md"
+    content: |
+      # Dashboard Archive: {date_range}
+
+      Archived entries from Dashboard.md
+
+      ## Activity Log (Archived)
+
+      {old_entries}
+
+      ---
+      *Archive created: {timestamp}*
+      *Original range: {start_date} to {end_date}*
+
+# Complete Dashboard.md template
+template: |
+  ---
+  last_updated: 2026-01-17T14:32:00Z
+  vault_version: bronze_tier_v1
+  ---
+
+  # AI Employee Dashboard
+
+  ## Current Status
+
+  **Watcher**: Running (last check: 2026-01-17 14:30)
+  **Pending Tasks**: 3 files in /Needs_Action
+  **Completed Today**: 12 tasks
+  **Error Rate**: 1/13 (7.7%)
+
+  ## Activity Log
+
+  Most recent entries (newest first):
+
+  - 2026-01-17 14:32 | EMAIL | Invoice #1234 processed → reply drafted | ✅ Complete
+  - 2026-01-17 13:15 | FILE  | invoice_jan_2026.pdf categorized as expense | ✅ Complete
+  - 2026-01-17 10:05 | EMAIL | Meeting request | ❌ Error: No calendar access
+
+  ## Task Summary (Last 24 Hours)
+
+  | Type | Count | Success Rate |
+  |------|-------|--------------|
+  | EMAIL | 8 | 100% |
+  | FILE | 4 | 75% |
+  | MANUAL | 1 | 100% |
+
+  ---
+  *Dashboard managed by dashboard-updater skill. Archive entries when log exceeds 1000 lines.*
+
+# Validation rules
+validation:
+  - rule: "YAML frontmatter must be valid and include last_updated, vault_version"
+  - rule: "All required sections must be present in order"
+  - rule: "Activity log entries must match format pattern"
+  - rule: "Status icons must be valid (✅, ❌, ⏸️)"
+  - rule: "Task types must be uppercase (EMAIL, FILE, MANUAL, SCHEDULED)"
+  - rule: "Timestamps must be local time in YYYY-MM-DD HH:MM format"
+
+# Performance considerations
+performance:
+  write_strategy: "atomic (read entire file, modify in memory, write once)"
+  read_strategy: "parse on demand (only when dashboard-updater skill runs)"
+  entry_limit: 1000  # Manual archiving trigger
+  file_size_limit: "~150 KB at 1000 entries"
+  append_time: "<1 second"
+  full_update_time: "<5 seconds"

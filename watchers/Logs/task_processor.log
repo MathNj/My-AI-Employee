@@ -1,0 +1,6 @@
+2026-01-19 18:29:37,647 - TaskProcessor - INFO - TaskProcessor initialized
+2026-01-19 18:29:37,648 - TaskProcessor - INFO -   Monitoring: C:\Users\Najma-LP\Desktop\AI_Employee_Vault\watchers\Needs_Action
+2026-01-19 18:29:37,648 - TaskProcessor - INFO -   Plans: C:\Users\Najma-LP\Desktop\AI_Employee_Vault\watchers\Plans
+2026-01-19 18:29:37,648 - TaskProcessor - INFO -   Done: C:\Users\Najma-LP\Desktop\AI_Employee_Vault\watchers\Done
+2026-01-19 18:29:37,648 - TaskProcessor - INFO - Checking for tasks...
+2026-01-19 18:29:37,649 - TaskProcessor - INFO - No pending tasks found

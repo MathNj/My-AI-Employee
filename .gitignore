@@ -139,3 +139,9 @@ mcp-servers/**/*.log
 # Claude Code MCP Config (contains credentials)
 # Comment out if you want to commit (after removing credentials)
 .config/claude-code/mcp.json
+
+# Next.js build output
+pm2-dashboard/.next/
+# Node modules
+pm2-dashboard/node_modules/
+

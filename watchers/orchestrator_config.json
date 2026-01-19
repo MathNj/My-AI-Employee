@@ -29,11 +29,6 @@
       "enabled": true,
       "priority": "medium"
     },
-    "xero": {
-      "enabled": true,
-      "priority": "low",
-      "check_interval_override": 300
-    }
   },
   "notifications": {
     "email_on_failure": false,

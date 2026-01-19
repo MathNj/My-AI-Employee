@@ -1,1 +1,0 @@
-export type timeframeType = "MONTH" | "QUARTER" | "YEAR" | undefined;

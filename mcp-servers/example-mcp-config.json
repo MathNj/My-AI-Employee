@@ -27,16 +27,6 @@
         "LOG_LEVEL": "info",
         "AUTO_APPROVE": "false"
       }
-    },
-    "xero": {
-      "command": "node",
-      "args": [
-        "C:\\Users\\Najma-LP\\Desktop\\My Vault\\mcp-servers\\xero-mcp-server\\dist\\index.js"
-      ],
-      "env": {
-        "XERO_CLIENT_ID": "your-xero-client-id",
-        "XERO_CLIENT_SECRET": "your-xero-client-secret"
-      }
     }
   }
 }

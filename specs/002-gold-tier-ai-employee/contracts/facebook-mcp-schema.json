@@ -1,0 +1,102 @@
+{
+  "mcp_server": "facebook-mcp",
+  "version": "1.0.0",
+  "description": "Facebook posting MCP server for posting updates to Facebook Pages via Facebook Graph API with OAuth 2.0 authentication",
+  "transport": "stdio",
+  "runtime": "nodejs",
+  "tools": [
+    {
+      "name": "post_facebook",
+      "description": "Post update to Facebook Page",
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "page_id": {
+            "type": "string",
+            "description": "Facebook Page ID to post to"
+          },
+          "content": {
+            "type": "string",
+            "description": "Post content (text, will be formatted as Facebook post)"
+          },
+          "image_url": {
+            "type": "string",
+            "description": "Image URL to attach (optional)",
+            "optional": true
+          },
+          "link_url": {
+            "type": "string",
+            "description": "Link URL to share (optional)",
+            "optional": true
+          },
+          "published": {
+            "type": "boolean",
+            "description": "Whether to publish immediately (true) or save as draft (false, optional)",
+            "optional": true
+          },
+          "scheduled_publish_time": {
+            "type": "integer",
+            "description": "Unix timestamp for scheduled publishing (optional, requires published=false initially)",
+            "optional": true
+          }
+        },
+        "required": ["page_id", "content"]
+      },
+      "outputSchema": {
+        "type": "object",
+        "properties": {
+          "success": {
+            "type": "boolean",
+            "description": "True if post published successfully, false otherwise"
+          },
+          "post_id": {
+            "type": "string",
+            "description": "Facebook post ID (returned on success)",
+            "optional": true
+          },
+          "post_url": {
+            "type": "string",
+            "description": "Facebook post URL (returned on success)",
+            "optional": true
+          },
+          "error": {
+            "type": "string",
+            "description": "Error message (returned on failure)",
+            "optional": true
+          },
+          "retry_possible": {
+            "type": "boolean",
+            "description": "True if error is transient and retry is possible",
+            "optional": true
+          }
+        },
+        "required": ["success"]
+      }
+    }
+  ],
+  "authentication": {
+    "type": "OAuth 2.0",
+    "flow": "authorization_code",
+    "scopes": [
+      "pages_manage_posts",
+      "pages_read_engagement"
+    ],
+    "token_endpoint": "https://graph.facebook.com/oauth/access_token",
+    "auth_endpoint": "https://www.facebook.com/dialog/oauth",
+    "refresh_interval_minutes": 60
+  },
+  "logging": {
+    "log_file": "/Logs/mcp_actions_YYYY-MM-DD.json",
+    "log_format": "json",
+    "log_fields": ["timestamp", "action_type", "actor", "target", "parameters", "approval_status", "result", "error"]
+  },
+  "error_handling": {
+    "transient_errors": ["RATE_LIMIT_EXCEEDED", "TEMPORARY_FAILURE", "NETWORK_ERROR"],
+    "retry_attempts": 3,
+    "retry_backoff_seconds": [1, 2, 4],
+    "rate_limit": {
+      "posts_per_day": 100,
+      "retry_after_header": "Retry-After"
+    }
+  }
+}

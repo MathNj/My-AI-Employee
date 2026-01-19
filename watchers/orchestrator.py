@@ -196,12 +196,6 @@ class Orchestrator:
             restart_on_fail=True
         )
 
-        self.processes['xero'] = Process(
-            name='Xero Watcher',
-            script='xero_watcher.py',
-            enabled=True,
-            restart_on_fail=True
-        )
 
         logger.info(f"Registered {len(self.processes)} processes")
 

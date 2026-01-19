@@ -1,0 +1,4 @@
+ODOO_URL=http://localhost:8069
+ODOO_DB=odoo
+ODOO_API_KEY=fc8d60e57586da18c580f6dab7db48f4df0b40ae
+ODOO_ADMIN=admin:admin

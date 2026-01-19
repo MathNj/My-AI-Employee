@@ -1,0 +1,105 @@
+{
+  "mcp_server": "gmail-mcp",
+  "version": "1.0.0",
+  "description": "Gmail send MCP server for sending emails via Gmail API with OAuth 2.0 authentication",
+  "transport": "stdio",
+  "runtime": "nodejs",
+  "tools": [
+    {
+      "name": "send_email",
+      "description": "Send email via Gmail API with OAuth 2.0 authentication",
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "to": {
+            "type": "string",
+            "description": "Recipient email address (single recipient)"
+          },
+          "subject": {
+            "type": "string",
+            "description": "Email subject line"
+          },
+          "body": {
+            "type": "string",
+            "description": "Email body content (HTML or plain text)"
+          },
+          "attachments": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "description": "List of file paths to attach (optional)",
+            "optional": true
+          },
+          "cc": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "description": "CC recipients (optional)",
+            "optional": true
+          },
+          "bcc": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "description": "BCC recipients (optional)",
+            "optional": true
+          }
+        },
+        "required": ["to", "subject", "body"]
+      },
+      "outputSchema": {
+        "type": "object",
+        "properties": {
+          "success": {
+            "type": "boolean",
+            "description": "True if email sent successfully, false otherwise"
+          },
+          "message_id": {
+            "type": "string",
+            "description": "Gmail message ID (returned on success)",
+            "optional": true
+          },
+          "thread_id": {
+            "type": "string",
+            "description": "Gmail thread ID (returned on success)",
+            "optional": true
+          },
+          "error": {
+            "type": "string",
+            "description": "Error message (returned on failure)",
+            "optional": true
+          },
+          "retry_possible": {
+            "type": "boolean",
+            "description": "True if error is transient and retry is possible",
+            "optional": true
+          }
+        },
+        "required": ["success"]
+      }
+    }
+  ],
+  "authentication": {
+    "type": "OAuth 2.0",
+    "flow": "authorization_code",
+    "scopes": [
+      "https://www.googleapis.com/auth/gmail.send"
+    ],
+    "token_endpoint": "https://oauth2.googleapis.com/token",
+    "auth_endpoint": "https://accounts.google.com/o/oauth2/v2/auth",
+    "refresh_interval_minutes": 60
+  },
+  "logging": {
+    "log_file": "/Logs/mcp_actions_YYYY-MM-DD.json",
+    "log_format": "json",
+    "log_fields": ["timestamp", "action_type", "actor", "target", "parameters", "approval_status", "result", "error"]
+  },
+  "error_handling": {
+    "transient_errors": ["RATE_LIMIT_EXCEEDED", "TEMPORARY_FAILURE", "NETWORK_ERROR"],
+    "retry_attempts": 3,
+    "retry_backoff_seconds": [1, 2, 4]
+  }
+}

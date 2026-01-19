@@ -1,0 +1,299 @@
+# Watcher Configuration Schema - Bronze Tier Foundation
+# Defines watcher_config.yaml structure for Gmail and File System watchers
+
+version: "1.0.0"
+description: "Configuration schema for watcher scripts"
+
+# Root configuration structure
+watcher_config:
+  gmail_watcher:
+    type: object
+    description: "Gmail API polling watcher configuration"
+    properties:
+      enabled:
+        type: boolean
+        default: false
+        description: "Enable Gmail watcher (choose ONE watcher for Bronze tier)"
+      check_interval_sec:
+        type: integer
+        minimum: 60
+        maximum: 600
+        default: 120
+        description: "Polling interval in seconds (recommended: 120-300 for quota management)"
+      max_results:
+        type: integer
+        minimum: 1
+        maximum: 50
+        default: 10
+        description: "Maximum emails to fetch per check (Gmail API limit: 500)"
+      labels:
+        type: array
+        items:
+          type: string
+        default: ["INBOX"]
+        description: "Gmail labels to monitor"
+        examples:
+          - ["INBOX"]
+          - ["INBOX", "IMPORTANT"]
+      credentials_path:
+        type: string
+        default: ".env"
+        description: "Path to credentials file (relative or absolute)"
+      token_path:
+        type: string
+        default: "token.json"
+        description: "Path to OAuth token storage (auto-created)"
+      vault_path:
+        type: string
+        required: true
+        description: "Absolute path to Obsidian vault directory"
+      scopes:
+        type: array
+        items:
+          type: string
+        default: ["https://www.googleapis.com/auth/gmail.readonly"]
+        description: "Gmail API scopes (readonly for Bronze tier)"
+
+  filesystem_watcher:
+    type: object
+    description: "File system monitoring watcher configuration"
+    properties:
+      enabled:
+        type: boolean
+        default: true
+        description: "Enable filesystem watcher (choose ONE watcher for Bronze tier)"
+      check_interval_sec:
+        type: integer
+        minimum: 10
+        maximum: 300
+        default: 30
+        description: "Check interval in seconds (real-time on some systems)"
+      watched_path:
+        type: string
+        required: true
+        description: "Absolute path to monitored directory (typically vault/Inbox)"
+      recursive:
+        type: boolean
+        default: false
+        description: "Monitor subdirectories (false for Bronze tier simplicity)"
+      vault_path:
+        type: string
+        required: true
+        description: "Absolute path to Obsidian vault directory"
+      file_filters:
+        type: array
+        items:
+          type: string
+        default: ["*.pdf", "*.docx", "*.txt", "*.md"]
+        description: "Glob patterns for file types to monitor"
+      ignore_patterns:
+        type: array
+        items:
+          type: string
+        default: [".*", "*.tmp", "*.swp"]
+        description: "Patterns to ignore (hidden files, temp files)"
+      min_file_size_bytes:
+        type: integer
+        minimum: 0
+        default: 100
+        description: "Ignore files smaller than this (avoid detecting incomplete writes)"
+      settle_time_sec:
+        type: integer
+        minimum: 0
+        default: 2
+        description: "Wait time after file modification before processing (avoid incomplete copies)"
+
+  logging:
+    type: object
+    description: "Logging configuration (applies to both watchers)"
+    properties:
+      log_level:
+        type: string
+        enum: [DEBUG, INFO, WARNING, ERROR, CRITICAL]
+        default: INFO
+        description: "Python logging level"
+      log_path:
+        type: string
+        default: "{vault_path}/Logs/watcher_{date}.log"
+        description: "Log file path template"
+      max_log_size_mb:
+        type: integer
+        minimum: 1
+        default: 10
+        description: "Max log file size before manual rotation"
+      log_format:
+        type: string
+        default: "%(asctime)s | %(levelname)s | %(message)s"
+        description: "Python logging format string"
+      date_format:
+        type: string
+        default: "%Y-%m-%d %H:%M:%S"
+        description: "Timestamp format in logs"
+
+# Complete configuration example
+example_config: |
+  # watcher_config.yaml - Bronze Tier Configuration
+  # Choose ONE watcher: gmail_watcher OR filesystem_watcher
+
+  gmail_watcher:
+    enabled: false  # Set to true if using Gmail watcher
+    check_interval_sec: 120  # 2 minutes (safe for API quota)
+    max_results: 10
+    labels:
+      - INBOX
+    credentials_path: .env
+    token_path: token.json
+    vault_path: /absolute/path/to/vault
+    scopes:
+      - https://www.googleapis.com/auth/gmail.readonly
+
+  filesystem_watcher:
+    enabled: true  # Set to true if using filesystem watcher
+    check_interval_sec: 30  # 30 seconds
+    watched_path: /absolute/path/to/vault/Inbox
+    recursive: false
+    vault_path: /absolute/path/to/vault
+    file_filters:
+      - "*.pdf"
+      - "*.docx"
+      - "*.txt"
+      - "*.md"
+    ignore_patterns:
+      - ".*"       # Hidden files
+      - "*.tmp"    # Temp files
+      - "*.swp"    # Vim swap files
+    min_file_size_bytes: 100
+    settle_time_sec: 2
+
+  logging:
+    log_level: INFO
+    log_path: "{vault_path}/Logs/watcher_{date}.log"
+    max_log_size_mb: 10
+    log_format: "%(asctime)s | %(levelname)s | %(message)s"
+    date_format: "%Y-%m-%d %H:%M:%S"
+
+# Validation rules
+validation_rules:
+  - rule: "Exactly ONE watcher must be enabled (gmail_watcher OR filesystem_watcher)"
+    check: "Count enabled watchers == 1"
+
+  - rule: "vault_path must be absolute path and exist"
+    check: "Path(vault_path).is_absolute() and Path(vault_path).exists()"
+
+  - rule: "check_interval_sec must be reasonable (not too aggressive)"
+    check: "gmail: >= 60 sec, filesystem: >= 10 sec"
+
+  - rule: "watched_path for filesystem must be subdirectory of vault"
+    check: "Path(watched_path).is_relative_to(vault_path)"
+
+  - rule: "Gmail credentials_path must exist when gmail_watcher enabled"
+    check: "If gmail_watcher.enabled, Path(credentials_path).exists()"
+
+  - rule: "file_filters must include at least one pattern"
+    check: "len(file_filters) > 0"
+
+# Gmail API quota considerations
+gmail_quota:
+  daily_limit: 10000  # units per day
+  cost_per_check: 5  # approximate units per check (list + metadata)
+  safe_intervals:
+    - interval: 60  # 1 minute
+      daily_checks: 1440
+      quota_used: 7200
+      percentage: 72%
+      risk: HIGH
+    - interval: 120  # 2 minutes (RECOMMENDED)
+      daily_checks: 720
+      quota_used: 3600
+      percentage: 36%
+      risk: MEDIUM
+    - interval: 300  # 5 minutes
+      daily_checks: 288
+      quota_used: 1440
+      percentage: 14%
+      risk: LOW
+  recommendation: "Use 120-300 second interval for Bronze tier to avoid quota issues"
+
+# File system watcher performance
+filesystem_performance:
+  check_strategies:
+    - strategy: "polling"
+      interval: 30  # seconds
+      cpu_usage: LOW
+      detection_latency: "<30 sec"
+      recommended_for: "Bronze tier"
+
+    - strategy: "event-driven (watchdog)"
+      interval: 1  # near real-time
+      cpu_usage: VERY_LOW
+      detection_latency: "<1 sec"
+      recommended_for: "Silver/Gold tier"
+
+  file_settling:
+    purpose: "Avoid detecting incomplete file copies"
+    method: "Wait settle_time_sec after last modification before processing"
+    default: 2  # seconds
+    use_cases:
+      - "Large files being copied to Inbox"
+      - "Files downloaded from browser (incremental writes)"
+      - "Files synced from cloud storage (Dropbox, OneDrive)"
+
+# Environment-specific paths
+path_templates:
+  windows:
+    vault_path: "C:\\Users\\username\\Documents\\AI_Employee_Vault"
+    watched_path: "C:\\Users\\username\\Documents\\AI_Employee_Vault\\Inbox"
+  macos:
+    vault_path: "/Users/username/Documents/AI_Employee_Vault"
+    watched_path: "/Users/username/Documents/AI_Employee_Vault/Inbox"
+  linux:
+    vault_path: "/home/username/AI_Employee_Vault"
+    watched_path: "/home/username/AI_Employee_Vault/Inbox"
+
+# Error handling configuration
+error_handling:
+  retry_on_transient:
+    enabled: true
+    max_retries: 3
+    backoff_multiplier: 2  # Exponential backoff: 2, 4, 8 seconds
+    transient_errors:
+      - "Network timeout"
+      - "API rate limit (429)"
+      - "Temporary file lock"
+
+  crash_on_critical:
+    enabled: true
+    critical_errors:
+      - "Config file missing"
+      - "vault_path does not exist"
+      - "Permissions denied"
+      - "OAuth authentication failed"
+
+  logging:
+    log_all_errors: true
+    include_stack_trace: true
+    error_log_path: "{vault_path}/Logs/error_{date}.log"
+
+# Bronze tier recommendations
+bronze_tier_recommendations:
+  - "Choose filesystem_watcher for beginners (zero OAuth setup)"
+  - "Use conservative check intervals (filesystem: 30 sec, gmail: 120 sec)"
+  - "Monitor single directory (recursive: false)"
+  - "Enable INFO level logging for visibility"
+  - "Test watcher for 1 hour continuously before production use"
+  - "Manually start/stop watcher (no auto-boot setup for Bronze)"
+  - "Check logs daily during testing phase"
+
+# Upgrade path
+upgrade_notes:
+  silver_tier:
+    - "Enable BOTH watchers (gmail AND filesystem)"
+    - "Add more file_filters for diverse content types"
+    - "Implement auto-restart on crash (watchdog pattern)"
+    - "Add cron/Task Scheduler for auto-start on boot"
+
+  gold_tier:
+    - "Add 4 more watchers (WhatsApp, Xero, Calendar, Slack)"
+    - "Implement orchestrator for health monitoring"
+    - "Add adaptive check intervals based on activity"
+    - "Implement log rotation automation"

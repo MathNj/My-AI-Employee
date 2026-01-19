@@ -1,0 +1,28 @@
+{
+  "name": "gmail-send-server",
+  "version": "1.0.0",
+  "description": "MCP server for sending emails via Gmail API (Silver Tier T046-T056)",
+  "main": "src/index.js",
+  "type": "module",
+  "scripts": {
+    "start": "node src/index.js",
+    "dev": "node --watch src/index.js",
+    "test": "node src/test.js"
+  },
+  "keywords": [
+    "mcp",
+    "gmail",
+    "email",
+    "ai-employee"
+  ],
+  "author": "AI Employee System",
+  "license": "MIT",
+  "dependencies": {
+    "@modelcontextprotocol/sdk": "^1.0.4",
+    "googleapis": "^144.0.0",
+    "open": "^8.4.2"
+  },
+  "engines": {
+    "node": ">=18.0.0"
+  }
+}

@@ -1,0 +1,122 @@
+{
+  "mcp_server": "instagram-mcp",
+  "version": "1.0.0",
+  "description": "Instagram posting MCP server for posting content to Instagram Business accounts via Instagram Graph API with OAuth 2.0 authentication",
+  "transport": "stdio",
+  "runtime": "nodejs",
+  "tools": [
+    {
+      "name": "post_instagram",
+      "description": "Post content to Instagram Business account",
+      "inputSchema": {
+        "type": "object",
+        "properties": {
+          "instagram_business_account_id": {
+            "type": "string",
+            "description": "Instagram Business Account ID"
+          },
+          "image_url": {
+            "type": "string",
+            "description": "Image URL to post (Instagram requires image for all posts)"
+          },
+          "caption": {
+            "type": "string",
+            "description": "Post caption (text content, supports hashtags, mentions, up to 2200 characters)",
+            "optional": true
+          },
+          "media_type": {
+            "type": "string",
+            "enum": ["IMAGE", "CAROUSEL_ALBUM"],
+            "description": "Media type: IMAGE (single image) or CAROUSEL_ALBUM (multiple images, optional)",
+            "optional": true
+          },
+          "children_image_urls": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "description": "Additional image URLs for carousel album (optional, required if media_type=CAROUSEL_ALBUM)",
+            "optional": true
+          },
+          "comment_enabled": {
+            "type": "boolean",
+            "description": "Enable comments on post (optional, default true)",
+            "optional": true
+          }
+        },
+        "required": ["instagram_business_account_id", "image_url"]
+      },
+      "outputSchema": {
+        "type": "object",
+        "properties": {
+          "success": {
+            "type": "boolean",
+            "description": "True if post published successfully, false otherwise"
+          },
+          "media_id": {
+            "type": "string",
+            "description": "Instagram media ID (returned on success)",
+            "optional": true
+          },
+          "post_url": {
+            "type": "string",
+            "description": "Instagram post URL (returned on success)",
+            "optional": true
+          },
+          "status": {
+            "type": "string",
+            "description": "Post status (e.g., 'PUBLISHED', 'EXPIRED', 'SCHEDULED')",
+            "optional": true
+          },
+          "error": {
+            "type": "string",
+            "description": "Error message (returned on failure)",
+            "optional": true
+          },
+          "retry_possible": {
+            "type": "boolean",
+            "description": "True if error is transient and retry is possible",
+            "optional": true
+          }
+        },
+        "required": ["success"]
+      }
+    }
+  ],
+  "authentication": {
+    "type": "OAuth 2.0",
+    "flow": "authorization_code",
+    "scopes": [
+      "instagram_basic",
+      "instagram_content_publish",
+      "pages_manage_posts",
+      "pages_read_engagement"
+    ],
+    "token_endpoint": "https://graph.facebook.com/oauth/access_token",
+    "auth_endpoint": "https://www.facebook.com/dialog/oauth",
+    "refresh_interval_minutes": 60,
+    "requires_facebook_page": true,
+    "requires_instagram_business_account": true
+  },
+  "logging": {
+    "log_file": "/Logs/mcp_actions_YYYY-MM-DD.json",
+    "log_format": "json",
+    "log_fields": ["timestamp", "action_type", "actor", "target", "parameters", "approval_status", "result", "error"]
+  },
+  "error_handling": {
+    "transient_errors": ["RATE_LIMIT_EXCEEDED", "TEMPORARY_FAILURE", "NETWORK_ERROR", "IMAGE_PROCESSING"],
+    "retry_attempts": 3,
+    "retry_backoff_seconds": [1, 2, 4],
+    "rate_limit": {
+      "posts_per_day": 25,
+      "retry_after_header": "Retry-After"
+    },
+    "media_upload_handling": "Upload media first (POST /media), then publish (POST /media/{media_id}/publish)"
+  },
+  "posting_workflow": {
+    "step_1": "Create media container (POST /{ig_user_id}/media) with image_url, caption",
+    "step_2": "Wait for media to be processed (poll status endpoint)",
+    "step_3": "Publish media container (POST /{ig_user_id}/media_publish) with media_id",
+    "note": "This is a two-step process required by Instagram Graph API"
+  }
+}

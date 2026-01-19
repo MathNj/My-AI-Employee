@@ -49,7 +49,7 @@ Sunday 11:00 PM
 ceo-briefing-generator activates
     ↓
 Data Collection:
-  - xero-integrator: Revenue & expenses
+  - odoo-integrator: Revenue & expenses
   - financial-analyst: Trend analysis
   - social-media-manager: Engagement metrics
   - Task files: Completed work
@@ -75,7 +75,7 @@ Ready for Monday morning review
 
 ## Data Sources
 
-### Financial Data (xero-integrator)
+### Financial Data (odoo-integrator)
 
 **Required Files:**
 - `/Accounting/Transactions_YYYY-MM.md` - Recent transactions
@@ -279,7 +279,7 @@ SUBSCRIPTION_PATTERNS = {
 ### Active Subscriptions (12 total, $847/month)
 
 ✅ **Recommended to Keep:**
-- **Xero** - $35/month - Daily usage, essential
+- **Odoo** - $35/month - Daily usage, essential
 - **GitHub** - $21/month - Daily usage, essential
 - **Google Workspace** - $72/month - Daily usage, essential
 
@@ -401,7 +401,7 @@ Instagram continues to outperform. Consider increasing Instagram content to 5 po
 
 ## Integration Points
 
-### xero-integrator Skill
+### odoo-integrator Skill
 
 **Data Retrieved:**
 - Weekly transactions
@@ -413,13 +413,13 @@ Instagram continues to outperform. Consider increasing Instagram content to 5 po
 **API Calls:**
 ```python
 # Get week's transactions
-transactions = xero_integrator.get_transactions(
+transactions = odoo_integrator.get_transactions(
     start_date='2026-01-05',
     end_date='2026-01-12'
 )
 
 # Get P&L statement
-profit_loss = xero_integrator.generate_report(
+profit_loss = odoo_integrator.generate_report(
     type='profit-loss',
     month='2026-01'
 )
@@ -755,10 +755,10 @@ ALERT_THRESHOLDS = {
 - Create template Business_Goals.md
 - Alert user to customize
 
-**If Xero data unavailable:**
+**If Odoo data unavailable:**
 - Note in briefing: "Financial data unavailable"
 - Use previous week's data with disclaimer
-- Alert user to check Xero integration
+- Alert user to check Odoo integration
 
 **If task tracking incomplete:**
 - Analyze available data
@@ -769,7 +769,7 @@ ALERT_THRESHOLDS = {
 
 **Graceful Degradation:**
 ```
-If xero-integrator unavailable:
+If odoo-integrator unavailable:
     ↓
 Skip financial sections
     ↓
@@ -862,7 +862,7 @@ Improve future briefings
 **Subscription audit missing items:**
 1. Check transaction descriptions match patterns
 2. Add custom patterns in script
-3. Review Xero categorization
+3. Review Odoo categorization
 4. Verify date range covers billing cycles
 
 **Recommendations not relevant:**
@@ -883,7 +883,7 @@ Improve future briefings
 ---
 
 **Dependencies:**
-- xero-integrator skill (financial data)
+- odoo-integrator skill (financial data)
 - financial-analyst skill (trend analysis)
 - social-media-manager skill (engagement metrics)
 - scheduler-manager skill (automation)

@@ -816,7 +816,7 @@ python scripts/suggest_adjustments.py --analyze-feasibility
 
 **Progress calculations incorrect:**
 - Verify date ranges
-- Check data source connections (xero-integrator, etc.)
+- Check data source connections (odoo-integrator, etc.)
 - Run validation: `python scripts/validate_goals.py`
 
 ---
@@ -876,7 +876,7 @@ dashboard.update_section('goals', {
 **Dependencies:**
 - Obsidian vault (for Business_Goals.md storage)
 - ceo-briefing-generator (for automated tracking)
-- xero-integrator (for financial data)
+- odoo-integrator (for financial data)
 - financial-analyst (for trend analysis)
 
 **Integration:** Core skill that supports all Gold Tier business intelligence features.
