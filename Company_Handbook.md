@@ -334,8 +334,8 @@ MCP servers are configured in `~/.config/claude-code/mcp.json`:
       "command": "node",
       "args": ["/path/to/odoo-mcp/index.js"],
       "env": {
-        "XERO_CLIENT_ID": "${XERO_CLIENT_ID}",
-        "XERO_CLIENT_SECRET": "${XERO_CLIENT_SECRET}"
+        "ODOO_URL": "${ODOO_URL}",
+        "ODOO_API_KEY": "${ODOO_API_KEY}"
       }
     }
   ]
