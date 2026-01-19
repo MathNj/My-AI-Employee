@@ -724,7 +724,7 @@ A file was uploaded to Slack that may require processing.
 def main():
     """Main entry point for Slack watcher."""
     # Determine vault path
-    vault_path = Path(__file__).parent.parent / "AI_Employee_Vault"
+    vault_path = Path(__file__).parent.parent  # Root of the vault
 
     print("=" * 70)
     print("Personal AI Employee - Slack Watcher")

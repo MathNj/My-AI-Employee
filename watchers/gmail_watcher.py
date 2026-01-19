@@ -25,7 +25,7 @@ import pickle
 
 
 # Configuration
-VAULT_PATH = Path(__file__).parent.parent / "AI_Employee_Vault"
+VAULT_PATH = Path(__file__).parent.parent  # Root of the vault
 NEEDS_ACTION_PATH = VAULT_PATH / "Needs_Action"
 LOGS_PATH = VAULT_PATH / "Logs"
 CREDENTIALS_DIR = Path(__file__).parent / "credentials"

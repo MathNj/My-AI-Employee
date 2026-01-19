@@ -19,7 +19,7 @@ import sys
 
 
 # Configuration
-VAULT_PATH = Path(__file__).parent.parent / "AI_Employee_Vault"
+VAULT_PATH = Path(__file__).parent.parent  # Root of the vault
 INBOX_PATH = VAULT_PATH / "Inbox"
 NEEDS_ACTION_PATH = VAULT_PATH / "Needs_Action"
 LOGS_PATH = VAULT_PATH / "Logs"

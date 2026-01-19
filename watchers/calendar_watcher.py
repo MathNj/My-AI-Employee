@@ -511,8 +511,8 @@ def main():
     )
     parser.add_argument(
         '--vault-path',
-        default=str(Path(__file__).parent.parent / 'AI_Employee_Vault'),
-        help='Path to Obsidian vault (default: ../AI_Employee_Vault)'
+        default=str(Path(__file__).parent.parent),
+        help='Path to Obsidian vault (default: root directory)'
     )
     parser.add_argument(
         '--credentials',

@@ -40,7 +40,7 @@ except ImportError:
 
 
 # Configuration
-VAULT_PATH = Path(__file__).parent.parent / "AI_Employee_Vault"
+VAULT_PATH = Path(__file__).parent.parent  # Root of the vault
 CHECK_INTERVAL = 30  # Check every 30 seconds (more frequent for messaging)
 
 # Keywords to detect in messages (case-insensitive)
