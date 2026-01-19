@@ -145,3 +145,6 @@ pm2-dashboard/.next/
 # Node modules
 pm2-dashboard/node_modules/
 
+pm2-dashboard/
+pm2-dashboard/.next/
+pm2-dashboard/node_modules/
