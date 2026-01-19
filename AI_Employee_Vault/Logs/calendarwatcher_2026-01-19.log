@@ -1,0 +1,103 @@
+2026-01-19 00:56:25 - CalendarWatcher - INFO - CalendarWatcher initialized
+2026-01-19 00:56:25 - CalendarWatcher - INFO -   Vault: C:\Users\Najma-LP\Desktop\AI_Employee_Vault\AI_Employee_Vault
+2026-01-19 00:56:25 - CalendarWatcher - INFO -   Output: C:\Users\Najma-LP\Desktop\AI_Employee_Vault\AI_Employee_Vault\Needs_Action
+2026-01-19 00:56:25 - CalendarWatcher - INFO -   Check interval: 300s
+2026-01-19 00:56:25 - CalendarWatcher - INFO - Loaded existing credentials from token file
+2026-01-19 00:56:25 - CalendarWatcher - INFO - Refreshing expired credentials...
+2026-01-19 00:56:26 - CalendarWatcher - INFO - Credentials refreshed successfully
+2026-01-19 00:56:26 - CalendarWatcher - INFO - Credentials saved to token file
+2026-01-19 00:56:26 - CalendarWatcher - INFO - ✓ Google Calendar API authenticated successfully
+2026-01-19 00:56:26 - CalendarWatcher - INFO -   Hours ahead: 48
+2026-01-19 00:56:26 - CalendarWatcher - INFO -   Min hours ahead: 1
+2026-01-19 00:56:26 - CalendarWatcher - INFO -   Monitoring calendars: primary
+2026-01-19 00:56:26 - CalendarWatcher - INFO - ======================================================================
+2026-01-19 00:56:26 - CalendarWatcher - INFO - CalendarWatcher started
+2026-01-19 00:56:26 - CalendarWatcher - INFO - Check interval: 300 seconds
+2026-01-19 00:56:26 - CalendarWatcher - INFO - Press Ctrl+C to stop
+2026-01-19 00:56:26 - CalendarWatcher - INFO - ======================================================================
+2026-01-19 00:56:37 - CalendarWatcher - INFO - CalendarWatcher initialized
+2026-01-19 00:56:37 - CalendarWatcher - INFO -   Vault: C:\Users\Najma-LP\Desktop\AI_Employee_Vault\AI_Employee_Vault
+2026-01-19 00:56:37 - CalendarWatcher - INFO -   Output: C:\Users\Najma-LP\Desktop\AI_Employee_Vault\AI_Employee_Vault\Needs_Action
+2026-01-19 00:56:37 - CalendarWatcher - INFO -   Check interval: 300s
+2026-01-19 00:56:37 - CalendarWatcher - INFO - Loaded existing credentials from token file
+2026-01-19 00:56:37 - CalendarWatcher - INFO - ✓ Google Calendar API authenticated successfully
+2026-01-19 00:56:37 - CalendarWatcher - INFO -   Hours ahead: 48
+2026-01-19 00:56:37 - CalendarWatcher - INFO -   Min hours ahead: 1
+2026-01-19 00:56:37 - CalendarWatcher - INFO -   Monitoring calendars: primary
+2026-01-19 00:56:37 - CalendarWatcher - INFO - ======================================================================
+2026-01-19 00:56:37 - CalendarWatcher - INFO - CalendarWatcher started
+2026-01-19 00:56:37 - CalendarWatcher - INFO - Check interval: 300 seconds
+2026-01-19 00:56:37 - CalendarWatcher - INFO - Press Ctrl+C to stop
+2026-01-19 00:56:37 - CalendarWatcher - INFO - ======================================================================
+2026-01-19 18:07:57 - CalendarWatcher - INFO - CalendarWatcher initialized
+2026-01-19 18:07:57 - CalendarWatcher - INFO -   Vault: C:\Users\Najma-LP\Desktop\AI_Employee_Vault\AI_Employee_Vault
+2026-01-19 18:07:57 - CalendarWatcher - INFO -   Output: C:\Users\Najma-LP\Desktop\AI_Employee_Vault\AI_Employee_Vault\Needs_Action
+2026-01-19 18:07:57 - CalendarWatcher - INFO -   Check interval: 300s
+2026-01-19 18:07:57 - CalendarWatcher - INFO - Loaded existing credentials from token file
+2026-01-19 18:07:57 - CalendarWatcher - INFO - Refreshing expired credentials...
+2026-01-19 18:07:57 - CalendarWatcher - INFO - Credentials refreshed successfully
+2026-01-19 18:07:57 - CalendarWatcher - INFO - Credentials saved to token file
+2026-01-19 18:07:57 - CalendarWatcher - INFO - ✓ Google Calendar API authenticated successfully
+2026-01-19 18:07:57 - CalendarWatcher - INFO -   Hours ahead: 48
+2026-01-19 18:07:57 - CalendarWatcher - INFO -   Min hours ahead: 1
+2026-01-19 18:07:57 - CalendarWatcher - INFO -   Monitoring calendars: primary
+2026-01-19 18:07:57 - CalendarWatcher - INFO - ======================================================================
+2026-01-19 18:07:57 - CalendarWatcher - INFO - CalendarWatcher started
+2026-01-19 18:07:57 - CalendarWatcher - INFO - Check interval: 300 seconds
+2026-01-19 18:07:57 - CalendarWatcher - INFO - Press Ctrl+C to stop
+2026-01-19 18:07:57 - CalendarWatcher - INFO - ======================================================================
+2026-01-19 18:25:59 - CalendarWatcher - INFO - CalendarWatcher initialized
+2026-01-19 18:25:59 - CalendarWatcher - INFO -   Vault: C:\Users\Najma-LP\Desktop\AI_Employee_Vault\AI_Employee_Vault
+2026-01-19 18:25:59 - CalendarWatcher - INFO -   Output: C:\Users\Najma-LP\Desktop\AI_Employee_Vault\AI_Employee_Vault\Needs_Action
+2026-01-19 18:25:59 - CalendarWatcher - INFO -   Check interval: 300s
+2026-01-19 18:25:59 - CalendarWatcher - INFO - Loaded existing credentials from token file
+2026-01-19 18:25:59 - CalendarWatcher - INFO - ✓ Google Calendar API authenticated successfully
+2026-01-19 18:25:59 - CalendarWatcher - INFO -   Hours ahead: 48
+2026-01-19 18:25:59 - CalendarWatcher - INFO -   Min hours ahead: 1
+2026-01-19 18:25:59 - CalendarWatcher - INFO -   Monitoring calendars: primary
+2026-01-19 18:25:59 - CalendarWatcher - INFO - ======================================================================
+2026-01-19 18:25:59 - CalendarWatcher - INFO - CalendarWatcher started
+2026-01-19 18:25:59 - CalendarWatcher - INFO - Check interval: 300 seconds
+2026-01-19 18:25:59 - CalendarWatcher - INFO - Press Ctrl+C to stop
+2026-01-19 18:25:59 - CalendarWatcher - INFO - ======================================================================
+2026-01-19 18:32:00 - CalendarWatcher - INFO - CalendarWatcher initialized
+2026-01-19 18:32:00 - CalendarWatcher - INFO -   Vault: C:\Users\Najma-LP\Desktop\AI_Employee_Vault\AI_Employee_Vault
+2026-01-19 18:32:00 - CalendarWatcher - INFO -   Output: C:\Users\Najma-LP\Desktop\AI_Employee_Vault\AI_Employee_Vault\Needs_Action
+2026-01-19 18:32:00 - CalendarWatcher - INFO -   Check interval: 300s
+2026-01-19 18:32:00 - CalendarWatcher - INFO - Loaded existing credentials from token file
+2026-01-19 18:32:00 - CalendarWatcher - INFO - ✓ Google Calendar API authenticated successfully
+2026-01-19 18:32:00 - CalendarWatcher - INFO -   Hours ahead: 48
+2026-01-19 18:32:00 - CalendarWatcher - INFO -   Min hours ahead: 1
+2026-01-19 18:32:00 - CalendarWatcher - INFO -   Monitoring calendars: primary
+2026-01-19 18:32:00 - CalendarWatcher - INFO - ======================================================================
+2026-01-19 18:32:00 - CalendarWatcher - INFO - CalendarWatcher started
+2026-01-19 18:32:00 - CalendarWatcher - INFO - Check interval: 300 seconds
+2026-01-19 18:32:00 - CalendarWatcher - INFO - Press Ctrl+C to stop
+2026-01-19 18:32:00 - CalendarWatcher - INFO - ======================================================================
+2026-01-19 18:33:06 - CalendarWatcher - INFO - CalendarWatcher initialized
+2026-01-19 18:33:06 - CalendarWatcher - INFO -   Vault: C:\Users\Najma-LP\Desktop\AI_Employee_Vault\AI_Employee_Vault
+2026-01-19 18:33:06 - CalendarWatcher - INFO -   Output: C:\Users\Najma-LP\Desktop\AI_Employee_Vault\AI_Employee_Vault\Needs_Action
+2026-01-19 18:33:06 - CalendarWatcher - INFO -   Check interval: 300s
+2026-01-19 18:33:06 - CalendarWatcher - INFO - Loaded existing credentials from token file
+2026-01-19 18:33:06 - CalendarWatcher - INFO - ✓ Google Calendar API authenticated successfully
+2026-01-19 18:33:06 - CalendarWatcher - INFO -   Hours ahead: 48
+2026-01-19 18:33:06 - CalendarWatcher - INFO -   Min hours ahead: 1
+2026-01-19 18:33:06 - CalendarWatcher - INFO -   Monitoring calendars: primary
+2026-01-19 18:33:06 - CalendarWatcher - INFO - ======================================================================
+2026-01-19 18:33:06 - CalendarWatcher - INFO - CalendarWatcher started
+2026-01-19 18:33:06 - CalendarWatcher - INFO - Check interval: 300 seconds
+2026-01-19 18:33:06 - CalendarWatcher - INFO - Press Ctrl+C to stop
+2026-01-19 18:33:06 - CalendarWatcher - INFO - ======================================================================
+2026-01-19 18:51:20 - CalendarWatcher - INFO - CalendarWatcher initialized
+2026-01-19 18:51:20 - CalendarWatcher - INFO -   Vault: C:\Users\Najma-LP\Desktop\AI_Employee_Vault\AI_Employee_Vault
+2026-01-19 18:51:20 - CalendarWatcher - INFO -   Output: C:\Users\Najma-LP\Desktop\AI_Employee_Vault\AI_Employee_Vault\Needs_Action
+2026-01-19 18:51:20 - CalendarWatcher - INFO -   Check interval: 300s
+2026-01-19 18:51:20 - CalendarWatcher - INFO - Starting OAuth 2.0 flow...
+2026-01-19 18:51:20 - CalendarWatcher - INFO - Your browser will open for authentication...
+2026-01-19 18:57:20 - CalendarWatcher - ERROR - OAuth 2.0 flow failed: 'NoneType' object has no attribute 'replace'
+2026-01-19 18:57:37 - CalendarWatcher - INFO - CalendarWatcher initialized
+2026-01-19 18:57:37 - CalendarWatcher - INFO -   Vault: C:\Users\Najma-LP\Desktop\AI_Employee_Vault\AI_Employee_Vault
+2026-01-19 18:57:37 - CalendarWatcher - INFO -   Output: C:\Users\Najma-LP\Desktop\AI_Employee_Vault\AI_Employee_Vault\Needs_Action
+2026-01-19 18:57:37 - CalendarWatcher - INFO -   Check interval: 300s
+2026-01-19 18:57:37 - CalendarWatcher - INFO - Starting OAuth 2.0 flow...
+2026-01-19 18:57:37 - CalendarWatcher - INFO - Your browser will open for authentication...
