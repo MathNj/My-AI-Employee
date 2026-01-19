@@ -1,45 +1,332 @@
 ---
 name: email-sender
-description: Send emails via MCP server or SMTP after approval workflow. Use this skill when you need to (1) Send approved email replies, (2) Send invoice emails with attachments, (3) Send business reports or updates, (4) Reply to customer inquiries, or (5) Send any email communication that has been approved. Integrates with approval workflow and supports templates, attachments, HTML/plain text.
+description: Send emails via Gmail MCP server after approval workflow. Uses OAuth 2.0 authentication (no app passwords needed). Integrates with auto-approver skill for intelligent approval decisions. Supports attachments, HTML, CC/BCC, and complete audit trail.
 ---
 
-# Email Sender
+# Email Sender (via Gmail MCP)
 
 ## Overview
 
-This skill enables sending emails through MCP (Model Context Protocol) server or direct SMTP after human approval. It provides email templates, attachment support, and complete integration with the approval workflow system.
+This skill sends emails through the **Gmail MCP server** using OAuth 2.0 authentication. It integrates with the approval workflow and auto-approver system for intelligent, automated email sending while maintaining human oversight for important communications.
+
+## Architecture
+
+```
+┌─────────────────────────────────────────┐
+│  Auto-Approver Skill                   │
+│  - Evaluates pending requests          │
+│  - Auto-approves known contacts        │
+│  - Holds important emails for review   │
+└──────────────┬──────────────────────────┘
+               │
+               ↓
+┌─────────────────────────────────────────┐
+│  /Approved Folder                       │
+│  - Human-approved emails               │
+│  - Auto-approved emails                │
+└──────────────┬──────────────────────────┘
+               │
+               ↓
+┌─────────────────────────────────────────┐
+│  Email Sender Skill                     │
+│  - Reads approved email files          │
+│  - Extracts metadata & content         │
+│  - Calls Gmail MCP server              │
+└──────────────┬──────────────────────────┘
+               │
+               ↓
+┌─────────────────────────────────────────┐
+│  Gmail MCP Server                       │
+│  - OAuth 2.0 authentication            │
+│  - Sends via Gmail API                 │
+│  - Handles attachments                 │
+└─────────────────────────────────────────┘
+```
 
 ## Quick Start
 
-### Send Simple Email
+### Prerequisites
 
-```bash
-# Create email approval request
-python scripts/send_email.py \
-  --to "client@example.com" \
-  --subject "Invoice for January" \
-  --body "Please find attached your January invoice." \
-  --create-approval
-```
+1. **Gmail MCP Server Running:**
+   ```bash
+   # Should already be running
+   cd mcp-servers/gmail-mcp
+   node dist/index.js
+   ```
 
-### Send with Template
-
-```bash
-# Use template
-python scripts/compose_email.py \
-  --template invoice \
-  --to "client@example.com" \
-  --invoice-number "INV-001" \
-  --amount "$1,500"
-```
+2. **OAuth Configured:**
+   - `mcp-servers/gmail-mcp/credentials.json` ✅
+   - `mcp-servers/gmail-mcp/token.json` ✅
 
 ### Execute Approved Email
 
 ```bash
-# After approval
+# Send an approved email
+cd .claude/skills/email-sender
 python scripts/send_email.py \
-  --execute-approved /path/to/approved/email.md
+  --execute-approved /path/to/Approved/EMAIL_*.md
 ```
+
+### Direct Email Send (Advanced)
+
+```bash
+# Send email directly (bypasses approval)
+python scripts/send_email.py \
+  --to "client@example.com" \
+  --subject "Invoice Attached" \
+  --body "Please find your invoice attached."
+```
+
+## How It Works
+
+### 1. Email Created by AI
+
+When Claude needs to send an email, it creates a file in `/Pending_Approval`:
+
+```yaml
+---
+type: email
+to: client@example.com
+subject: Invoice for January
+format: text
+---
+
+Hi Client,
+
+Please find attached your January invoice for $2,500.
+
+Total due: January 31, 2026
+
+Best regards,
+AI Employee
+```
+
+### 2. Approval Workflow
+
+**Option A: Auto-Approver** (if known contact)
+- Auto-approver checks: Known contact? Safe content?
+- If yes: Moves to `/Approved` automatically
+- If no: Keeps in `/Pending_Approval` for human review
+
+**Option B: Human Approval**
+- You review the email in Obsidian
+- Move to `/Approved` (send) or `/Rejected` (cancel)
+
+### 3. Email Sent via Gmail MCP
+
+Email sender skill detects file in `/Approved`:
+
+```bash
+python scripts/send_email.py --execute-approved Approved/EMAIL_*.md
+```
+
+**What happens:**
+1. ✅ Parses email metadata (to, subject, body)
+2. ✅ Calls Gmail MCP server with OAuth token
+3. ✅ Gmail API sends the email
+4. ✅ Moves file to `/Done`
+5. ✅ Logs action to `/Logs/emails_YYYY-MM-DD.json`
+
+## Supported Features
+
+### ✅ Recipients
+
+- **To**: Primary recipient(s)
+- **CC**: Carbon copy recipients
+- **BCC**: Blind carbon copy
+- **Multiple recipients**: `["email1@example.com", "email2@example.com"]`
+
+### ✅ Attachments
+
+```yaml
+---
+attachments: /path/to/invoice.pdf,/path/to/receipt.pdf
+---
+```
+
+### ✅ HTML vs Plain Text
+
+```yaml
+---
+format: html
+---
+<h1>Hello!</h1>
+<p>This is <strong>HTML</strong> email.</p>
+```
+
+### ✅ Templates (Future)
+
+```bash
+# Use email template
+python scripts/compose_email.py \
+  --template invoice_notification \
+  --to "client@example.com" \
+  --amount "$2,500" \
+  --due-date "2026-01-31"
+```
+
+## Configuration
+
+### Gmail MCP Server
+
+**Location:** `mcp-servers/gmail-mcp/`
+
+**Files:**
+- `credentials.json` - OAuth client credentials
+- `token.json` - OAuth access token
+- `config/.env` - Environment variables
+
+**Status:** ✅ Running and authenticated
+
+### Email Sender Skill
+
+**Location:** `.claude/skills/email-sender/`
+
+**Config:** None required (uses Gmail MCP)
+
+## Integration with Auto-Approver
+
+The auto-approver skill makes intelligent decisions about emails:
+
+### ✅ Auto-Approves When:
+
+- Recipient is **known contact** (5+ interactions)
+- Content is **safe** (no urgent/payment keywords)
+- It's a **reply** (not new conversation)
+- **Routine business communication**
+
+### ⏸️ Holds for Review When:
+
+- **New contact** (first interaction)
+- **Financial content** (payment, invoice, transfer)
+- **Urgent keywords** (URGENT, ASAP, emergency)
+- **Unknown patterns**
+- **Attachments** (unless verified safe)
+
+## Examples
+
+### Example 1: Routine Email (Auto-Approved)
+
+```yaml
+---
+type: email
+to: boss@company.com
+subject: Weekly Report Attached
+---
+Hi Boss,
+
+Please find attached the weekly status report.
+All metrics are on track.
+
+Best,
+AI Employee
+```
+
+**Auto-Approver Decision:** ✅ APPROVE
+- Known contact: boss@company.com (45 interactions)
+- Safe content: Weekly report
+- Confidence: 96%
+
+**Result:** Email sent automatically via Gmail MCP ✅
+
+### Example 2: Payment Request (Held for Review)
+
+```yaml
+---
+type: email
+to: new-vendor@unknown.com
+subject: URGENT: Invoice Payment
+---
+Please approve payment of $5,000 to new vendor.
+```
+
+**Auto-Approver Decision:** ⏸️ HOLD
+- Unknown contact: new-vendor@unknown.com (0 interactions)
+- Financial content: $5,000 payment
+- Urgent keyword: URGENT
+
+**Result:** Held for your review in `/Pending_Approval` ⏸️
+
+## Troubleshooting
+
+### Email Not Sending
+
+**Check Gmail MCP Server:**
+```bash
+# Is Gmail MCP running?
+ps aux | grep "gmail-mcp"
+
+# Check logs
+tail -f mcp-servers/gmail-mcp/logs/gmail-mcp.log
+```
+
+**Check OAuth Token:**
+```bash
+# Token exists and valid?
+cat mcp-servers/gmail-mcp/token.json | jq
+```
+
+**Test Direct Send:**
+```bash
+cd .claude/skills/email-sender
+python scripts/send_email.py \
+  --to "test@example.com" \
+  --subject "Test" \
+  --body "Test email"
+```
+
+### "MCP Server Not Found" Error
+
+**Build the MCP Server:**
+```bash
+cd mcp-servers/gmail-mcp
+npm install
+npm run build
+```
+
+## Audit Trail
+
+All email actions logged to: `/Logs/emails_YYYY-MM-DD.json`
+
+```json
+{
+  "timestamp": "2026-01-19T22:50:00Z",
+  "action": "email_sent",
+  "to": "client@example.com",
+  "subject": "Invoice Attached",
+  "method": "gmail_mcp",
+  "file": "EMAIL_20260119_invoice.md"
+}
+```
+
+## Benefits of MCP vs SMTP
+
+| Feature | Old (SMTP) | New (Gmail MCP) |
+|---------|------------|-----------------|
+| Authentication | App password ❌ | OAuth 2.0 ✅ |
+| Security | Less secure | More secure |
+| Attachments | Manual | Automatic |
+| Rate limiting | Manual | Built-in |
+| Token refresh | Manual | Automatic |
+| Audit logging | Basic | Comprehensive |
+
+## Version History
+
+**v2.0.0** (2026-01-19)
+- ✅ Migrated from SMTP to Gmail MCP
+- ✅ OAuth 2.0 authentication
+- ✅ Integrated with auto-approver
+- ✅ Removed dependency on app passwords
+
+**v1.0.0** (2025-12-01)
+- Initial SMTP-based implementation
+
+---
+
+**Status:** Production Ready ✅
+**Method:** Gmail MCP (OAuth 2.0)
+**Integration:** Auto-approver enabled
+
 
 ## Core Workflows
 

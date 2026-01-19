@@ -827,11 +827,13 @@ def api_call():
 
 | Action Category | Auto-Approve Threshold | Always Require Approval |
 |-----------------|------------------------|------------------------|
-| Email replies | ❌ Never (Gold tier) | ✅ All emails |
-| Social media | ❌ Never | ✅ All posts |
+| Email replies | ✅ To known contacts (5+ interactions) | ❌ New contacts, bulk sends |
+| Social media | ✅ Scheduled posts | ❌ Replies, DMs |
 | Payments | ❌ Never | ✅ All amounts |
-| File operations | Read, create plans | Delete, move outside vault |
-| Odoo actions | Read data | Create/modify records |
+| File operations | ✅ Create, read | ❌ Delete, move outside vault |
+| Odoo actions | ✅ Read data | ❌ Create/modify records |
+
+**Note:** Auto-approval powered by AI reasoning via `auto-approver` skill. System evaluates each request using Claude's understanding of context, safety, and Company_Handbook.md rules before approving. Uncertain cases default to human review.
 
 ### Data Privacy
 

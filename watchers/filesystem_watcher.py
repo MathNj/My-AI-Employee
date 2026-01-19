@@ -8,6 +8,14 @@ When new files are detected, creates task files in Needs_Action folder.
 Based on the architecture from Requirements.md
 """
 
+import sys
+from pathlib import Path
+
+# Fix import conflict: remove current directory from sys.path to avoid
+# Python finding filesystem_watcher.py when importing 'watchdog' package
+if str(Path(__file__).parent) in sys.path:
+    sys.path.remove(str(Path(__file__).parent))
+
 from watchdog.observers import Observer
 from watchdog.events import FileSystemEventHandler
 from pathlib import Path

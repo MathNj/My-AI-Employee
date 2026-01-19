@@ -29,6 +29,11 @@
       "enabled": true,
       "priority": "medium"
     },
+    "auto_approver": {
+      "enabled": true,
+      "priority": "high",
+      "check_interval_override": 30
+    }
   },
   "notifications": {
     "email_on_failure": false,

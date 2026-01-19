@@ -1,0 +1,13 @@
+[
+  {
+    "timestamp": "2026-01-20T00:08:37.623148",
+    "action": "task_created",
+    "details": {
+      "name": "Weekly_CEO_Briefing",
+      "command": "python .claude/skills/ceo-briefing-generator/scripts/generate_briefing.py",
+      "schedule": "weekly",
+      "platform": "windows"
+    },
+    "skill": "scheduler-manager"
+  }
+]

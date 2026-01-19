@@ -132,7 +132,7 @@ TEMPLATES = {
 
 def get_vault_path():
     """Get vault path from environment or use default"""
-    return Path(os.getenv('VAULT_PATH', 'C:/Users/Najma-LP/Desktop/My Vault/AI_Employee_Vault'))
+    return Path(os.getenv('VAULT_PATH', Path(__file__).parent.parent.parent.parent))
 
 
 def generate_goals_file(business_type: str) -> str:

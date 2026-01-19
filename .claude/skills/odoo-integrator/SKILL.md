@@ -421,14 +421,14 @@ MIN_CONFIDENCE=0.85
 curl http://localhost:8000/health
 
 # Check logs
-cd mcp/odoo-mcp-server-vzeman
+cd mcp-servers/odoo-mcp-server
 cat logs/mcp_server.log
 ```
 
 **Solution:**
 ```bash
 # Restart MCP server
-cd mcp/odoo-mcp-server-vzeman
+cd mcp-servers/odoo-mcp-server
 python -m mcp_server_odoo.http_server
 ```
 
@@ -685,7 +685,7 @@ odoo-mcp-server==0.2.0
 
 ### Troubleshooting
 
-- Check MCP server logs: `mcp/odoo-mcp-server-vzeman/logs/`
+- Check MCP server logs: `mcp-servers/odoo-mcp-server/logs/`
 - Check Odoo logs: `docker logs odoo`
 - Check skill logs: `/Logs/odoo_integrator_YYYY-MM-DD.log`
 

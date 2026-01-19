@@ -1,0 +1,18 @@
+{
+  "contacts": {
+    "boss@company.com": {
+      "name": "Boss Name",
+      "interactions": 0,
+      "first_approved": null,
+      "last_approved": null,
+      "trust_score": 0.0,
+      "typical_content": [],
+      "notes": "Auto-add when first approved by human"
+    }
+  },
+  "metadata": {
+    "last_updated": "2026-01-19T00:00:00Z",
+    "total_contacts": 0,
+    "average_trust_score": 0.0
+  }
+}

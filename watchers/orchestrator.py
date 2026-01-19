@@ -196,6 +196,13 @@ class Orchestrator:
             restart_on_fail=True
         )
 
+        # AI Auto-Approver
+        self.processes['auto_approver'] = Process(
+            name='Auto-Approver',
+            script='auto_approver_watcher.py',
+            enabled=True,
+            restart_on_fail=True
+        )
 
         logger.info(f"Registered {len(self.processes)} processes")
 

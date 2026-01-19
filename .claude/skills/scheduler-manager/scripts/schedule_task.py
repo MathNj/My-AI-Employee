@@ -174,7 +174,7 @@ def create_windows_task(name: str, command: str, schedule: str, description: str
         result = subprocess.run(cmd, capture_output=True, text=True)
 
         if result.returncode == 0:
-            print(f"✅ Task created: {name}")
+            print(f"[OK] Task created: {name}")
             log_activity("task_created", {
                 "name": name,
                 "command": command,
@@ -183,11 +183,11 @@ def create_windows_task(name: str, command: str, schedule: str, description: str
             })
             return True
         else:
-            print(f"❌ Failed to create task: {result.stderr}")
+            print(f"[ERROR] Failed to create task: {result.stderr}")
             return False
 
     except Exception as e:
-        print(f"❌ Error creating Windows task: {e}")
+        print(f"[ERROR] Error creating Windows task: {e}")
         return False
 
 
@@ -232,7 +232,7 @@ def create_unix_cron(name: str, command: str, schedule: str, description: str = 
         process.communicate(input=new_crontab)
 
         if process.returncode == 0:
-            print(f"✅ Cron job created: {name}")
+            print(f"[OK] Cron job created: {name}")
             log_activity("cron_created", {
                 "name": name,
                 "command": command,
@@ -241,11 +241,11 @@ def create_unix_cron(name: str, command: str, schedule: str, description: str = 
             })
             return True
         else:
-            print(f"❌ Failed to create cron job")
+            print(f"[ERROR] Failed to create cron job")
             return False
 
     except Exception as e:
-        print(f"❌ Error creating cron job: {e}")
+        print(f"[ERROR] Error creating cron job: {e}")
         return False
 
 
@@ -262,7 +262,7 @@ def schedule_task(name: str, command: str, schedule: str, description: str = "")
     elif PLATFORM in ['linux', 'darwin']:  # darwin = macOS
         return create_unix_cron(name, command, schedule, description)
     else:
-        print(f"❌ Unsupported platform: {PLATFORM}")
+        print(f"[ERROR] Unsupported platform: {PLATFORM}")
         return False
 
 
@@ -349,7 +349,7 @@ def list_unix_crons():
 
 def list_scheduled_tasks():
     """List all scheduled tasks (cross-platform)."""
-    print(f"📋 Scheduled Tasks ({PLATFORM})\n")
+    print(f"Scheduled Tasks ({PLATFORM})\n")
 
     if PLATFORM == 'windows':
         tasks = list_windows_tasks()
@@ -389,15 +389,15 @@ def remove_windows_task(name: str):
         )
 
         if result.returncode == 0:
-            print(f"✅ Task removed: {name}")
+            print(f"[OK] Task removed: {name}")
             log_activity("task_removed", {"name": name, "platform": "windows"})
             return True
         else:
-            print(f"❌ Failed to remove task: {result.stderr}")
+            print(f"[ERROR] Failed to remove task: {result.stderr}")
             return False
 
     except Exception as e:
-        print(f"❌ Error removing task: {e}")
+        print(f"[ERROR] Error removing task: {e}")
         return False
 
 
@@ -408,7 +408,7 @@ def remove_unix_cron(name: str):
         result = subprocess.run(['crontab', '-l'], capture_output=True, text=True)
 
         if result.returncode != 0:
-            print(f"❌ No crontab found")
+            print(f"[ERROR] No crontab found")
             return False
 
         # Remove task
@@ -433,15 +433,15 @@ def remove_unix_cron(name: str):
         process.communicate(input=new_crontab)
 
         if process.returncode == 0:
-            print(f"✅ Cron job removed: {name}")
+            print(f"[OK] Cron job removed: {name}")
             log_activity("cron_removed", {"name": name, "platform": "unix"})
             return True
         else:
-            print(f"❌ Failed to remove cron job")
+            print(f"[ERROR] Failed to remove cron job")
             return False
 
     except Exception as e:
-        print(f"❌ Error removing cron job: {e}")
+        print(f"[ERROR] Error removing cron job: {e}")
         return False
 
 
@@ -454,13 +454,13 @@ def remove_scheduled_task(name: str):
     elif PLATFORM in ['linux', 'darwin']:
         return remove_unix_cron(name)
     else:
-        print(f"❌ Unsupported platform: {PLATFORM}")
+        print(f"[ERROR] Unsupported platform: {PLATFORM}")
         return False
 
 
 def setup_recommended_schedules():
     """Set up recommended schedules for AI Employee."""
-    print("🚀 Setting up recommended schedules for AI Employee\n")
+    print("Setting up recommended schedules for AI Employee\n")
 
     for key, config in RECOMMENDED_SCHEDULES.items():
         print(f"Setting up: {config['name']}")
@@ -474,11 +474,11 @@ def setup_recommended_schedules():
         )
 
         if success:
-            print(f"  ✅ Success\n")
+            print(f"  [OK] Success\n")
         else:
-            print(f"  ❌ Failed\n")
+            print(f"  [ERROR] Failed\n")
 
-    print("\n✅ Recommended schedules setup complete!")
+    print("\n[OK] Recommended schedules setup complete!")
     print("\nTo view schedules:")
     print(f"  python {__file__} --list")
 

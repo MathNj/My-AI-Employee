@@ -1,0 +1,25 @@
+{
+  "check_interval": 30,
+  "confidence_threshold": 0.85,
+  "dry_run": false,
+  "learn_from_corrections": true,
+  "rules": {
+    "email": {
+      "known_contact_threshold": 5,
+      "pattern_match_required": true,
+      "max_recipients": 1,
+      "safe_content_keywords": ["weekly report", "status update", "meeting notes", "follow up"],
+      "hold_keywords": ["urgent", "asap", "payment", "invoice", "contract", "legal"]
+    },
+    "social_media": {
+      "scheduled_only": true,
+      "controversial_keywords": ["politics", "religion", "controversial"],
+      "max_posts_per_day": 3,
+      "safe_topics": ["business", "technology", "professional", "industry"]
+    },
+    "payments": {
+      "auto_approve": false,
+      "max_amount": 0
+    }
+  }
+}
