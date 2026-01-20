@@ -205,6 +205,43 @@ Wait for consent; never auto-create ADRs. Group related decisions (stacks, authe
 - `history/prompts/` — Prompt History Records
 - `history/adr/` — Architecture Decision Records
 - `.specify/` — SpecKit Plus templates and scripts
+- `ad_management/` — E-commerce ad monitoring system
+- `.claude/skills/` — AI Employee skills directory
+- `.claude/plans/` — Implementation plans (see ad-monitoring-enhancement.md)
+
+## Current Work: E-Commerce Ad Monitoring Enhancement
+
+**Status**: Implementation in progress (Phase 1: Product Discovery)
+
+**Plan**: `.claude/plans/ad-monitoring-enhancement.md`
+
+**Objective**: Enhance the ad monitoring system for gulahmedshop.com with:
+1. Hidden size detection (site HIDES out-of-stock sizes, not just disables)
+2. Real-time price scraping from product pages
+3. Per-product revenue impact calculation: `days_out × price × conversion_rate`
+4. Top Selling Products dashboard section
+5. Ad monitoring skill integration
+
+**Implementation Phases**:
+- Phase 1: Product Discovery (2-3 hours) - Scrape 15-25 real products
+- Phase 2: Core Logic Enhancement (4-5 hours) - Hidden size detection + price scraping
+- Phase 3: Dashboard Enhancement (3-4 hours) - Revenue metrics + Top Products
+- Phase 4: Skill Integration (2-3 hours) - Create ad_monitoring skill
+- Phase 5: Testing & Validation (2-3 hours) - Test suite execution
+
+**Critical Files**:
+- `ad_management/2Check_Availability.py` (lines 70-132) - Size detection + scraping
+- `ad_management/logger.py` (lines 34-60, 170-187) - Product price logging
+- `ad_management/dashboard.py` (lines 887-1013, 260) - Revenue calculations + UI
+- `ad_management/URLS.csv` - Product data source
+- `.claude/skills/ad_monitoring/` - New skill integration
+
+**Success Metrics**:
+- Size detection accuracy: ≥95%
+- Price scraping accuracy: ≥95%
+- Performance: 20 products in < 120s
+- Dashboard load: < 3s
+- Test coverage: ≥80%
 
 ## Code Standards
 See `.specify/memory/constitution.md` for code quality, testing, performance, security, and architecture principles.

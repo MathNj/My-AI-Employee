@@ -204,6 +204,22 @@ class Orchestrator:
             restart_on_fail=True
         )
 
+        # Ad Monitoring (NEW - E-commerce enhancement)
+        self.processes['ad_monitor'] = Process(
+            name='Ad Monitor',
+            script='../ad_management/2Check_Availability.py',
+            enabled=False,  # Disabled by default - user can enable
+            restart_on_fail=True
+        )
+
+        # Dashboard Server (NEW)
+        self.processes['dashboard'] = Process(
+            name='Dashboard',
+            script='../ad_management/dashboard.py',
+            enabled=False,  # Disabled by default
+            restart_on_fail=True
+        )
+
         logger.info(f"Registered {len(self.processes)} processes")
 
     def start_all(self):

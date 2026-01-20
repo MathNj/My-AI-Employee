@@ -1,20 +1,27 @@
 {
   "name": "pm2-dashboard",
-  "version": "1.0.0",
-  "description": "PM2 Process Monitoring Dashboard",
+  "version": "0.1.0",
+  "private": true,
   "scripts": {
-    "dev": "node server.js",
-    "start": "node server.js"
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "lint": "eslint"
   },
   "dependencies": {
-    "express": "^4.22.1",
-    "pm2": "^6.0.14"
+    "next": "16.1.4",
+    "pm2": "^6.0.14",
+    "react": "19.2.3",
+    "react-dom": "19.2.3"
   },
-  "keywords": [
-    "pm2",
-    "monitoring",
-    "dashboard"
-  ],
-  "author": "",
-  "license": "ISC"
+  "devDependencies": {
+    "@tailwindcss/postcss": "^4",
+    "@types/node": "^20",
+    "@types/react": "^19",
+    "@types/react-dom": "^19",
+    "eslint": "^9",
+    "eslint-config-next": "16.1.4",
+    "tailwindcss": "^4",
+    "typescript": "^5"
+  }
 }
