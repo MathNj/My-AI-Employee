@@ -1,0 +1,20 @@
+{
+  "name": "pm2-dashboard",
+  "version": "1.0.0",
+  "description": "PM2 Process Monitoring Dashboard",
+  "scripts": {
+    "dev": "node server.js",
+    "start": "node server.js"
+  },
+  "dependencies": {
+    "express": "^4.22.1",
+    "pm2": "^6.0.14"
+  },
+  "keywords": [
+    "pm2",
+    "monitoring",
+    "dashboard"
+  ],
+  "author": "",
+  "license": "ISC"
+}

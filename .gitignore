@@ -70,12 +70,26 @@ tmpclaude-*
 
 # Personal data folders (optional - comment out if you want to commit)
 # Inbox/
+
+# ==========================================
+# Platinum Tier - Work Zone Communication
+# ==========================================
+# These directories SYNC between cloud and local via Git
+# We WANT to commit these for Platinum Tier - do NOT ignore them
+# The directories below are commented out so they WILL be synced
+
 # Needs_Action/
-# Plans/
-# Done/
+# In_Progress/
 # Pending_Approval/
 # Approved/
 # Rejected/
+# Updates/
+# Signals/
+# Done/
+# Plans/
+
+# BUT ignore local-only inbox
+Inbox/
 
 # Backup files
 *.bak
@@ -140,11 +154,7 @@ mcp-servers/**/*.log
 # Comment out if you want to commit (after removing credentials)
 .config/claude-code/mcp.json
 
-# Next.js build output
+# PM2 Dashboard - Next.js build output
 pm2-dashboard/.next/
-# Node modules
-pm2-dashboard/node_modules/
-
-pm2-dashboard/
-pm2-dashboard/.next/
+# PM2 Dashboard - Node modules
 pm2-dashboard/node_modules/
