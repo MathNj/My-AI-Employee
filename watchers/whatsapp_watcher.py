@@ -257,8 +257,22 @@ class WhatsAppWatcher(BaseWatcher):
                     return []
                 self.logger.info("Successfully reconnected to browser")
 
-            # Find all unread chat elements
-            unread_chats = self.page.query_selector_all('[data-testid="cell-frame-container"] [aria-label*="unread message"]')
+            # Find all unread chat elements (with error handling for closed page)
+            try:
+                unread_chats = self.page.query_selector_all('[data-testid="cell-frame-container"] [aria-label*="unread message"]')
+            except Exception as e:
+                self.logger.error(f"Error querying unread chats: {e}")
+                # Page might have closed, try to reconnect
+                self.logger.warning("Page may have closed, attempting to reconnect...")
+                if not self._initialize_browser():
+                    self.logger.error("Failed to reconnect after page closed")
+                    return []
+                # Retry after reconnection
+                try:
+                    unread_chats = self.page.query_selector_all('[data-testid="cell-frame-container"] [aria-label*="unread message"]')
+                except Exception as e2:
+                    self.logger.error(f"Still failed after reconnection: {e2}")
+                    return []
 
             if not unread_chats:
                 self.logger.debug("No unread messages")
@@ -308,19 +322,28 @@ class WhatsAppWatcher(BaseWatcher):
                         self.logger.info(f"  Keywords: {', '.join(matched_keywords)}")
 
                 except Exception as e:
-                    self.logger.error(f"Error processing chat element: {e}")
+                    # Check if page closed during processing
+                    if "Target closed" in str(e) or "Session closed" in str(e):
+                        self.logger.warning(f"Page closed while processing chat, stopping this check cycle")
+                        # Mark browser for reinitialization
+                        self.page = None
+                        raise  # Re-raise to be caught by outer handler
+                    else:
+                        self.logger.error(f"Error processing chat element: {e}")
                     continue
 
             return urgent_messages
 
         except Exception as e:
-            self.logger.error(f"Error checking for updates: {e}", exc_info=True)
-            # If critical error, try to reinitialize browser on next cycle
-            if "Target closed" in str(e) or "Session closed" in str(e):
-                self.logger.warning("Browser session closed, will attempt reinitialization")
-                self.page = None
-                self.context = None
-                self.playwright = None
+            error_type = type(e).__name__
+            self.logger.error(f"Error checking for updates [{error_type}]: {e}")
+
+            # If target/session closed, clean up and force reinitialization
+            if "Target closed" in str(e) or "Session closed" in str(e) or "TargetPage" in error_type:
+                self.logger.warning("Browser session closed unexpectedly, cleaning up...")
+                self._cleanup_browser()
+                # Schedule reinitialization on next check
+                self.logger.info("Will reinitialize browser on next check cycle")
             return []
 
     def _is_group_chat(self, chat_element) -> bool:
@@ -470,7 +493,7 @@ Add notes here about actions taken on this message.
 
     def run(self):
         """
-        Main monitoring loop with browser initialization.
+        Main monitoring loop with browser initialization and auto-recovery.
         """
         try:
             # Initialize browser
@@ -478,11 +501,66 @@ Add notes here about actions taken on this message.
                 self.logger.error("Failed to initialize browser. Exiting.")
                 sys.exit(1)
 
-            # Run the base watcher loop
-            super().run()
+            # Run the base watcher loop with custom error handling
+            self.logger.info("=" * 70)
+            self.logger.info("WhatsAppWatcher started")
+            self.logger.info(f"Check interval: {self.check_interval} seconds")
+            self.logger.info("Press Ctrl+C to stop")
+            self.logger.info("=" * 70)
 
-        except KeyboardInterrupt:
-            self._shutdown()
+            try:
+                while True:
+                    try:
+                        # Check if browser is still alive, reinitialize if needed
+                        if not self.page or self.page.is_closed():
+                            self.logger.warning("Browser page closed, reinitializing...")
+                            if not self.initialize_browser():
+                                self.logger.error("Failed to reinitialize browser, retrying in 30s...")
+                                time.sleep(30)
+                                continue
+
+                        # Increment check counter
+                        self.total_checks += 1
+
+                        # Check for new items
+                        new_items = self.check_for_updates()
+
+                        # Process each new item
+                        if new_items:
+                            self.logger.info(f"Found {len(new_items)} new item(s)")
+
+                            for item in new_items:
+                                try:
+                                    # Create task file
+                                    task_path = self.create_action_file(item)
+
+                                    if task_path:
+                                        self.total_items_processed += 1
+                                        self.logger.info(f"[OK] Created task: {task_path.name}")
+
+                                except Exception as e:
+                                    self.total_errors += 1
+                                    self.logger.error(f"Error creating task file: {e}", exc_info=True)
+
+                        # Wait before next check
+                        time.sleep(self.check_interval)
+
+                    except KeyboardInterrupt:
+                        # Allow Ctrl+C to break the loop
+                        raise
+
+                    except Exception as e:
+                        # Log error but continue running
+                        self.total_errors += 1
+                        self.logger.error(f"Error in check cycle: {e}", exc_info=True)
+
+                        # If browser-related error, try to reinitialize
+                        if "Target closed" in str(e) or "Session closed" in str(e):
+                            self.logger.warning("Browser error detected, will reinitialize...")
+                            self._cleanup_browser()
+
+            except KeyboardInterrupt:
+                self._shutdown()
 
         except Exception as e:
             self.logger.error(f"Fatal error: {e}", exc_info=True)
