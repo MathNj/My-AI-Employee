@@ -1,11 +1,14 @@
 # Company Handbook - Rules of Engagement
 
 ---
-version: 2.1
+version: 2.2
 tier: gold
-last_updated: 2026-01-18
+last_updated: 2026-01-21
 odoo_integrated: true
 social_media_enabled: true
+instagram_watcher_enabled: true
+whatsapp_enhanced: true
+ad_management_enabled: true
 architecture: local_first
 ---
 
@@ -74,8 +77,9 @@ This AI Employee follows a **Perception → Reasoning → Action** architecture:
 
 1. **Perception Layer (Watchers)** - Lightweight Python sentinel scripts that monitor:
    - Gmail (OAuth via Google API)
-   - WhatsApp (Playwright browser automation)
-   - Odoo accounting system (JSON-2 API)
+   - WhatsApp (Playwright browser automation with auto-recovery)
+   - Instagram (Social media monitoring and engagement)
+   - Odoo accounting system (JSON-2 API with email notifications)
    - File system (watchdog pattern)
    - Calendar events (Google Calendar API)
    - Slack channels (Slack API)
@@ -174,6 +178,12 @@ Managed with AI assistance
 
 ### WhatsApp/Messaging (WhatsApp Watcher)
 
+**Enhanced error handling (as of 2026-01-21):**
+- Auto-recovery from TargetClosedError
+- Graceful degradation when WhatsApp Web unavailable
+- Retry logic with exponential backoff
+- Session restoration on connection loss
+
 **Urgent keywords trigger immediate action:**
 - "urgent", "ASAP", "emergency", "critical"
 - "invoice", "payment", "overdue"
@@ -258,6 +268,7 @@ class BaseWatcher(ABC):
 |---------|----------------|-------------|---------------|
 | **gmail_watcher.py** | 2 minutes | Unread important emails | `EMAIL_{id}.md` |
 | **whatsapp_watcher.py** | 30 seconds | Keywords (urgent, invoice, payment) | `WHATSAPP_{contact}_{timestamp}.md` |
+| **instagram_watcher.py** | 2 minutes | New posts, comments, DMs | `INSTAGRAM_{type}_{timestamp}.md` |
 | **odoo_watcher.py** | 5 minutes | New invoices, bills, payments, overdue | `odoo_{event}_{timestamp}.md` |
 | **filesystem_watcher.py** | Real-time | New files in Inbox/ | `FILE_{timestamp}_{name}.md` |
 | **calendar_watcher.py** | 10 minutes | Upcoming events, changes | `CALENDAR_{event_id}_{timestamp}.md` |
@@ -311,8 +322,8 @@ Model Context Protocol (MCP) servers are Claude Code's "hands" for executing act
 | **browser-mcp** | Web automation | Navigate, click, fill forms | Playwright-based |
 | **calendar-mcp** | Scheduling | Create, update, query events | Google Calendar API |
 | **slack-mcp** | Team comms | Send messages, read channels | Slack bot token |
-| **odoo-mcp** | Accounting | Read/write financial data | OAuth 2.0 with 30-min refresh |
-| **odoo-mcp** | ERP operations | Full business management | JSON-RPC API, self-hosted |
+| **odoo-mcp** | Accounting | Read/write financial data + Email notifications | JSON-RPC API, self-hosted |
+| **ad-monitoring** | E-commerce ads | Stockout detection, revenue tracking | Playwright-based scraping |
 
 ### MCP Configuration
 
@@ -406,7 +417,7 @@ node test-mcp-connection.js
 - Flag duplicate or unusual charges
 - Calculate average days to payment
 
-### Odoo Community Integration (Gold Tier Alternative)
+### Odoo Community Integration (Gold Tier Standard)
 
 **Why Odoo?**
 - Free, open-source ERP system (Community Edition)
@@ -414,11 +425,12 @@ node test-mcp-connection.js
 - Comprehensive modules: Accounting, Inventory, CRM, Project Management
 - JSON-RPC API for MCP integration (Odoo 19+)
 - Cost-effective for businesses needing full ERP capabilities
+- **Email notifications** for financial events (as of 2026-01-21)
 
 **Odoo MCP Server Integration:**
 ```python
 # Odoo JSON-RPC API via MCP
-# Access: https://your-odoo-instance.com/jsonrpc
+# Access: http://localhost:8069/jsonrpc
 
 Available operations:
 - Read invoices, bills, payments
@@ -426,6 +438,7 @@ Available operations:
 - Query financial reports
 - Manage contacts and vendors
 - Track inventory and projects
+- Send email notifications on events
 ```
 
 **Deployment options:**
@@ -790,7 +803,8 @@ def api_call():
 **When services are unavailable:**
 - **Gmail API down:** Queue emails locally, process when restored
 - **Odoo API timeout:** Log event, retry on next check cycle (5 minutes)
-- **WhatsApp Web unavailable:** Pause watcher, alert human, retry hourly
+- **WhatsApp Web unavailable:** Auto-recovery with TargetClosedError fix, pause watcher if persistent, alert human
+- **Instagram unavailable:** Pause watcher, log error, retry hourly
 - **Claude Code unavailable:** Watchers continue collecting, queue grows
 - **Obsidian locked:** Write to temp folder, sync when available
 
@@ -1011,6 +1025,7 @@ Located in `.claude/skills/` directory:
 | **linkedin-poster** | Post to LinkedIn via MCP | Via approval processor |
 | **social-media-manager** | Multi-platform posting | Via approval processor |
 | **odoo-integrator** | Query/update Odoo data | On-demand |
+| **ad_monitoring** | E-commerce ad stockout detection | Continuous |
 | **scheduler-manager** | Manage cron jobs / Task Scheduler | Setup |
 
 ### Skill Invocation
@@ -1187,6 +1202,7 @@ Example:
 
 | Version | Date | Changes |
 |---------|------|---------|
+| 2.2 | 2026-01-21 | Added: Instagram watcher, WhatsApp auto-recovery, Ad monitoring system, Odoo email notifications |
 | 2.1 | 2026-01-17 | Added: Digital FTE metrics, Watcher architecture, Odoo integration, Platinum tier roadmap |
 | 2.0 | 2026-01-14 | Gold tier complete: Odoo integration, social media, Ralph loop |
 | 1.5 | 2026-01-13 | Silver tier: Multiple watchers, approval workflow |
@@ -1199,9 +1215,9 @@ Example:
 
 **Current Status:**
 - **Tier:** Gold (Platinum roadmap defined)
-- **Version:** 2.1
+- **Version:** 2.2
 - **Architecture:** Local-first with cloud-ready design
-- **Odoo:** ✅ Connected
+- **Odoo:** ✅ Connected with email notifications
 - **Social Media:** ✅ Multi-platform (LinkedIn, Facebook, Instagram, X)
-- **Odoo:** Ready for deployment
-- **Watchers:** Gmail, WhatsApp, Odoo, Filesystem, Calendar, Slack
+- **Watchers:** Gmail, WhatsApp (enhanced), Instagram, Odoo, Filesystem, Calendar, Slack
+- **Ad Management:** ✅ E-commerce monitoring with stockout detection
