@@ -162,7 +162,7 @@ class GmailWatcher:
         # Build Gmail service
         try:
             self.service = build('gmail', 'v1', credentials=creds)
-            logger.info("✓ Gmail API authenticated successfully")
+            logger.info("[OK] Gmail API authenticated successfully")
             return True
         except Exception as e:
             logger.error(f"Error building Gmail service: {e}")
@@ -295,7 +295,7 @@ https://mail.google.com/mail/u/0/#inbox/{message['id']}
             # Log the action
             self.log_action(from_email, subject, task_filename)
 
-            logger.info(f"✓ Created task for email from: {from_email}")
+            logger.info(f"[OK] Created task for email from: {from_email}")
             return task_path
 
         except Exception as e:
@@ -397,7 +397,7 @@ https://mail.google.com/mail/u/0/#inbox/{message['id']}
             logger.info("\n" + "=" * 60)
             logger.info("Stopping Gmail watcher...")
             logger.info(f"Total emails processed: {len(self.processed_ids)}")
-            logger.info("✓ Gmail watcher stopped successfully")
+            logger.info("[OK] Gmail watcher stopped successfully")
             logger.info("=" * 60)
             sys.exit(0)
         except Exception as e:

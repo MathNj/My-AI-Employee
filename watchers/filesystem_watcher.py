@@ -93,7 +93,7 @@ class InboxWatcherHandler(FileSystemEventHandler):
         try:
             # Create task file in Needs_Action
             self.create_task_file(source)
-            logger.info(f"✓ Created task for: {source.name}")
+            logger.info(f"[OK] Created task for: {source.name}")
 
         except Exception as e:
             logger.error(f"Error processing {source.name}: {e}")
@@ -278,7 +278,7 @@ def main():
 
     # Start watching
     observer.start()
-    logger.info("✓ Watcher started successfully")
+    logger.info("[OK] Watcher started successfully")
     logger.info(f"  Drop files in: {INBOX_PATH}")
     logger.info(f"  Tasks created in: {NEEDS_ACTION_PATH}")
     logger.info("")
@@ -292,7 +292,7 @@ def main():
         logger.info("Stopping watcher...")
         observer.stop()
         observer.join()
-        logger.info("✓ Watcher stopped successfully")
+        logger.info("[OK] Watcher stopped successfully")
         logger.info("=" * 60)
         sys.exit(0)
     except Exception as e:

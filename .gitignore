@@ -158,3 +158,5 @@ mcp-servers/**/*.log
 pm2-dashboard/.next/
 # PM2 Dashboard - Node modules
 pm2-dashboard/node_modules/
+
+credentials

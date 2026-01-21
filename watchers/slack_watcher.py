@@ -158,7 +158,7 @@ class SlackWatcher(BaseWatcher):
             response = self.slack_client.auth_test()
             self.bot_user_id = response['user_id']
 
-            self.logger.info(f"✓ Connected to Slack (Bot ID: {self.bot_user_id})")
+            self.logger.info(f"[OK] Connected to Slack (Bot ID: {self.bot_user_id})")
 
         except Exception as e:
             self.logger.error(f"Failed to connect to Slack: {e}")

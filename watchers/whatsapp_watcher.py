@@ -170,7 +170,7 @@ class WhatsAppWatcher(BaseWatcher):
             for selector in chat_selectors:
                 try:
                     self.page.wait_for_selector(selector, timeout=5000)
-                    self.logger.info(f"✓ WhatsApp Web loaded successfully (found: {selector})")
+                    self.logger.info(f"[OK] WhatsApp Web loaded successfully (found: {selector})")
                     chat_loaded = True
                     break
                 except PlaywrightTimeoutError:
@@ -196,7 +196,7 @@ class WhatsAppWatcher(BaseWatcher):
                 try:
                     qr_code = self.page.wait_for_selector(selector, timeout=5000)
                     if qr_code:
-                        self.logger.info(f"✓ QR code detected using selector: {selector}")
+                        self.logger.info(f"[OK] QR code detected using selector: {selector}")
                         break
                 except PlaywrightTimeoutError:
                     continue
@@ -210,7 +210,7 @@ class WhatsAppWatcher(BaseWatcher):
 
                 # Wait for authentication (chat list appears)
                 self.page.wait_for_selector('[data-testid="chat-list"]', timeout=120000)
-                self.logger.info("✓ Authentication successful!")
+                self.logger.info("[OK] Authentication successful!")
                 return True
 
             else:
@@ -238,12 +238,25 @@ class WhatsAppWatcher(BaseWatcher):
 
         Returns:
             List of message dictionaries with details
+
+        Note:
+            If page becomes unresponsive, attempts to reconnect automatically.
         """
         if not self.page:
             self.logger.error("Browser not initialized")
             return []
 
         try:
+            # Check if page is still responsive
+            try:
+                self.page.title()
+            except Exception as e:
+                self.logger.warning(f"Page unresponsive ({e}), attempting to reconnect...")
+                if not self._initialize_browser():
+                    self.logger.error("Failed to reconnect to browser")
+                    return []
+                self.logger.info("Successfully reconnected to browser")
+
             # Find all unread chat elements
             unread_chats = self.page.query_selector_all('[data-testid="cell-frame-container"] [aria-label*="unread message"]')
 
@@ -302,6 +315,12 @@ class WhatsAppWatcher(BaseWatcher):
 
         except Exception as e:
             self.logger.error(f"Error checking for updates: {e}", exc_info=True)
+            # If critical error, try to reinitialize browser on next cycle
+            if "Target closed" in str(e) or "Session closed" in str(e):
+                self.logger.warning("Browser session closed, will attempt reinitialization")
+                self.page = None
+                self.context = None
+                self.playwright = None
             return []
 
     def _is_group_chat(self, chat_element) -> bool:
@@ -349,7 +368,7 @@ class WhatsAppWatcher(BaseWatcher):
                 screenshot_filename = f"screenshot_{safe_timestamp}.png"
                 screenshot_path = self.needs_action / screenshot_filename
                 self.page.screenshot(path=str(screenshot_path), full_page=False)
-                self.logger.info(f"✓ Screenshot saved: {screenshot_filename}")
+                self.logger.info(f"[OK] Screenshot saved: {screenshot_filename}")
             except Exception as e:
                 self.logger.warning(f"Could not capture screenshot: {e}")
 
@@ -477,15 +496,41 @@ Add notes here about actions taken on this message.
         super()._shutdown()
 
     def _cleanup_browser(self):
-        """Clean up browser resources."""
+        """
+        Clean up browser resources with comprehensive error handling.
+
+        Ensures all browser resources are properly closed even if errors occur.
+        """
+        cleanup_errors = []
+
+        # Close page if exists
+        try:
+            if self.page:
+                self.page.close()
+                self.page = None
+        except Exception as e:
+            cleanup_errors.append(f"Error closing page: {e}")
+
+        # Close context if exists
         try:
             if self.context:
                 self.context.close()
+                self.context = None
+        except Exception as e:
+            cleanup_errors.append(f"Error closing context: {e}")
+
+        # Stop playwright if exists
+        try:
             if self.playwright:
                 self.playwright.stop()
-            self.logger.info("✓ Browser resources cleaned up")
+                self.playwright = None
         except Exception as e:
-            self.logger.error(f"Error cleaning up browser: {e}")
+            cleanup_errors.append(f"Error stopping playwright: {e}")
+
+        if cleanup_errors:
+            self.logger.warning(f"Browser cleanup completed with {len(cleanup_errors)} error(s): {'; '.join(cleanup_errors)}")
+        else:
+            self.logger.info("Browser resources cleaned up successfully")
 
 
 def main():

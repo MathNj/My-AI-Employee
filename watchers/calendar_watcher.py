@@ -162,7 +162,7 @@ class CalendarWatcher(BaseWatcher):
         # Build Google Calendar service
         try:
             self.service = build('calendar', 'v3', credentials=creds)
-            self.logger.info("✓ Google Calendar API authenticated successfully")
+            self.logger.info("[OK] Google Calendar API authenticated successfully")
             return True
         except Exception as e:
             self.logger.error(f"Error building Calendar service: {e}")
@@ -387,7 +387,7 @@ Add preparation notes and context here.
                 task_filename=task_filename
             )
 
-            self.logger.info(f"✓ Created task for event: {summary} (in {hours_until}h)")
+            self.logger.info(f"[OK] Created task for event: {summary} (in {hours_until}h)")
             return task_path
 
         except Exception as e:

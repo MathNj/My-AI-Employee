@@ -20,6 +20,100 @@ from abc import ABC, abstractmethod
 from datetime import datetime
 from typing import List, Optional, Any
 import json
+import platform
+from contextlib import contextmanager
+
+# Platform-specific imports for file locking
+if platform.system() == 'Windows':
+    import msvcrt
+    import ctypes
+    import ctypes.wintypes
+else:
+    import fcntl
+    import errno
+
+# Import path utilities
+try:
+    from path_utils import resolve_config_path, get_vault_path
+except ImportError:
+    # Fallback if path_utils not available
+    def resolve_config_path(path_str, config_type="watchers"):
+        base = Path(__file__).parent if config_type == "watchers" else Path(__file__).parent.parent
+        return (base / path_str).resolve()
+    def get_vault_path():
+        return Path(__file__).parent.parent.resolve()
+
+
+@contextmanager
+def file_lock(lock_file: Path, timeout=30):
+    """
+    Cross-platform file locking context manager.
+
+    Uses fcntl on Unix/Mac and msvcrt on Windows.
+
+    Args:
+        lock_file: Path to lock file
+        timeout: Maximum seconds to wait for lock (default: 30)
+
+    Raises:
+        TimeoutError: If lock cannot be acquired within timeout
+        IOError: If lock acquisition fails
+    """
+    lock_file.parent.mkdir(parents=True, exist_ok=True)
+
+    # Create/open lock file
+    f = open(lock_file, 'w')
+
+    try:
+        # Try to acquire lock with timeout
+        start_time = time.time()
+
+        while True:
+            try:
+                current_system = platform.system()
+
+                if current_system == 'Windows':
+                    # Windows locking - try to lock first byte
+                    msvcrt.locking(f.fileno(), msvcrt.LK_NBLCK, 1)
+                else:
+                    # Unix/Mac locking
+                    fcntl.lockf(f.fileno(), fcntl.LOCK_EX | fcntl.LOCK_NB)
+
+                # Lock acquired
+                break
+
+            except (IOError, OSError) as e:
+                # Lock not available
+                if time.time() - start_time >= timeout:
+                    raise TimeoutError(f"Could not acquire lock on {lock_file} after {timeout}s")
+
+                # Wait a bit before retrying
+                time.sleep(0.1)
+
+        # Yield with lock held
+        try:
+            yield f
+        finally:
+            # Release lock
+            try:
+                current_system = platform.system()
+
+                if current_system == 'Windows':
+                    # Windows unlock
+                    msvcrt.locking(f.fileno(), msvcrt.LK_UNLCK, 1)
+                else:
+                    # Unix/Mac unlock
+                    fcntl.lockf(f.fileno(), fcntl.LOCK_UN)
+            except:
+                pass  # Ignore errors during release
+
+    finally:
+        f.close()
+        # Try to remove lock file
+        try:
+            lock_file.unlink()
+        except:
+            pass
 
 
 class BaseWatcher(ABC):
@@ -150,8 +244,9 @@ class BaseWatcher(ABC):
                 self.processed_items = set()
 
     def _save_processed_items(self):
-        """Save processed item IDs to persistent storage."""
+        """Save processed item IDs to persistent storage with file locking."""
         processed_file = self.logs_path / f'{self.watcher_name.lower()}_processed.json'
+        lock_file = self.logs_path / f'.{self.watcher_name.lower()}_processed.lock'
 
         try:
             data = {
@@ -161,9 +256,13 @@ class BaseWatcher(ABC):
                 'items': list(self.processed_items)
             }
 
-            with open(processed_file, 'w', encoding='utf-8') as f:
-                json.dump(data, f, indent=2)
+            # Use file locking to prevent concurrent write conflicts
+            with file_lock(lock_file, timeout=10):
+                with open(processed_file, 'w', encoding='utf-8') as f:
+                    json.dump(data, f, indent=2)
 
+        except TimeoutError as e:
+            self.logger.warning(f"Timeout saving processed items (file locked): {e}")
         except Exception as e:
             self.logger.error(f"Error saving processed items: {e}")
 
@@ -196,7 +295,7 @@ class BaseWatcher(ABC):
         task_filename: Optional[str] = None
     ):
         """
-        Log a watcher action to the daily action log.
+        Log a watcher action to the daily action log with file locking.
 
         Args:
             action_type: Type of action (e.g., 'email_detected', 'file_detected')
@@ -205,6 +304,7 @@ class BaseWatcher(ABC):
         """
         log_date = datetime.now().strftime('%Y-%m-%d')
         log_file = self.logs_path / f'actions_{log_date}.json'
+        lock_file = self.logs_path / f'.actions_{log_date}.lock'
 
         log_entry = {
             "timestamp": datetime.now().isoformat(),
@@ -217,20 +317,24 @@ class BaseWatcher(ABC):
             log_entry["task_file"] = task_filename
 
         try:
-            # Read existing logs or create new list
-            if log_file.exists():
-                with open(log_file, 'r', encoding='utf-8') as f:
-                    logs = json.load(f)
-            else:
-                logs = []
+            # Use file locking to prevent concurrent write conflicts
+            with file_lock(lock_file, timeout=10):
+                # Read existing logs or create new list
+                if log_file.exists():
+                    with open(log_file, 'r', encoding='utf-8') as f:
+                        logs = json.load(f)
+                else:
+                    logs = []
 
-            # Append new entry
-            logs.append(log_entry)
+                # Append new entry
+                logs.append(log_entry)
 
-            # Write back
-            with open(log_file, 'w', encoding='utf-8') as f:
-                json.dump(logs, f, indent=2)
+                # Write back
+                with open(log_file, 'w', encoding='utf-8') as f:
+                    json.dump(logs, f, indent=2)
 
+        except TimeoutError as e:
+            self.logger.warning(f"Timeout writing to action log (file locked): {e}")
         except Exception as e:
             self.logger.error(f"Error writing to action log: {e}")
 

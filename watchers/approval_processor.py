@@ -19,6 +19,14 @@ if sys.platform == 'win32':
     except:
         pass
 
+# Import email sender for Gmail integration
+try:
+    from email_sender import EmailSender
+    EMAIL_SENDER_AVAILABLE = True
+except ImportError:
+    EMAIL_SENDER_AVAILABLE = False
+    logging.warning("Email sender not available - emails will require manual sending")
+
 # Configuration
 VAULT_PATH = Path(__file__).parent.parent
 APPROVED_PATH = VAULT_PATH / "Approved"
@@ -41,7 +49,7 @@ logger = logging.getLogger(__name__)
 
 
 class ApprovalProcessor:
-    """Process approved actions"""
+    """Process approved actions with email sending support"""
 
     def __init__(self):
         self.approved = APPROVED_PATH
@@ -55,15 +63,39 @@ class ApprovalProcessor:
         self.done.mkdir(exist_ok=True)
         self.failed.mkdir(exist_ok=True)
 
+        # Initialize email sender if available
+        self.email_sender = None
+        if EMAIL_SENDER_AVAILABLE:
+            vault_path = Path(__file__).parent.parent
+            creds_path = vault_path / 'watchers' / 'credentials' / 'credentials.json'
+            token_path = vault_path / 'watchers' / 'credentials' / 'token.json'
+
+            if creds_path.exists():
+                self.email_sender = EmailSender(str(creds_path), str(token_path))
+                logger.info("Email sender initialized")
+            else:
+                logger.warning("Gmail credentials not found - emails will require manual sending")
+        else:
+            logger.info("Email sender not available - emails will require manual sending")
+
         logger.info("ApprovalProcessor initialized")
         logger.info(f"  Monitoring: {self.approved}")
         logger.info(f"  Done: {self.done}")
 
     def get_approved_actions(self):
-        """Get all approved action files"""
+        """Get all approved action files including subdirectories"""
         try:
+            # Get all .md files in root
             action_files = list(self.approved.glob('*.md'))
-            return sorted(action_files, key=lambda x: x.stat().st_mtime)
+
+            # Get all .md files in subdirectories recursively
+            action_files.extend(self.approved.rglob('*.md'))
+
+            # Remove duplicates and sort
+            action_files = list(set(action_files))
+            action_files.sort(key=lambda x: x.stat().st_mtime)
+
+            return action_files
         except Exception as e:
             logger.error(f"Error reading approved actions: {e}")
             return []
@@ -99,7 +131,7 @@ class ApprovalProcessor:
 
         try:
             if action_type == 'email':
-                return self.execute_email(action_file, metadata)
+                return self.execute_email(action_file, metadata, content)
             elif action_type in ['linkedin_post', 'x_post', 'facebook_post', 'instagram_post']:
                 return self.execute_social_post(action_file, metadata, action_type)
             else:
@@ -114,18 +146,67 @@ class ApprovalProcessor:
             self.move_to_failed(action_file)
             return False
 
-    def execute_email(self, action_file, metadata):
-        """Execute email action (log only - requires SMTP/MCP)"""
-        to = metadata.get('to', 'unknown')
-        subject = metadata.get('subject', 'no subject')
+    def execute_email(self, action_file, metadata, content):
+        """
+        Execute email action using Gmail API
+
+        Reads email content from the approved action file and sends it.
+        """
+        to = metadata.get('to', metadata.get('recipient', ''))
+        subject = metadata.get('subject', '')
+        message_id = metadata.get('message_id', '')
+
+        # Extract email body from content (after frontmatter)
+        # Look for ## Email Reply or similar section
+        body_lines = []
+        in_reply_section = False
+        for line in content.split('\n'):
+            if line.startswith('## Email Reply') or line.startswith('## Reply'):
+                in_reply_section = True
+                continue
+            if in_reply_section and (line.startswith('#') or line.startswith('---')):
+                break
+            if in_reply_section:
+                body_lines.append(line)
+
+        body = '\n'.join(body_lines).strip()
+
+        # If no reply section, use entire content after frontmatter
+        if not body:
+            # Find content after frontmatter ends
+            parts = content.split('---', 2)
+            if len(parts) > 1:
+                body = parts[1].strip()
+            else:
+                body = content
 
         logger.info(f"  Email to: {to}")
         logger.info(f"  Subject: {subject}")
-        logger.info(f"  Note: Email sending requires manual action or SMTP setup")
 
-        # For now, just move to Done with note
-        self.move_to_done(action_file, note="Email requires manual sending")
-        return True
+        # Try to send via Gmail API
+        if self.email_sender and to and subject:
+            logger.info("  Attempting to send via Gmail API...")
+
+            result = self.email_sender.send_email(
+                to=to,
+                subject=subject,
+                body=body,
+                thread_id=message_id if message_id != 'unknown' else None
+            )
+
+            if result['success']:
+                self.move_to_done(action_file, note=f"Email sent successfully via Gmail API. Message ID: {result.get('message_id')}")
+                logger.info(f"  [OK] Email sent successfully!")
+                return True
+            else:
+                logger.error(f"  Failed to send email: {result.get('error')}")
+                logger.info("  Moving to Done with note for manual sending")
+                self.move_to_done(action_file, note=f"Email sending failed: {result.get('error')}\nPlease send manually:\nTo: {to}\nSubject: {subject}\n\n{body}")
+                return False
+        else:
+            logger.info("  Email sender not available - requires manual sending")
+            self.move_to_done(action_file, note="Email requires manual sending via Gmail\n\nPlease send:\nTo: {to}\nSubject: {subject}\n\n{body}")
+            return True
 
     def execute_social_post(self, action_file, metadata, platform):
         """Execute social media post (log only - already posted)"""
@@ -134,9 +215,14 @@ class ApprovalProcessor:
         return True
 
     def move_to_done(self, action_file, note=""):
-        """Move action file to Done"""
+        """Move action file to Done, preserving subdirectory structure"""
         try:
-            done_file = self.done / action_file.name
+            # Preserve subdirectory structure
+            relative_path = action_file.relative_to(self.approved)
+            done_file = self.done / relative_path
+
+            # Create parent directory if needed
+            done_file.parent.mkdir(parents=True, exist_ok=True)
 
             # Add completion note if needed
             if note:
@@ -147,7 +233,7 @@ class ApprovalProcessor:
             else:
                 action_file.rename(done_file)
 
-            logger.info(f"  Moved to Done: {done_file.name}")
+            logger.info(f"  Moved to Done: {relative_path}")
             return True
 
         except Exception as e:
@@ -155,11 +241,17 @@ class ApprovalProcessor:
             return False
 
     def move_to_failed(self, action_file):
-        """Move action file to Failed"""
+        """Move action file to Failed, preserving subdirectory structure"""
         try:
-            failed_file = self.failed / action_file.name
+            # Preserve subdirectory structure
+            relative_path = action_file.relative_to(self.approved)
+            failed_file = self.failed / relative_path
+
+            # Create parent directory if needed
+            failed_file.parent.mkdir(parents=True, exist_ok=True)
+
             action_file.rename(failed_file)
-            logger.info(f"  Moved to Failed: {failed_file.name}")
+            logger.info(f"  Moved to Failed: {relative_path}")
         except Exception as e:
             logger.error(f"Error moving to Failed: {e}")
 

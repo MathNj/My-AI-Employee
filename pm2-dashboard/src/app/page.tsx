@@ -21,11 +21,24 @@ interface LogEntry {
   message: string;
 }
 
+interface AdProduct {
+  id: number;
+  url: string;
+  title: string;
+  price: number;
+  category: string;
+  status: string;
+  days_out: number;
+  revenue_impact: number;
+  is_top_selling: boolean;
+  last_checked: string;
+}
+
 export default function Dashboard() {
   const [processes, setProcesses] = useState<Process[]>([]);
   const [logs, setLogs] = useState<LogEntry[]>([]);
   const [loading, setLoading] = useState(true);
-  const [activeTab, setActiveTab] = useState<'overview' | 'processes' | 'logs' | 'files' | 'metrics'>('overview');
+  const [activeTab, setActiveTab] = useState<'overview' | 'processes' | 'logs' | 'files' | 'metrics' | 'ad-management'>('overview');
   const [mounted, setMounted] = useState(false);
   const [lastUpdate, setLastUpdate] = useState<Date>(new Date());
   const [hoveredProcess, setHoveredProcess] = useState<number | null>(null);
@@ -50,6 +63,11 @@ export default function Dashboard() {
   const [cpuHistory, setCpuHistory] = useState<number[]>([]);
   const [memHistory, setMemHistory] = useState<number[]>([]);
 
+  // Ad management state
+  const [adProducts, setAdProducts] = useState<AdProduct[]>([]);
+  const [adSummary, setAdSummary] = useState<any>(null);
+  const [adLoading, setAdLoading] = useState(false);
+
   useEffect(() => {
     setMounted(true);
     fetchData();
@@ -63,6 +81,12 @@ export default function Dashboard() {
       fetchFiles(currentDir);
     }
   }, [activeTab, currentDir]);
+
+  useEffect(() => {
+    if (activeTab === 'ad-management') {
+      fetchAdData();
+    }
+  }, [activeTab]);
 
   const fetchData = async () => {
     try {
@@ -208,6 +232,29 @@ export default function Dashboard() {
     }
   };
 
+  const fetchAdData = async () => {
+    setAdLoading(true);
+    try {
+      const res = await fetch('/api/ad-data?action=products');
+      const data = await res.json();
+      setAdProducts(data.products || []);
+      setAdSummary(data.summary || null);
+    } catch (error) {
+      console.error('Error fetching ad data:', error);
+    } finally {
+      setAdLoading(false);
+    }
+  };
+
+  const refreshAdData = async () => {
+    try {
+      await fetch('/api/ad-data?action=refresh');
+      await fetchAdData();
+    } catch (error) {
+      console.error('Error refreshing ad data:', error);
+    }
+  };
+
   const formatBytes = (bytes: number): string => {
     if (!bytes) return '0 MB';
     const mb = bytes / (1024 * 1024);
@@ -230,7 +277,7 @@ export default function Dashboard() {
       case 'stopped': return 'text-red-400 border-red-400 bg-red-400/10';
       case 'stopping': return 'text-yellow-400 border-yellow-400 bg-yellow-400/10';
       case 'launching': return 'text-blue-400 border-blue-400 bg-blue-400/10';
-      default: return 'text-gray-400 border-gray-400 bg-gray-400/10';
+      default: return 'text-gray-100 border-gray-400 bg-gray-400/10';
     }
   };
 
@@ -239,7 +286,7 @@ export default function Dashboard() {
   const totalMem = processes.reduce((sum, p) => sum + p.memory, 0);
 
   return (
-    <div className="min-h-screen bg-black font-mono text-xs" style={{
+    <div className="min-h-screen bg-black font-mono text-lg" style={{
       fontFamily: 'JetBrains Mono, Fira Code, Roboto Mono, monospace'
     }}>
       {/* Animated background grid */}
@@ -266,8 +313,8 @@ export default function Dashboard() {
 
           {/* Header */}
           <div className="border-b border-cyan-900/50 p-3">
-            <div className="text-cyan-400 text-sm font-bold animate-wave">:: PM2_CONTROLLER ::</div>
-            <div className="text-gray-500 text-[10px] mt-1">DIGITAL EMPLOYEE OS v2.0</div>
+            <div className="text-cyan-400 text-lg font-bold animate-wave">:: PM2_CONTROLLER ::</div>
+            <div className="text-gray-300 text-[14px] mt-1">DIGITAL EMPLOYEE OS v2.0</div>
           </div>
 
           {/* Status Widget */}
@@ -275,20 +322,20 @@ export default function Dashboard() {
             <div className="flex items-center gap-2 mb-2">
               <div className={`w-2 h-2 rounded-full ${onlineCount > 0 ? 'bg-blue-400 animate-ping animate-glowPulse' : 'bg-red-400 animate-glowPulse'}`}></div>
               <div className={`w-2 h-2 rounded-full ${onlineCount > 0 ? 'bg-blue-400 animate-pulse' : 'bg-red-400 animate-pulse'}`}></div>
-              <span className="text-cyan-300 text-[10px] animate-flicker">SYSTEM_STATUS</span>
+              <span className="text-cyan-300 text-[14px] animate-flicker">SYSTEM_STATUS</span>
             </div>
-            <div className={`text-sm font-bold transition-all duration-300 ${onlineCount > 0 ? 'text-blue-400' : 'text-red-400'}`}>
+            <div className={`text-lg font-bold transition-all duration-300 ${onlineCount > 0 ? 'text-blue-400' : 'text-red-400'}`}>
               {onlineCount > 0 ? 'OPERATIONAL' : 'OFFLINE'}
             </div>
           </div>
 
           {/* Key Metrics */}
           <div className="border-b border-cyan-900/50 p-3 flex-1 overflow-auto">
-            <div className="text-cyan-400 text-[10px] mb-3">:: SYSTEM_METRICS ::</div>
+            <div className="text-cyan-400 text-[14px] mb-3">:: SYSTEM_METRICS ::</div>
 
             <div className="space-y-3">
               <div className="group">
-                <div className="flex justify-between text-gray-400 text-[10px] mb-1">
+                <div className="flex justify-between text-gray-100 text-[14px] mb-1">
                   <span>PROCESSES</span>
                   <span className="text-cyan-300 group-hover:text-cyan-200 transition-colors">{processes.length}</span>
                 </div>
@@ -303,7 +350,7 @@ export default function Dashboard() {
               </div>
 
               <div className="group">
-                <div className="flex justify-between text-gray-400 text-[10px] mb-1">
+                <div className="flex justify-between text-gray-100 text-[14px] mb-1">
                   <span>ONLINE</span>
                   <span className="text-blue-400 group-hover:text-blue-300 transition-colors">{onlineCount}</span>
                 </div>
@@ -318,7 +365,7 @@ export default function Dashboard() {
               </div>
 
               <div className="group">
-                <div className="flex justify-between text-gray-400 text-[10px] mb-1">
+                <div className="flex justify-between text-gray-100 text-[14px] mb-1">
                   <span>CPU_LOAD</span>
                   <span className="text-yellow-400 group-hover:text-yellow-300 transition-colors">{totalCpu.toFixed(1)}%</span>
                 </div>
@@ -333,7 +380,7 @@ export default function Dashboard() {
               </div>
 
               <div className="group">
-                <div className="flex justify-between text-gray-400 text-[10px] mb-1">
+                <div className="flex justify-between text-gray-100 text-[14px] mb-1">
                   <span>MEMORY</span>
                   <span className="text-purple-400 group-hover:text-purple-300 transition-colors">{formatBytes(totalMem)}</span>
                 </div>
@@ -350,10 +397,10 @@ export default function Dashboard() {
 
             {/* Resource Allocation */}
             <div className="mt-4 p-2 border border-gray-800 rounded bg-black/30">
-              <div className="text-cyan-400 text-[9px] mb-2">:: RESOURCE_ALLOCATION ::</div>
+              <div className="text-cyan-400 text-[13px] mb-2">:: RESOURCE_ALLOCATION ::</div>
               <div className="space-y-2">
                 <div className="flex items-center justify-between">
-                  <span className="text-gray-500 text-[8px]">SYSTEM</span>
+                  <span className="text-gray-300 text-[14px]">SYSTEM</span>
                   <div className="flex gap-1">
                     <div className="w-2 h-2 bg-cyan-400 rounded animate-pulse"></div>
                     <div className="w-2 h-2 bg-cyan-400 rounded animate-pulse" style={{ animationDelay: '0.2s' }}></div>
@@ -361,14 +408,14 @@ export default function Dashboard() {
                   </div>
                 </div>
                 <div className="flex items-center justify-between">
-                  <span className="text-gray-500 text-[8px]">USER</span>
+                  <span className="text-gray-300 text-[14px]">USER</span>
                   <div className="flex gap-1">
                     <div className="w-2 h-2 bg-blue-400 rounded animate-pulse"></div>
                     <div className="w-2 h-2 bg-blue-400 rounded animate-pulse" style={{ animationDelay: '0.3s' }}></div>
                   </div>
                 </div>
                 <div className="flex items-center justify-between">
-                  <span className="text-gray-500 text-[8px]">IDLE</span>
+                  <span className="text-gray-300 text-[14px]">IDLE</span>
                   <div className="w-2 h-2 bg-gray-600 rounded"></div>
                 </div>
               </div>
@@ -376,17 +423,17 @@ export default function Dashboard() {
 
             {/* Active Processes List */}
             <div className="mt-4">
-              <div className="text-cyan-400 text-[10px] mb-2">:: ACTIVE_PROCESSES ::</div>
+              <div className="text-cyan-400 text-[14px] mb-2">:: ACTIVE_PROCESSES ::</div>
               <div className="space-y-1">
                 {processes.slice(0, 8).map(p => (
                   <div
                     key={p.id}
-                    className="flex items-center gap-2 text-[10px] p-1.5 rounded border border-transparent hover:border-cyan-500/30 hover:bg-cyan-950/30 transition-all cursor-pointer group"
+                    className="flex items-center gap-2 text-[14px] p-1.5 rounded border border-transparent hover:border-cyan-500/30 hover:bg-cyan-950/30 transition-all cursor-pointer group"
                     onMouseEnter={() => setHoveredProcess(p.id)}
                     onMouseLeave={() => setHoveredProcess(null)}
                   >
                     <div className={`w-1.5 h-1.5 rounded-full ${p.status === 'online' ? 'bg-blue-400 animate-pulse' : 'bg-red-400'}`}></div>
-                    <span className="text-gray-400 flex-1 truncate group-hover:text-cyan-300 transition-colors">{p.name}</span>
+                    <span className="text-gray-100 flex-1 truncate group-hover:text-cyan-300 transition-colors">{p.name}</span>
                     <span className={`text-cyan-300 transition-all duration-300 ${animatingProcesses.has(p.id) ? 'scale-125 font-bold text-yellow-400' : ''}`}>{p.cpu.toFixed(0)}%</span>
                   </div>
                 ))}
@@ -395,21 +442,21 @@ export default function Dashboard() {
 
             {/* Quick Actions */}
             <div className="mt-4">
-              <div className="text-cyan-400 text-[10px] mb-2">:: QUICK_ACTIONS ::</div>
+              <div className="text-cyan-400 text-[14px] mb-2">:: QUICK_ACTIONS ::</div>
               <div className="grid grid-cols-2 gap-2">
-                <button className="p-2 border border-gray-800 rounded bg-black/30 hover:border-cyan-500/50 hover:bg-cyan-950/20 transition-all text-[8px] text-gray-400 hover:text-cyan-300 group">
+                <button className="p-2 border border-gray-800 rounded bg-black/30 hover:border-cyan-500/50 hover:bg-cyan-950/20 transition-all text-[14px] text-gray-100 hover:text-cyan-300 group">
                   <div className="text-lg mb-1 group-hover:scale-110 transition-transform text-cyan-300">⟳</div>
                   REFRESH
                 </button>
-                <button className="p-2 border border-gray-800 rounded bg-black/30 hover:border-blue-500/50 hover:bg-blue-950/20 transition-all text-[8px] text-gray-400 hover:text-blue-300 group">
+                <button className="p-2 border border-gray-800 rounded bg-black/30 hover:border-blue-500/50 hover:bg-blue-950/20 transition-all text-[14px] text-gray-100 hover:text-blue-300 group">
                   <div className="text-lg mb-1 group-hover:scale-110 transition-transform text-blue-300">▶</div>
                   START ALL
                 </button>
-                <button className="p-2 border border-gray-800 rounded bg-black/30 hover:border-yellow-500/50 hover:bg-yellow-950/20 transition-all text-[8px] text-gray-400 hover:text-yellow-300 group">
+                <button className="p-2 border border-gray-800 rounded bg-black/30 hover:border-yellow-500/50 hover:bg-yellow-950/20 transition-all text-[14px] text-gray-100 hover:text-yellow-300 group">
                   <div className="text-lg mb-1 group-hover:scale-110 transition-transform text-yellow-300">❚❚</div>
                   PAUSE
                 </button>
-                <button className="p-2 border border-gray-800 rounded bg-black/30 hover:border-red-500/50 hover:bg-red-950/20 transition-all text-[8px] text-gray-400 hover:text-red-300 group">
+                <button className="p-2 border border-gray-800 rounded bg-black/30 hover:border-red-500/50 hover:bg-red-950/20 transition-all text-[14px] text-gray-100 hover:text-red-300 group">
                   <div className="text-lg mb-1 group-hover:scale-110 transition-transform text-red-300">■</div>
                   STOP ALL
                 </button>
@@ -418,7 +465,7 @@ export default function Dashboard() {
           </div>
 
           {/* Footer */}
-          <div className="border-t border-cyan-900/50 p-2 text-gray-600 text-[9px]">
+          <div className="border-t border-cyan-900/50 p-2 text-gray-200 text-[13px]">
             <div>LATENCY: {mounted ? (Math.random() * 2 + 0.5).toFixed(2) : '--.--'}ms</div>
             <div>UPTIME: {mounted ? formatUptime(Date.now() / 1000) : '--:--'}</div>
           </div>
@@ -429,14 +476,14 @@ export default function Dashboard() {
 
           {/* Navigation Tabs */}
           <div className="border-b border-cyan-900/50 flex">
-            {(['overview', 'processes', 'logs', 'files', 'metrics'] as const).map((tab, i) => (
+            {(['overview', 'processes', 'logs', 'files', 'metrics', 'ad-management'] as const).map((tab, i) => (
               <button
                 key={tab}
                 onClick={() => setActiveTab(tab)}
-                className={`px-4 py-3 text-[10px] font-bold transition-all duration-300 relative flex-1 hover:bg-cyan-900/10 ${
+                className={`px-4 py-3 text-[14px] font-bold transition-all duration-300 relative flex-1 hover:bg-cyan-900/10 ${
                   activeTab === tab
                     ? 'bg-cyan-500/20 text-cyan-400'
-                    : 'text-gray-500 hover:text-gray-300'
+                    : 'text-gray-300 hover:text-gray-300'
                 }`}
                 style={{ animationDelay: `${i * 0.05}s` }}
               >
@@ -461,27 +508,27 @@ export default function Dashboard() {
                 <div className="grid grid-cols-4 gap-3 mb-4">
                   <div className="bg-gray-900/50 border border-cyan-500/30 rounded-lg p-2 backdrop-blur-sm hover:border-cyan-400 hover:shadow-[0_0_20px_rgba(6,182,212,0.3)] transition-all duration-300 group relative overflow-hidden">
                     <div className="absolute inset-0 bg-gradient-to-r from-transparent via-cyan-400/10 to-transparent -translate-x-full group-hover:animate-[shimmer_1.5s_infinite]"></div>
-                    <div className="text-gray-500 text-[8px] mb-1 relative z-10">PROCESSES</div>
+                    <div className="text-gray-300 text-[14px] mb-1 relative z-10">PROCESSES</div>
                     <div className="text-xl font-bold text-cyan-400 group-hover:scale-110 transition-transform relative z-10">{processes.length}</div>
-                    <div className="text-[7px] text-gray-600 mt-1 relative z-10">Total monitored</div>
+                    <div className="text-[7px] text-gray-200 mt-1 relative z-10">Total monitored</div>
                   </div>
                   <div className="bg-gray-900/50 border border-blue-500/30 rounded-lg p-2 backdrop-blur-sm hover:border-blue-400 hover:shadow-[0_0_20px_rgba(74,222,128,0.3)] transition-all duration-300 group relative overflow-hidden animate-fadeIn" style={{ animationDelay: '0.1s' }}>
                     <div className="absolute inset-0 bg-gradient-to-r from-transparent via-green-400/10 to-transparent -translate-x-full group-hover:animate-[shimmer_1.5s_infinite]"></div>
-                    <div className="text-gray-500 text-[8px] mb-1 relative z-10">ONLINE</div>
+                    <div className="text-gray-300 text-[14px] mb-1 relative z-10">ONLINE</div>
                     <div className="text-xl font-bold text-blue-400 group-hover:scale-110 transition-transform relative z-10">{onlineCount}</div>
-                    <div className="text-[7px] text-gray-600 mt-1 relative z-10">Active processes</div>
+                    <div className="text-[7px] text-gray-200 mt-1 relative z-10">Active processes</div>
                   </div>
                   <div className="bg-gray-900/50 border border-yellow-500/30 rounded-lg p-2 backdrop-blur-sm hover:border-yellow-400 hover:shadow-[0_0_20px_rgba(250,204,21,0.3)] transition-all duration-300 group relative overflow-hidden animate-fadeIn" style={{ animationDelay: '0.2s' }}>
                     <div className="absolute inset-0 bg-gradient-to-r from-transparent via-yellow-400/10 to-transparent -translate-x-full group-hover:animate-[shimmer_1.5s_infinite]"></div>
-                    <div className="text-gray-500 text-[8px] mb-1 relative z-10">CPU_USAGE</div>
+                    <div className="text-gray-300 text-[14px] mb-1 relative z-10">CPU_USAGE</div>
                     <div className="text-xl font-bold text-yellow-400 group-hover:scale-110 transition-transform relative z-10">{totalCpu.toFixed(1)}%</div>
-                    <div className="text-[7px] text-gray-600 mt-1 relative z-10">Total load</div>
+                    <div className="text-[7px] text-gray-200 mt-1 relative z-10">Total load</div>
                   </div>
                   <div className="bg-gray-900/50 border border-purple-500/30 rounded-lg p-2 backdrop-blur-sm hover:border-purple-400 hover:shadow-[0_0_20px_rgba(168,85,247,0.3)] transition-all duration-300 group relative overflow-hidden animate-fadeIn" style={{ animationDelay: '0.3s' }}>
                     <div className="absolute inset-0 bg-gradient-to-r from-transparent via-purple-400/10 to-transparent -translate-x-full group-hover:animate-[shimmer_1.5s_infinite]"></div>
-                    <div className="text-gray-500 text-[8px] mb-1 relative z-10">MEMORY</div>
+                    <div className="text-gray-300 text-[14px] mb-1 relative z-10">MEMORY</div>
                     <div className="text-xl font-bold text-purple-400 group-hover:scale-110 transition-transform relative z-10">{(totalMem / 1024 / 1024 / 1024).toFixed(2)} GB</div>
-                    <div className="text-[7px] text-gray-600 mt-1 relative z-10">System memory</div>
+                    <div className="text-[7px] text-gray-200 mt-1 relative z-10">System memory</div>
                   </div>
                 </div>
 
@@ -498,22 +545,22 @@ export default function Dashboard() {
                         ⚙️
                       </div>
                       <div>
-                        <h3 className="text-sm font-bold text-cyan-400 group-hover:scale-105 transition-transform">PM2 Control</h3>
-                        <p className="text-gray-500 text-[8px]">Process monitoring & management</p>
+                        <h3 className="text-lg font-bold text-cyan-400 group-hover:scale-105 transition-transform">PM2 Control</h3>
+                        <p className="text-gray-300 text-[14px]">Process monitoring & management</p>
                       </div>
                     </div>
-                    <div className="grid grid-cols-3 gap-2 text-[8px] relative z-10">
+                    <div className="grid grid-cols-3 gap-2 text-[14px] relative z-10">
                       <div className="flex items-center gap-1 group-hover:animate-slideIn" style={{ animationDelay: '0.1s' }}>
                         <div className="w-1 h-1 rounded-full bg-cyan-400 animate-pulse"></div>
-                        <span className="text-gray-400">Start/Stop</span>
+                        <span className="text-gray-100">Start/Stop</span>
                       </div>
                       <div className="flex items-center gap-1 group-hover:animate-slideIn" style={{ animationDelay: '0.2s' }}>
                         <div className="w-1 h-1 rounded-full bg-blue-400 animate-pulse"></div>
-                        <span className="text-gray-400">Logs</span>
+                        <span className="text-gray-100">Logs</span>
                       </div>
                       <div className="flex items-center gap-1 group-hover:animate-slideIn" style={{ animationDelay: '0.3s' }}>
                         <div className="w-1 h-1 rounded-full bg-purple-400 animate-pulse"></div>
-                        <span className="text-gray-400">Files</span>
+                        <span className="text-gray-100">Files</span>
                       </div>
                     </div>
                   </div>
@@ -530,22 +577,22 @@ export default function Dashboard() {
                         ◫
                       </div>
                       <div>
-                        <h3 className="text-sm font-bold text-orange-400 group-hover:scale-105 transition-transform">Ad Management</h3>
-                        <p className="text-gray-500 text-[8px]">E-commerce monitoring dashboard</p>
+                        <h3 className="text-lg font-bold text-orange-400 group-hover:scale-105 transition-transform">Ad Management</h3>
+                        <p className="text-gray-300 text-[14px]">E-commerce monitoring dashboard</p>
                       </div>
                     </div>
-                    <div className="grid grid-cols-3 gap-2 text-[8px] relative z-10">
+                    <div className="grid grid-cols-3 gap-2 text-[14px] relative z-10">
                       <div className="flex items-center gap-1 group-hover:animate-slideIn" style={{ animationDelay: '0.1s' }}>
                         <div className="w-1 h-1 rounded-full bg-orange-400 animate-pulse"></div>
-                        <span className="text-gray-400">Stockouts</span>
+                        <span className="text-gray-100">Stockouts</span>
                       </div>
                       <div className="flex items-center gap-1 group-hover:animate-slideIn" style={{ animationDelay: '0.2s' }}>
                         <div className="w-1 h-1 rounded-full bg-yellow-400 animate-pulse"></div>
-                        <span className="text-gray-400">Revenue</span>
+                        <span className="text-gray-100">Revenue</span>
                       </div>
                       <div className="flex items-center gap-1 group-hover:animate-slideIn" style={{ animationDelay: '0.3s' }}>
                         <div className="w-1 h-1 rounded-full bg-red-400 animate-pulse"></div>
-                        <span className="text-gray-400">Products</span>
+                        <span className="text-gray-100">Products</span>
                       </div>
                     </div>
                   </a>
@@ -556,10 +603,10 @@ export default function Dashboard() {
                   {/* Active Processes */}
                   <div className="bg-gray-900/50 border border-gray-800 rounded-lg p-3 backdrop-blur-sm hover:border-cyan-500/30 transition-all duration-300 animate-fadeIn flex flex-col min-h-0" style={{ animationDelay: '0.6s' }}>
                     <div className="flex items-center justify-between mb-2 shrink-0">
-                      <h3 className="text-xs font-bold text-gray-300">:: ACTIVE_PROCESSES ::</h3>
+                      <h3 className="text-lg font-bold text-gray-300">:: ACTIVE_PROCESSES ::</h3>
                       <button
                         onClick={() => setActiveTab('processes')}
-                        className="text-cyan-400 text-[8px] hover:text-cyan-300 hover:underline hover:scale-105 transition-transform"
+                        className="text-cyan-400 text-[14px] hover:text-cyan-300 hover:underline hover:scale-105 transition-transform"
                       >
                         VIEW ALL →
                       </button>
@@ -567,10 +614,10 @@ export default function Dashboard() {
                     {loading ? (
                       <div className="text-center py-4">
                         <div className="text-3xl text-cyan-400 animate-spin inline-block" style={{ animationDuration: '1s' }}>◉</div>
-                        <div className="text-cyan-700 mt-3 animate-pulse text-[10px]">LOADING...</div>
+                        <div className="text-cyan-700 mt-3 animate-pulse text-[14px]">LOADING...</div>
                       </div>
                     ) : processes.length === 0 ? (
-                      <div className="text-gray-600 text-center py-4 animate-pulse text-[10px]">[ NO PROCESSES ]</div>
+                      <div className="text-gray-200 text-center py-4 animate-pulse text-[14px]">[ NO PROCESSES ]</div>
                     ) : (
                       <div className="space-y-1.5 overflow-auto flex-1">
                         {processes.slice(0, 5).map((p, i) => (
@@ -582,9 +629,9 @@ export default function Dashboard() {
                           >
                             <div className="flex items-center gap-2">
                               <div className={`w-1 h-1 rounded-full ${p.status === 'online' ? 'bg-blue-400 animate-pulse' : 'bg-red-400'}`}></div>
-                              <span className="font-medium text-white text-[10px] group-hover:text-cyan-300 transition-colors">{p.name}</span>
+                              <span className="font-medium text-white text-[14px] group-hover:text-cyan-300 transition-colors">{p.name}</span>
                             </div>
-                            <div className="flex items-center gap-3 text-[8px] text-gray-500">
+                            <div className="flex items-center gap-3 text-[14px] text-gray-300">
                               <span>CPU: <span className="text-yellow-400">{p.cpu.toFixed(1)}%</span></span>
                               <span>MEM: <span className="text-purple-400">{formatBytes(p.memory)}</span></span>
                             </div>
@@ -597,18 +644,18 @@ export default function Dashboard() {
                   {/* Recent Logs */}
                   <div className="bg-gray-900/50 border border-gray-800 rounded-lg p-3 backdrop-blur-sm hover:border-cyan-500/30 transition-all duration-300 animate-fadeIn flex flex-col min-h-0" style={{ animationDelay: '0.7s' }}>
                     <div className="flex items-center justify-between mb-2 shrink-0">
-                      <h3 className="text-xs font-bold text-gray-300">:: RECENT_LOGS ::</h3>
+                      <h3 className="text-lg font-bold text-gray-300">:: RECENT_LOGS ::</h3>
                       <button
                         onClick={() => setActiveTab('logs')}
-                        className="text-cyan-400 text-[8px] hover:text-cyan-300 hover:underline hover:scale-105 transition-transform"
+                        className="text-cyan-400 text-[14px] hover:text-cyan-300 hover:underline hover:scale-105 transition-transform"
                       >
                         VIEW ALL →
                       </button>
                     </div>
                     {logs.length === 0 ? (
-                      <div className="text-gray-600 text-center py-4 animate-pulse text-[10px]">[ NO LOGS ]</div>
+                      <div className="text-gray-200 text-center py-4 animate-pulse text-[14px]">[ NO LOGS ]</div>
                     ) : (
-                      <div className="space-y-1 font-mono text-[8px] overflow-auto flex-1">
+                      <div className="space-y-1 font-mono text-[14px] overflow-auto flex-1">
                         {logs.slice(0, 8).map((log, i) => (
                           <div
                             key={i}
@@ -622,7 +669,7 @@ export default function Dashboard() {
                                 '#06b6d4'
                             }}
                           >
-                            <span className="text-gray-600 shrink-0">{log.timestamp.split('T')[1]?.substring(0, 8) || log.timestamp}</span>
+                            <span className="text-gray-200 shrink-0">{log.timestamp.split('T')[1]?.substring(0, 8) || log.timestamp}</span>
                             <span className={`px-1 py-0.5 text-[7px] rounded shrink-0 ${
                               log.level === 'error'
                                 ? 'bg-red-500/20 text-red-400'
@@ -634,7 +681,7 @@ export default function Dashboard() {
                             }`}>
                               {log.process}
                             </span>
-                            <span className="text-gray-400 break-all">{log.message.substring(0, 40)}{log.message.length > 40 ? '...' : ''}</span>
+                            <span className="text-gray-100 break-all">{log.message.substring(0, 40)}{log.message.length > 40 ? '...' : ''}</span>
                           </div>
                         ))}
                       </div>
@@ -646,29 +693,29 @@ export default function Dashboard() {
                 <div className="mt-3 pt-2 border-t border-gray-800 shrink-0 animate-fadeIn" style={{ animationDelay: '1.2s' }}>
                   <div className="grid grid-cols-3 gap-3 text-center">
                     <div className="group">
-                      <div className="text-gray-600 text-[8px] mb-1 group-hover:text-cyan-400 transition-colors">SYSTEM_HEALTH</div>
-                      <div className={`text-xs font-bold transition-all duration-300 ${onlineCount === processes.length && processes.length > 0 ? 'text-blue-400 group-hover:scale-110' : onlineCount > 0 ? 'text-yellow-400 group-hover:scale-110' : 'text-red-400 group-hover:scale-110'}`}>
+                      <div className="text-gray-200 text-[14px] mb-1 group-hover:text-cyan-400 transition-colors">SYSTEM_HEALTH</div>
+                      <div className={`text-lg font-bold transition-all duration-300 ${onlineCount === processes.length && processes.length > 0 ? 'text-blue-400 group-hover:scale-110' : onlineCount > 0 ? 'text-yellow-400 group-hover:scale-110' : 'text-red-400 group-hover:scale-110'}`}>
                         {onlineCount === processes.length && processes.length > 0 ? 'OPTIMAL' : onlineCount > 0 ? 'WARNING' : 'CRITICAL'}
                       </div>
                     </div>
                     <div className="group">
-                      <div className="text-gray-600 text-[8px] mb-1 group-hover:text-cyan-400 transition-colors">TOTAL_RESTARTS</div>
-                      <div className="text-xs font-bold text-yellow-400 group-hover:scale-110 transition-transform">{processes.reduce((sum, p) => sum + (p.restarts || 0), 0)}</div>
+                      <div className="text-gray-200 text-[14px] mb-1 group-hover:text-cyan-400 transition-colors">TOTAL_RESTARTS</div>
+                      <div className="text-lg font-bold text-yellow-400 group-hover:scale-110 transition-transform">{processes.reduce((sum, p) => sum + (p.restarts || 0), 0)}</div>
                     </div>
                     <div className="group">
-                      <div className="text-gray-600 text-[8px] mb-1 group-hover:text-cyan-400 transition-colors">UPTIME_RATIO</div>
-                      <div className="text-xs font-bold text-blue-400 group-hover:scale-110 transition-transform">
+                      <div className="text-gray-200 text-[14px] mb-1 group-hover:text-cyan-400 transition-colors">UPTIME_RATIO</div>
+                      <div className="text-lg font-bold text-blue-400 group-hover:scale-110 transition-transform">
                         {processes.length > 0 ? ((onlineCount / processes.length) * 100).toFixed(0) : '0'}%
                       </div>
                     </div>
                   </div>
-                  <div className="text-center text-gray-700 text-[8px] mt-2">
+                  <div className="text-center text-gray-500 text-[14px] mt-2">
                     <div className="group inline-block">
                       <span className="group-hover:text-cyan-400 transition-colors">Digital Employee OS v2.0</span>
                       <span className="mx-2">|</span>
                       <span className="group-hover:text-cyan-400 transition-colors">Auto-refresh: 3s</span>
                       <span className="mx-2">|</span>
-                      <span className="text-gray-600">{mounted ? lastUpdate.toLocaleTimeString() : '--:--:--'}</span>
+                      <span className="text-gray-200">{mounted ? lastUpdate.toLocaleTimeString() : '--:--:--'}</span>
                     </div>
                   </div>
                 </div>
@@ -678,16 +725,16 @@ export default function Dashboard() {
               <div>
                 {/* Header with stats */}
                 <div className="flex items-center justify-between mb-4">
-                  <div className="text-cyan-400 text-sm font-bold">:: PROCESS_CONTROL ::</div>
-                  <div className="flex items-center gap-4 text-[9px]">
+                  <div className="text-cyan-400 text-lg font-bold">:: PROCESS_CONTROL ::</div>
+                  <div className="flex items-center gap-4 text-[13px]">
                     <div className="flex items-center gap-1">
                       <div className={`w-1.5 h-1.5 rounded-full ${onlineCount > 0 ? 'bg-blue-400 animate-pulse' : 'bg-red-400'}`}></div>
-                      <span className="text-gray-500">{onlineCount} ONLINE</span>
+                      <span className="text-gray-300">{onlineCount} ONLINE</span>
                     </div>
-                    <div className="text-gray-500">|</div>
+                    <div className="text-gray-300">|</div>
                     <button
                       onClick={() => setProcessViewMode(processViewMode === 'grid' ? 'list' : 'grid')}
-                      className="flex items-center gap-1 px-2 py-1 border border-gray-700 rounded hover:border-cyan-500/50 transition-all text-gray-400 hover:text-cyan-300"
+                      className="flex items-center gap-1 px-2 py-1 border border-gray-700 rounded hover:border-cyan-500/50 transition-all text-gray-100 hover:text-cyan-300"
                     >
                       [{processViewMode === 'grid' ? '▦' : '☰'} {processViewMode.toUpperCase()}]
                     </button>
@@ -700,7 +747,7 @@ export default function Dashboard() {
                     <div className="text-cyan-700 mt-4 animate-pulse">INITIALIZING...</div>
                   </div>
                 ) : processes.length === 0 ? (
-                  <div className="text-center py-20 text-gray-600 animate-pulse">
+                  <div className="text-center py-20 text-gray-200 animate-pulse">
                     [ NO_PROCESSES_DETECTED ]
                   </div>
                 ) : (
@@ -737,14 +784,14 @@ export default function Dashboard() {
                                 <div className={`w-2 h-2 rounded-full ${
                                   p.status === 'online' ? 'bg-blue-400 animate-pulse' : 'bg-red-400'
                                 }`}></div>
-                                <h3 className="text-sm font-bold text-white">{p.name}</h3>
-                                <span className={`px-2 py-0.5 text-[8px] font-bold rounded ${
+                                <h3 className="text-lg font-bold text-white">{p.name}</h3>
+                                <span className={`px-2 py-0.5 text-[14px] font-bold rounded ${
                                   p.status === 'online' ? 'bg-blue-500/20 text-blue-400' : 'bg-red-500/20 text-red-400'
                                 }`}>
                                   {p.status}
                                 </span>
                               </div>
-                              <div className="flex gap-4 text-[10px] text-gray-500">
+                              <div className="flex gap-4 text-[14px] text-gray-300">
                                 <span>PID: <span className="text-cyan-400 font-mono">{p.pid}</span></span>
                                 <span>ID: <span className="text-cyan-400 font-mono">{p.id}</span></span>
                                 <span>MODE: <span className="text-gray-300">{p.mode === 'fork_mode' ? 'FORK' : 'CLUSTER'}</span></span>
@@ -752,7 +799,7 @@ export default function Dashboard() {
                             </div>
 
                             {/* Status Badge */}
-                            <div className={`text-xs font-bold px-3 py-1.5 rounded border ${getStatusColor(p.status)} ml-4`}>
+                            <div className={`text-lg font-bold px-3 py-1.5 rounded border ${getStatusColor(p.status)} ml-4`}>
                               {p.status.toUpperCase()}
                             </div>
                           </div>
@@ -762,8 +809,8 @@ export default function Dashboard() {
                             {/* CPU */}
                             <div className="bg-black/50 rounded p-2 border border-gray-800">
                               <div className="flex items-center justify-between mb-1">
-                                <span className="text-gray-600 text-[8px]">CPU</span>
-                                <span className={`text-xs font-bold ${
+                                <span className="text-gray-200 text-[14px]">CPU</span>
+                                <span className={`text-lg font-bold ${
                                   p.cpu > 50 ? 'text-red-400' : p.cpu > 20 ? 'text-yellow-400' : 'text-blue-400'
                                 }`}>
                                   {p.cpu.toFixed(1)}%
@@ -782,8 +829,8 @@ export default function Dashboard() {
                             {/* Memory */}
                             <div className="bg-black/50 rounded p-2 border border-gray-800">
                               <div className="flex items-center justify-between mb-1">
-                                <span className="text-gray-600 text-[8px]">MEMORY</span>
-                                <span className="text-xs font-bold text-purple-400">
+                                <span className="text-gray-200 text-[14px]">MEMORY</span>
+                                <span className="text-lg font-bold text-purple-400">
                                   {formatBytes(p.memory)}
                                 </span>
                               </div>
@@ -798,12 +845,12 @@ export default function Dashboard() {
                             {/* Uptime */}
                             <div className="bg-black/50 rounded p-2 border border-gray-800">
                               <div className="flex items-center justify-between mb-1">
-                                <span className="text-gray-600 text-[8px]">UPTIME</span>
-                                <span className="text-xs font-bold text-cyan-400">
+                                <span className="text-gray-200 text-[14px]">UPTIME</span>
+                                <span className="text-lg font-bold text-cyan-400">
                                   {formatUptime(p.uptime)}
                                 </span>
                               </div>
-                              <div className="text-[9px] text-gray-500 mt-1">
+                              <div className="text-[13px] text-gray-300 mt-1">
                                 Restarts: {p.restarts}
                               </div>
                             </div>
@@ -815,13 +862,13 @@ export default function Dashboard() {
                               <>
                                 <button
                                   onClick={() => handleProcessAction(p.id, 'restart')}
-                                  className="flex-1 px-3 py-2 bg-gradient-to-r from-cyan-500/20 to-blue-500/20 border border-cyan-500/50 text-cyan-400 hover:from-cyan-500/30 hover:to-blue-500/30 text-[9px] font-bold transition-all duration-200 hover:scale-105 active:scale-95"
+                                  className="flex-1 px-3 py-2 bg-gradient-to-r from-cyan-500/20 to-blue-500/20 border border-cyan-500/50 text-cyan-400 hover:from-cyan-500/30 hover:to-blue-500/30 text-[13px] font-bold transition-all duration-200 hover:scale-105 active:scale-95"
                                 >
                                   ↻ RESTART
                                 </button>
                                 <button
                                   onClick={() => handleProcessAction(p.id, 'stop')}
-                                  className="flex-1 px-3 py-2 bg-gradient-to-r from-red-500/20 to-orange-500/20 border border-red-500/50 text-red-400 hover:from-red-500/30 hover:to-orange-500/30 text-[9px] font-bold transition-all duration-200 hover:scale-105 active:scale-95"
+                                  className="flex-1 px-3 py-2 bg-gradient-to-r from-red-500/20 to-orange-500/20 border border-red-500/50 text-red-400 hover:from-red-500/30 hover:to-orange-500/30 text-[13px] font-bold transition-all duration-200 hover:scale-105 active:scale-95"
                                 >
                                   ◼ STOP
                                 </button>
@@ -829,7 +876,7 @@ export default function Dashboard() {
                             ) : (
                               <button
                                 onClick={() => handleProcessAction(p.id, 'start')}
-                                className="flex-1 px-3 py-2 bg-gradient-to-r from-blue-500/20 to-emerald-500/20 border border-blue-500/50 text-blue-400 hover:from-blue-500/30 hover:to-emerald-500/30 text-[9px] font-bold transition-all duration-200 hover:scale-105 active:scale-95"
+                                className="flex-1 px-3 py-2 bg-gradient-to-r from-blue-500/20 to-emerald-500/20 border border-blue-500/50 text-blue-400 hover:from-blue-500/30 hover:to-emerald-500/30 text-[13px] font-bold transition-all duration-200 hover:scale-105 active:scale-95"
                               >
                                 ▶ START
                               </button>
@@ -850,24 +897,24 @@ export default function Dashboard() {
 
             {activeTab === 'logs' && (
               <div>
-                <div className="text-cyan-400 text-sm font-bold mb-4">:: SYSTEM_LOGS ::</div>
+                <div className="text-cyan-400 text-lg font-bold mb-4">:: SYSTEM_LOGS ::</div>
 
                 {/* Log Filters */}
                 <div className="mb-3 space-y-2">
                   {/* Level Filter */}
                   <div className="flex items-center gap-2 flex-wrap">
-                    <span className="text-gray-500 text-[9px]">LEVEL:</span>
+                    <span className="text-gray-300 text-[13px]">LEVEL:</span>
                     {(['all', 'info', 'error', 'warn', 'PM2'] as const).map((level) => (
                       <button
                         key={level}
                         onClick={() => setLogFilter(level)}
-                        className={`px-2 py-1 text-[9px] font-bold transition-all duration-200 ${
+                        className={`px-2 py-1 text-[13px] font-bold transition-all duration-200 ${
                           logFilter === level
                             ? level === 'error' ? 'bg-red-500/20 text-red-400 border border-red-500'
                             : level === 'warn' ? 'bg-yellow-500/20 text-yellow-400 border border-yellow-500'
                             : level === 'PM2' ? 'bg-purple-500/20 text-purple-400 border border-purple-500'
                             : 'bg-cyan-500/20 text-cyan-400 border border-cyan-500'
-                            : 'text-gray-500 border border-gray-700 hover:border-gray-500'
+                            : 'text-gray-300 border border-gray-700 hover:border-gray-500'
                         }`}
                       >
                         [{level.toUpperCase()}]
@@ -877,13 +924,13 @@ export default function Dashboard() {
 
                   {/* Process Filter */}
                   <div className="flex items-center gap-2 flex-wrap">
-                    <span className="text-gray-500 text-[9px]">PROCESS:</span>
+                    <span className="text-gray-300 text-[13px]">PROCESS:</span>
                     <button
                       onClick={() => setLogProcessFilter('all')}
-                      className={`px-2 py-1 text-[9px] font-bold transition-all duration-200 ${
+                      className={`px-2 py-1 text-[13px] font-bold transition-all duration-200 ${
                         logProcessFilter === 'all'
                           ? 'bg-cyan-500/20 text-cyan-400 border border-cyan-500'
-                          : 'text-gray-500 border border-gray-700 hover:border-gray-500'
+                          : 'text-gray-300 border border-gray-700 hover:border-gray-500'
                       }`}
                     >
                       [ALL]
@@ -892,10 +939,10 @@ export default function Dashboard() {
                       <button
                         key={proc}
                         onClick={() => setLogProcessFilter(proc)}
-                        className={`px-2 py-1 text-[9px] font-bold transition-all duration-200 ${
+                        className={`px-2 py-1 text-[13px] font-bold transition-all duration-200 ${
                           logProcessFilter === proc
                             ? 'bg-blue-500/20 text-blue-400 border border-blue-500'
-                            : 'text-gray-500 border border-gray-700 hover:border-gray-500'
+                            : 'text-gray-300 border border-gray-700 hover:border-gray-500'
                         }`}
                       >
                         [{proc.toUpperCase()}]
@@ -905,9 +952,9 @@ export default function Dashboard() {
                 </div>
 
                 {/* Logs Display */}
-                <div className="border border-gray-800 bg-black p-3 h-[450px] overflow-auto text-[10px] font-mono rounded">
+                <div className="border border-gray-800 bg-black p-3 h-[450px] overflow-auto text-[14px] font-mono rounded">
                   {logs.length === 0 ? (
-                    <div className="text-gray-600 animate-pulse">[ NO_LOGS_AVAILABLE ]</div>
+                    <div className="text-gray-200 animate-pulse">[ NO_LOGS_AVAILABLE ]</div>
                   ) : (
                     <div className="space-y-1">
                       {logs
@@ -931,8 +978,8 @@ export default function Dashboard() {
                             style={{ animationDelay: `${Math.min(i * 20, 500)}ms` }}
                           >
                             <div className="flex items-start gap-2">
-                              <span className="text-gray-600 shrink-0">{log.timestamp.split('T')[1]?.substring(0, 8) || log.timestamp}</span>
-                              <span className={`px-1.5 py-0.5 text-[8px] font-bold rounded shrink-0 ${
+                              <span className="text-gray-200 shrink-0">{log.timestamp.split('T')[1]?.substring(0, 8) || log.timestamp}</span>
+                              <span className={`px-1.5 py-0.5 text-[14px] font-bold rounded shrink-0 ${
                                 log.level === 'error'
                                   ? 'bg-red-500/20 text-red-400'
                                   : log.level === 'warn'
@@ -954,8 +1001,8 @@ export default function Dashboard() {
                 </div>
 
                 {/* Log Stats */}
-                <div className="mt-2 flex items-center justify-between text-[9px]">
-                  <span className="text-gray-500">
+                <div className="mt-2 flex items-center justify-between text-[13px]">
+                  <span className="text-gray-300">
                     Showing {logs.filter(l =>
                       (logFilter === 'all' || l.level === logFilter) &&
                       (logProcessFilter === 'all' || l.process === logProcessFilter)
@@ -974,17 +1021,17 @@ export default function Dashboard() {
             {activeTab === 'files' && (
               <div>
                 <div className="flex items-center justify-between mb-4">
-                  <div className="text-cyan-400 text-sm font-bold">:: FILE_BROWSER ::</div>
+                  <div className="text-cyan-400 text-lg font-bold">:: FILE_BROWSER ::</div>
                   <div className="flex gap-2">
                     <button
                       onClick={() => { setCreateType('file'); setShowCreateModal(true); }}
-                      className="px-3 py-1 border border-cyan-500/30 rounded text-[9px] text-cyan-400 hover:border-cyan-400 hover:bg-cyan-950/20 transition-all"
+                      className="px-3 py-1 border border-cyan-500/30 rounded text-[13px] text-cyan-400 hover:border-cyan-400 hover:bg-cyan-950/20 transition-all"
                     >
                       [+ FILE]
                     </button>
                     <button
                       onClick={() => { setCreateType('directory'); setShowCreateModal(true); }}
-                      className="px-3 py-1 border border-blue-500/30 rounded text-[9px] text-blue-400 hover:border-blue-400 hover:bg-blue-950/20 transition-all"
+                      className="px-3 py-1 border border-blue-500/30 rounded text-[13px] text-blue-400 hover:border-blue-400 hover:bg-blue-950/20 transition-all"
                     >
                       [+ FOLDER]
                     </button>
@@ -992,19 +1039,19 @@ export default function Dashboard() {
                 </div>
 
                 {/* Breadcrumb */}
-                <div className="mb-3 flex items-center gap-2 text-[10px]">
+                <div className="mb-3 flex items-center gap-2 text-[14px]">
                   <button
                     onClick={() => { setCurrentDir(''); setSelectedFile(null); setEditingFile(null); }}
-                    className="text-gray-500 hover:text-cyan-400 transition-colors"
+                    className="text-gray-300 hover:text-cyan-400 transition-colors"
                   >
                     [ROOT]
                   </button>
                   {currentDir && currentDir.split('/').map((part, i, arr) => (
                     <span key={i} className="flex items-center gap-2">
-                      <span className="text-gray-600">/</span>
+                      <span className="text-gray-200">/</span>
                       <button
                         onClick={() => { setCurrentDir(arr.slice(0, i + 1).join('/')); setEditingFile(null); }}
-                        className="text-gray-500 hover:text-cyan-400 transition-colors"
+                        className="text-gray-300 hover:text-cyan-400 transition-colors"
                       >
                         {part.toUpperCase()}
                       </button>
@@ -1016,17 +1063,17 @@ export default function Dashboard() {
                 {editingFile && (
                   <div className="mb-3 border border-cyan-500/30 rounded bg-black/50 p-3">
                     <div className="flex items-center justify-between mb-2">
-                      <span className="text-cyan-400 text-[10px]">EDITING: {editingFile}</span>
+                      <span className="text-cyan-400 text-[14px]">EDITING: {editingFile}</span>
                       <div className="flex gap-2">
                         <button
                           onClick={handleSaveFile}
-                          className="px-2 py-1 bg-blue-500/20 border border-blue-500/30 rounded text-[8px] text-blue-400 hover:bg-blue-500/30 transition-all"
+                          className="px-2 py-1 bg-blue-500/20 border border-blue-500/30 rounded text-[14px] text-blue-400 hover:bg-blue-500/30 transition-all"
                         >
                           [SAVE]
                         </button>
                         <button
                           onClick={() => { setEditingFile(null); setSelectedFile(null); setFileContent(''); }}
-                          className="px-2 py-1 bg-red-500/20 border border-red-500/30 rounded text-[8px] text-red-400 hover:bg-red-500/30 transition-all"
+                          className="px-2 py-1 bg-red-500/20 border border-red-500/30 rounded text-[14px] text-red-400 hover:bg-red-500/30 transition-all"
                         >
                           [CANCEL]
                         </button>
@@ -1035,26 +1082,26 @@ export default function Dashboard() {
                     <textarea
                       value={fileContent}
                       onChange={(e) => setFileContent(e.target.value)}
-                      className="w-full h-40 bg-black border border-gray-700 rounded p-2 text-[9px] font-mono text-gray-300 focus:border-cyan-500 focus:outline-none resize-none"
+                      className="w-full h-40 bg-black border border-gray-700 rounded p-2 text-[13px] font-mono text-gray-300 focus:border-cyan-500 focus:outline-none resize-none"
                       spellCheck={false}
                     />
                   </div>
                 )}
 
                 {/* Files List */}
-                <div className="border border-gray-800 bg-black p-3 h-[350px] overflow-auto text-[10px] font-mono rounded">
+                <div className="border border-gray-800 bg-black p-3 h-[350px] overflow-auto text-[14px] font-mono rounded">
                   {parentDir && (
                     <div
                       onClick={() => { setCurrentDir(parentDir); setSelectedFile(null); setEditingFile(null); }}
                       className="flex items-center gap-2 p-2 hover:bg-cyan-900/20 rounded cursor-pointer transition-all mb-1"
                     >
-                      <span className="text-gray-500">..</span>
-                      <span className="text-gray-400">[PARENT]</span>
+                      <span className="text-gray-300">..</span>
+                      <span className="text-gray-100">[PARENT]</span>
                     </div>
                   )}
 
                   {files.length === 0 ? (
-                    <div className="text-gray-600 animate-pulse">[ DIRECTORY_EMPTY ]</div>
+                    <div className="text-gray-200 animate-pulse">[ DIRECTORY_EMPTY ]</div>
                   ) : (
                     <div className="space-y-1">
                       {files.map((file, i) => (
@@ -1077,13 +1124,13 @@ export default function Dashboard() {
                             <span className={`flex-1 truncate ${file.type === 'directory' ? 'text-cyan-200' : 'text-gray-200'}`}>
                               {file.name}
                             </span>
-                            <span className="text-gray-400 text-[9px] shrink-0">
+                            <span className="text-gray-100 text-[13px] shrink-0">
                               {file.type === 'file' ? formatBytes(file.size) : '<DIR>'}
                             </span>
                           </div>
                           <button
                             onClick={(e) => { e.stopPropagation(); handleDeleteFile(file); }}
-                            className="px-2 py-1 bg-red-500/10 border border-red-500/30 rounded text-[8px] text-red-400 opacity-0 group-hover:opacity-100 hover:bg-red-500/20 transition-all shrink-0"
+                            className="px-2 py-1 bg-red-500/10 border border-red-500/30 rounded text-[14px] text-red-400 opacity-0 group-hover:opacity-100 hover:bg-red-500/20 transition-all shrink-0"
                           >
                             [DEL]
                           </button>
@@ -1094,7 +1141,7 @@ export default function Dashboard() {
                 </div>
 
                 {/* File Stats */}
-                <div className="mt-2 flex items-center justify-between text-[9px] text-gray-500">
+                <div className="mt-2 flex items-center justify-between text-[13px] text-gray-300">
                   <span>{files.length} items</span>
                   <span>{currentDir || 'root'}</span>
                 </div>
@@ -1103,7 +1150,7 @@ export default function Dashboard() {
                 {showCreateModal && (
                   <div className="fixed inset-0 bg-black/80 flex items-center justify-center z-50 animate-fadeIn">
                     <div className="bg-gray-900 border border-cyan-500/30 rounded-lg p-4 w-80">
-                      <div className="text-cyan-400 text-sm font-bold mb-3">
+                      <div className="text-cyan-400 text-lg font-bold mb-3">
                         :: CREATE_{createType.toUpperCase()} ::
                       </div>
                       <input
@@ -1111,20 +1158,20 @@ export default function Dashboard() {
                         value={createName}
                         onChange={(e) => setCreateName(e.target.value)}
                         placeholder={`${createType} name...`}
-                        className="w-full bg-black border border-gray-700 rounded p-2 text-[10px] text-gray-300 focus:border-cyan-500 focus:outline-none mb-3"
+                        className="w-full bg-black border border-gray-700 rounded p-2 text-[14px] text-gray-300 focus:border-cyan-500 focus:outline-none mb-3"
                         autoFocus
                         onKeyDown={(e) => { if (e.key === 'Enter') handleCreate(); }}
                       />
                       <div className="flex gap-2">
                         <button
                           onClick={handleCreate}
-                          className="flex-1 px-3 py-2 bg-blue-500/20 border border-blue-500/30 rounded text-[9px] text-blue-400 hover:bg-blue-500/30 transition-all"
+                          className="flex-1 px-3 py-2 bg-blue-500/20 border border-blue-500/30 rounded text-[13px] text-blue-400 hover:bg-blue-500/30 transition-all"
                         >
                           [CREATE]
                         </button>
                         <button
                           onClick={() => { setShowCreateModal(false); setCreateName(''); }}
-                          className="flex-1 px-3 py-2 bg-gray-700/20 border border-gray-600/30 rounded text-[9px] text-gray-400 hover:bg-gray-700/30 transition-all"
+                          className="flex-1 px-3 py-2 bg-gray-700/20 border border-gray-600/30 rounded text-[13px] text-gray-100 hover:bg-gray-700/30 transition-all"
                         >
                           [CANCEL]
                         </button>
@@ -1137,15 +1184,15 @@ export default function Dashboard() {
 
             {activeTab === 'metrics' && (
               <div>
-                <div className="text-cyan-400 text-sm font-bold mb-4">:: PERFORMANCE_METRICS ::</div>
+                <div className="text-cyan-400 text-lg font-bold mb-4">:: PERFORMANCE_METRICS ::</div>
 
                 {/* Real-time Graphs */}
                 <div className="grid grid-cols-2 gap-4 mb-4">
                   {/* CPU History Graph */}
                   <div className="border border-gray-800 bg-black p-3 rounded">
                     <div className="flex justify-between items-center mb-2">
-                      <div className="text-gray-500 text-[9px]">CPU_HISTORY (30s)</div>
-                      <div className="text-yellow-400 text-xs font-bold">{totalCpu.toFixed(1)}%</div>
+                      <div className="text-gray-300 text-[13px]">CPU_HISTORY (30s)</div>
+                      <div className="text-yellow-400 text-lg font-bold">{totalCpu.toFixed(1)}%</div>
                     </div>
                     <div className="h-24 relative">
                       <svg viewBox="0 0 100 40" className="w-full h-full" preserveAspectRatio="none">
@@ -1195,8 +1242,8 @@ export default function Dashboard() {
                   {/* Memory History Graph */}
                   <div className="border border-gray-800 bg-black p-3 rounded">
                     <div className="flex justify-between items-center mb-2">
-                      <div className="text-gray-500 text-[9px]">MEMORY_HISTORY (30s)</div>
-                      <div className="text-purple-400 text-xs font-bold">{formatBytes(totalMem)}</div>
+                      <div className="text-gray-300 text-[13px]">MEMORY_HISTORY (30s)</div>
+                      <div className="text-purple-400 text-lg font-bold">{formatBytes(totalMem)}</div>
                     </div>
                     <div className="h-24 relative">
                       <svg viewBox="0 0 100 40" className="w-full h-full" preserveAspectRatio="none">
@@ -1249,31 +1296,31 @@ export default function Dashboard() {
                 {/* Overview Stats */}
                 <div className="grid grid-cols-4 gap-2 mb-4">
                   <div className="border border-cyan-500/30 p-2 rounded hover:border-cyan-500 transition-all group">
-                    <div className="text-gray-600 text-[8px] mb-1">PROCESSES</div>
+                    <div className="text-gray-200 text-[14px] mb-1">PROCESSES</div>
                     <div className="text-xl font-bold text-cyan-400 group-hover:scale-110 transition-transform">{processes.length}</div>
                   </div>
                   <div className="border border-blue-500/30 p-2 rounded hover:border-blue-500 transition-all group">
-                    <div className="text-gray-600 text-[8px] mb-1">ONLINE</div>
+                    <div className="text-gray-200 text-[14px] mb-1">ONLINE</div>
                     <div className="text-xl font-bold text-blue-400 group-hover:scale-110 transition-transform">{onlineCount}</div>
                   </div>
                   <div className="border border-yellow-500/30 p-2 rounded hover:border-yellow-500 transition-all group">
-                    <div className="text-gray-600 text-[8px] mb-1">AVG_CPU</div>
+                    <div className="text-gray-200 text-[14px] mb-1">AVG_CPU</div>
                     <div className="text-xl font-bold text-yellow-400 group-hover:scale-110 transition-transform">
                       {processes.length > 0 ? (totalCpu / processes.length).toFixed(1) : '0'}%
                     </div>
                   </div>
                   <div className="border border-purple-500/30 p-2 rounded hover:border-purple-500 transition-all group">
-                    <div className="text-gray-600 text-[8px] mb-1">TOTAL_MEM</div>
+                    <div className="text-gray-200 text-[14px] mb-1">TOTAL_MEM</div>
                     <div className="text-xl font-bold text-purple-400 group-hover:scale-110 transition-transform">{formatBytes(totalMem)}</div>
                   </div>
                 </div>
 
                 {/* System Health */}
                 <div className="border border-gray-800 bg-black p-3 rounded mb-4">
-                  <div className="text-gray-500 text-[9px] mb-3">:: SYSTEM_HEALTH ::</div>
+                  <div className="text-gray-300 text-[13px] mb-3">:: SYSTEM_HEALTH ::</div>
                   <div className="grid grid-cols-3 gap-3">
                     <div className="text-center">
-                      <div className="text-gray-600 text-[8px] mb-1">UPTIME_RATIO</div>
+                      <div className="text-gray-200 text-[14px] mb-1">UPTIME_RATIO</div>
                       <div className="text-2xl font-bold text-blue-400">
                         {processes.length > 0 ? ((onlineCount / processes.length) * 100).toFixed(0) : '0'}%
                       </div>
@@ -1285,29 +1332,29 @@ export default function Dashboard() {
                       </div>
                     </div>
                     <div className="text-center">
-                      <div className="text-gray-600 text-[8px] mb-1">TOTAL_RESTARTS</div>
+                      <div className="text-gray-200 text-[14px] mb-1">TOTAL_RESTARTS</div>
                       <div className="text-2xl font-bold text-yellow-400">
                         {processes.reduce((sum, p) => sum + p.restarts, 0)}
                       </div>
-                      <div className="text-[8px] text-gray-600 mt-2">All processes</div>
+                      <div className="text-[14px] text-gray-200 mt-2">All processes</div>
                     </div>
                     <div className="text-center">
-                      <div className="text-gray-600 text-[8px] mb-1">HELIATH_STATUS</div>
+                      <div className="text-gray-200 text-[14px] mb-1">HELIATH_STATUS</div>
                       <div className={`text-xl font-bold ${onlineCount === processes.length && processes.length > 0 ? 'text-blue-400' : onlineCount > 0 ? 'text-yellow-400' : 'text-red-400'}`}>
                         {onlineCount === processes.length && processes.length > 0 ? 'HEALTHY' : onlineCount > 0 ? 'WARNING' : 'CRITICAL'}
                       </div>
-                      <div className="text-[8px] text-gray-600 mt-2">Overall system</div>
+                      <div className="text-[14px] text-gray-200 mt-2">Overall system</div>
                     </div>
                   </div>
                 </div>
 
                 {/* Process Details Table */}
                 <div className="border border-gray-800 bg-black p-3 rounded mb-4">
-                  <div className="text-gray-500 text-[9px] mb-3">:: PROCESS_DETAILS ::</div>
+                  <div className="text-gray-300 text-[13px] mb-3">:: PROCESS_DETAILS ::</div>
                   <div className="overflow-x-auto">
-                    <table className="w-full text-[9px]">
+                    <table className="w-full text-[13px]">
                       <thead>
-                        <tr className="text-gray-500 border-b border-gray-800">
+                        <tr className="text-gray-300 border-b border-gray-800">
                           <th className="text-left py-2 px-2">PROCESS</th>
                           <th className="text-left py-2 px-2">STATUS</th>
                           <th className="text-right py-2 px-2">CPU</th>
@@ -1321,7 +1368,7 @@ export default function Dashboard() {
                           <tr key={p.id} className={`border-b border-gray-900 hover:bg-cyan-900/10 transition-colors ${animatingProcesses.has(p.id) ? 'bg-cyan-900/5' : ''}`}>
                             <td className="py-2 px-2 text-cyan-300">{p.name}</td>
                             <td className="py-2 px-2">
-                              <span className={`px-1.5 py-0.5 rounded text-[8px] font-bold ${
+                              <span className={`px-1.5 py-0.5 rounded text-[14px] font-bold ${
                                 p.status === 'online' ? 'bg-blue-500/20 text-blue-400' : 'bg-red-500/20 text-red-400'
                               }`}>
                                 {p.status.toUpperCase()}
@@ -1329,8 +1376,8 @@ export default function Dashboard() {
                             </td>
                             <td className="py-2 px-2 text-right text-yellow-400">{p.cpu.toFixed(2)}%</td>
                             <td className="py-2 px-2 text-right text-purple-400">{formatBytes(p.memory)}</td>
-                            <td className="py-2 px-2 text-right text-gray-400">{formatUptime(p.uptime)}</td>
-                            <td className="py-2 px-2 text-right text-gray-400">{p.restarts}</td>
+                            <td className="py-2 px-2 text-right text-gray-100">{formatUptime(p.uptime)}</td>
+                            <td className="py-2 px-2 text-right text-gray-100">{p.restarts}</td>
                           </tr>
                         ))}
                       </tbody>
@@ -1342,14 +1389,14 @@ export default function Dashboard() {
                 <div className="grid grid-cols-2 gap-4">
                   {/* Memory Distribution */}
                   <div className="border border-gray-800 bg-black p-3 rounded">
-                    <div className="text-gray-500 text-[9px] mb-3">MEMORY_DISTRIBUTION</div>
+                    <div className="text-gray-300 text-[13px] mb-3">MEMORY_DISTRIBUTION</div>
                     <div className="space-y-3">
                       {processes.map((p) => (
                         <div key={p.id} className="space-y-1">
-                          <div className="flex justify-between text-[9px]">
-                            <span className="text-gray-400 truncate flex-1">{p.name}</span>
+                          <div className="flex justify-between text-[13px]">
+                            <span className="text-gray-100 truncate flex-1">{p.name}</span>
                             <span className="text-purple-400 ml-2">{formatBytes(p.memory)}</span>
-                            <span className="text-gray-600 ml-2">{((p.memory / totalMem) * 100 || 0).toFixed(1)}%</span>
+                            <span className="text-gray-200 ml-2">{((p.memory / totalMem) * 100 || 0).toFixed(1)}%</span>
                           </div>
                           <div className="w-full bg-gray-900 h-1.5 rounded-full overflow-hidden">
                             <div
@@ -1366,12 +1413,12 @@ export default function Dashboard() {
 
                   {/* CPU Distribution */}
                   <div className="border border-gray-800 bg-black p-3 rounded">
-                    <div className="text-gray-500 text-[9px] mb-3">CPU_DISTRIBUTION</div>
+                    <div className="text-gray-300 text-[13px] mb-3">CPU_DISTRIBUTION</div>
                     <div className="space-y-3">
                       {processes.map((p) => (
                         <div key={p.id} className="space-y-1">
-                          <div className="flex justify-between text-[9px]">
-                            <span className="text-gray-400 truncate flex-1">{p.name}</span>
+                          <div className="flex justify-between text-[13px]">
+                            <span className="text-gray-100 truncate flex-1">{p.name}</span>
                             <span className={`text-yellow-400 ml-2 ${animatingProcesses.has(p.id) ? 'animate-pulse' : ''}`}>{p.cpu.toFixed(2)}%</span>
                           </div>
                           <div className="w-full bg-gray-900 h-1.5 rounded-full overflow-hidden">
@@ -1388,12 +1435,12 @@ export default function Dashboard() {
 
                 {/* Resource Usage Gauge */}
                 <div className="mt-4 border border-gray-800 bg-black p-3 rounded">
-                  <div className="text-gray-500 text-[9px] mb-3">RESOURCE_UTILIZATION</div>
+                  <div className="text-gray-300 text-[13px] mb-3">RESOURCE_UTILIZATION</div>
                   <div className="grid grid-cols-2 gap-4">
                     <div>
-                      <div className="flex justify-between text-[9px] mb-2">
+                      <div className="flex justify-between text-[13px] mb-2">
                         <span className="text-purple-400">MEMORY</span>
-                        <span className="text-gray-400">{((totalMem / 4000000000) * 100).toFixed(1)}%</span>
+                        <span className="text-gray-100">{((totalMem / 4000000000) * 100).toFixed(1)}%</span>
                       </div>
                       <div className="relative h-4 bg-gray-900 rounded-full overflow-hidden">
                         <div
@@ -1403,12 +1450,12 @@ export default function Dashboard() {
                           <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent animate-pulse"></div>
                         </div>
                       </div>
-                      <div className="text-[8px] text-gray-600 mt-1 text-right">4 GB max</div>
+                      <div className="text-[14px] text-gray-200 mt-1 text-right">4 GB max</div>
                     </div>
                     <div>
-                      <div className="flex justify-between text-[9px] mb-2">
+                      <div className="flex justify-between text-[13px] mb-2">
                         <span className="text-yellow-400">CPU</span>
-                        <span className="text-gray-400">{totalCpu.toFixed(1)}%</span>
+                        <span className="text-gray-100">{totalCpu.toFixed(1)}%</span>
                       </div>
                       <div className="relative h-4 bg-gray-900 rounded-full overflow-hidden">
                         <div
@@ -1418,10 +1465,126 @@ export default function Dashboard() {
                           <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent animate-pulse"></div>
                         </div>
                       </div>
-                      <div className="text-[8px] text-gray-600 mt-1 text-right">{processes.length} cores</div>
+                      <div className="text-[14px] text-gray-200 mt-1 text-right">{processes.length} cores</div>
                     </div>
                   </div>
                 </div>
+              </div>
+            )}
+
+            {activeTab === 'ad-management' && (
+              <div className="animate-fadeIn h-full flex flex-col">
+                {/* Header */}
+                <div className="flex items-center justify-between mb-4">
+                  <div>
+                    <div className="text-cyan-400 text-lg font-bold">:: AD_MANAGEMENT ::</div>
+                    <div className="text-gray-300 text-[14px]">Gulahmed Shop E-commerce Monitor</div>
+                  </div>
+                  <button
+                    onClick={refreshAdData}
+                    className="px-3 py-2 bg-cyan-500/20 border border-cyan-500/50 text-cyan-400 hover:bg-cyan-500/30 transition-all text-[14px] font-bold flex items-center gap-2"
+                  >
+                    <span>⟳</span>
+                    REFRESH DATA
+                  </button>
+                </div>
+
+                {adLoading ? (
+                  <div className="flex-1 flex items-center justify-center">
+                    <div className="text-center">
+                      <div className="text-4xl text-cyan-400 animate-spin inline-block" style={{ animationDuration: '1s' }}>◉</div>
+                      <div className="text-cyan-700 mt-4 animate-pulse text-[14px]">LOADING AD DATA...</div>
+                    </div>
+                  </div>
+                ) : (
+                  <>
+                    {/* Summary Cards */}
+                    {adSummary && (
+                      <div className="grid grid-cols-4 gap-3 mb-4">
+                        <div className="bg-gray-900/50 border border-cyan-500/30 rounded-lg p-3 hover:border-cyan-400 hover:shadow-[0_0_20px_rgba(6,182,212,0.3)] transition-all group">
+                          <div className="text-gray-300 text-[14px] mb-1">TOTAL_PRODUCTS</div>
+                          <div className="text-2xl font-bold text-cyan-400 group-hover:scale-110 transition-transform">{adSummary.total}</div>
+                        </div>
+                        <div className="bg-gray-900/50 border border-red-500/30 rounded-lg p-3 hover:border-red-400 hover:shadow-[0_0_20px_rgba(239,68,68,0.3)] transition-all group">
+                          <div className="text-gray-300 text-[14px] mb-1">OUT_OF_STOCK</div>
+                          <div className="text-2xl font-bold text-red-400 group-hover:scale-110 transition-transform">{adSummary.out_of_stock}</div>
+                        </div>
+                        <div className="bg-gray-900/50 border border-yellow-500/30 rounded-lg p-3 hover:border-yellow-400 hover:shadow-[0_0_20px_rgba(250,204,21,0.3)] transition-all group">
+                          <div className="text-gray-300 text-[14px] mb-1">REVENUE_IMPACT</div>
+                          <div className="text-2xl font-bold text-yellow-400 group-hover:scale-110 transition-transform">${adSummary.total_revenue_impact.toLocaleString()}</div>
+                        </div>
+                        <div className="bg-gray-900/50 border border-purple-500/30 rounded-lg p-3 hover:border-purple-400 hover:shadow-[0_0_20px_rgba(168,85,247,0.3)] transition-all group">
+                          <div className="text-gray-300 text-[14px] mb-1">TOP_SELLING</div>
+                          <div className="text-2xl font-bold text-purple-400 group-hover:scale-110 transition-transform">{adSummary.top_selling}</div>
+                        </div>
+                      </div>
+                    )}
+
+                    {/* Products Table */}
+                    <div className="bg-gray-900/50 border border-gray-800 rounded-lg p-4 flex-1 overflow-auto">
+                      <div className="flex items-center justify-between mb-3">
+                        <h3 className="text-lg font-bold text-gray-300">:: PRODUCT_INVENTORY ::</h3>
+                        <div className="text-gray-300 text-[14px]">Showing {adProducts.length} products</div>
+                      </div>
+
+                      <div className="overflow-x-auto">
+                        <table className="w-full text-[13px]">
+                          <thead>
+                            <tr className="text-gray-300 border-b border-gray-700">
+                              <th className="text-left py-2 px-2">ID</th>
+                              <th className="text-left py-2 px-2">PRODUCT</th>
+                              <th className="text-left py-2 px-2">CATEGORY</th>
+                              <th className="text-right py-2 px-2">PRICE</th>
+                              <th className="text-center py-2 px-2">STATUS</th>
+                              <th className="text-center py-2 px-2">DAYS_OUT</th>
+                              <th className="text-right py-2 px-2">REVENUE_IMPACT</th>
+                            </tr>
+                          </thead>
+                          <tbody>
+                            {adProducts.map((product) => (
+                              <tr
+                                key={product.id}
+                                className={`border-b border-gray-800 hover:bg-cyan-900/10 transition-colors ${
+                                  product.is_top_selling ? 'bg-purple-900/10' : ''
+                                }`}
+                              >
+                                <td className="py-2 px-2 text-cyan-300">{product.id}</td>
+                                <td className="py-2 px-2">
+                                  <div className="flex items-center gap-2">
+                                    {product.is_top_selling && (
+                                      <span className="text-purple-400">★</span>
+                                    )}
+                                    <a
+                                      href={product.url}
+                                      target="_blank"
+                                      rel="noopener noreferrer"
+                                      className="text-gray-100 hover:text-cyan-400 transition-colors truncate max-w-xs block"
+                                    >
+                                      {product.title}
+                                    </a>
+                                  </div>
+                                </td>
+                                <td className="py-2 px-2 text-gray-300">{product.category}</td>
+                                <td className="py-2 px-2 text-right text-green-400">${product.price}</td>
+                                <td className="py-2 px-2 text-center">
+                                  <span className={`px-2 py-1 rounded text-[14px] font-bold ${
+                                    product.status.includes('In Stock')
+                                      ? 'bg-green-500/20 text-green-400'
+                                      : 'bg-red-500/20 text-red-400'
+                                  }`}>
+                                    {product.status.includes('In Stock') ? 'IN_STOCK' : 'OUT_OF_STOCK'}
+                                  </span>
+                                </td>
+                                <td className="py-2 px-2 text-center text-yellow-400">{product.days_out}</td>
+                                <td className="py-2 px-2 text-right text-orange-400">${product.revenue_impact.toLocaleString()}</td>
+                              </tr>
+                            ))}
+                          </tbody>
+                        </table>
+                      </div>
+                    </div>
+                  </>
+                )}
               </div>
             )}
           </div>
@@ -1432,28 +1595,28 @@ export default function Dashboard() {
 
           {/* Header */}
           <div className="border-b border-cyan-900/50 p-3">
-            <div className="text-cyan-400 text-sm font-bold">:: LIVE_FEED ::</div>
-            <div className="text-gray-500 text-[10px] mt-1">REAL-TIME_DATA_STREAM</div>
+            <div className="text-cyan-400 text-lg font-bold">:: LIVE_FEED ::</div>
+            <div className="text-gray-300 text-[14px] mt-1">REAL-TIME_DATA_STREAM</div>
           </div>
 
           {/* Summary Metrics */}
           <div className="border-b border-cyan-900/50 p-3">
             <div className="grid grid-cols-2 gap-2">
               <div className="border border-gray-800 p-2 rounded hover:border-cyan-500/50 transition-all duration-300 group">
-                <div className="text-gray-600 text-[9px]">UPTIME</div>
-                <div className="text-cyan-400 text-sm font-bold group-hover:scale-110 transition-transform">99.9%</div>
+                <div className="text-gray-200 text-[13px]">UPTIME</div>
+                <div className="text-cyan-400 text-lg font-bold group-hover:scale-110 transition-transform">99.9%</div>
               </div>
               <div className="border border-gray-800 p-2 rounded hover:border-blue-500/50 transition-all duration-300 group">
-                <div className="text-gray-600 text-[9px]">REQS</div>
-                <div className="text-blue-400 text-sm font-bold group-hover:scale-110 transition-transform">42K</div>
+                <div className="text-gray-200 text-[13px]">REQS</div>
+                <div className="text-blue-400 text-lg font-bold group-hover:scale-110 transition-transform">42K</div>
               </div>
               <div className="border border-gray-800 p-2 rounded hover:border-red-500/50 transition-all duration-300 group">
-                <div className="text-gray-600 text-[9px]">ERRORS</div>
-                <div className="text-red-400 text-sm font-bold group-hover:scale-110 transition-transform">0</div>
+                <div className="text-gray-200 text-[13px]">ERRORS</div>
+                <div className="text-red-400 text-lg font-bold group-hover:scale-110 transition-transform">0</div>
               </div>
               <div className="border border-gray-800 p-2 rounded hover:border-yellow-500/50 transition-all duration-300 group">
-                <div className="text-gray-600 text-[9px]">LOAD</div>
-                <div className="text-yellow-400 text-sm font-bold group-hover:scale-110 transition-transform">{totalCpu.toFixed(0)}%</div>
+                <div className="text-gray-200 text-[13px]">LOAD</div>
+                <div className="text-yellow-400 text-lg font-bold group-hover:scale-110 transition-transform">{totalCpu.toFixed(0)}%</div>
               </div>
             </div>
           </div>
@@ -1461,11 +1624,11 @@ export default function Dashboard() {
           {/* Cognitive Stream */}
           <div className="flex-1 overflow-hidden flex flex-col">
             <div className="p-3 border-b border-cyan-900/50">
-              <div className="text-cyan-400 text-[10px]">:: COGNITIVE_STREAM ::</div>
+              <div className="text-cyan-400 text-[14px]">:: COGNITIVE_STREAM ::</div>
             </div>
-            <div className="flex-1 overflow-auto p-3 font-mono text-[9px]">
+            <div className="flex-1 overflow-auto p-3 font-mono text-[13px]">
               {logs.length === 0 ? (
-                <div className="text-gray-700 animate-pulse">[ AWAITING_DATA_STREAM ]</div>
+                <div className="text-gray-500 animate-pulse">[ AWAITING_DATA_STREAM ]</div>
               ) : (
                 <div className="space-y-2">
                   {logs.slice(0, 15).map((log, i) => (
@@ -1474,8 +1637,8 @@ export default function Dashboard() {
                       className="mb-2 leading-tight p-1 rounded hover:bg-cyan-900/10 transition-all duration-200 animate-slideIn"
                       style={{ animationDelay: `${i * 30}ms` }}
                     >
-                      <span className="text-gray-700">[{log.timestamp}]</span>
-                      <span className="text-gray-500 ml-1">{log.message.substring(0, 50)}</span>
+                      <span className="text-gray-500">[{log.timestamp}]</span>
+                      <span className="text-gray-300 ml-1">{log.message.substring(0, 50)}</span>
                     </div>
                   ))}
                 </div>
@@ -1485,10 +1648,10 @@ export default function Dashboard() {
 
           {/* Production Metrics */}
           <div className="border-t border-cyan-900/50 p-3">
-            <div className="text-cyan-400 text-[10px] mb-2">:: PRODUCTION_METRICS ::</div>
+            <div className="text-cyan-400 text-[14px] mb-2">:: PRODUCTION_METRICS ::</div>
             <div className="space-y-2">
               <div>
-                <div className="flex justify-between text-gray-500 text-[9px] mb-1">
+                <div className="flex justify-between text-gray-300 text-[13px] mb-1">
                   <span>MEMORY_USAGE</span>
                   <span className="text-purple-400">{((totalMem / 4000000000) * 100).toFixed(1)}%</span>
                 </div>
@@ -1500,7 +1663,7 @@ export default function Dashboard() {
                 </div>
               </div>
               <div>
-                <div className="flex justify-between text-gray-500 text-[9px] mb-1">
+                <div className="flex justify-between text-gray-300 text-[13px] mb-1">
                   <span>CAPACITY</span>
                   <span className="text-cyan-400">{((onlineCount / Math.max(processes.length, 1)) * 100).toFixed(1)}%</span>
                 </div>
@@ -1515,7 +1678,7 @@ export default function Dashboard() {
           </div>
 
           {/* Footer */}
-          <div className="border-t border-cyan-900/50 p-2 text-gray-700 text-[9px]">
+          <div className="border-t border-cyan-900/50 p-2 text-gray-500 text-[13px]">
             <div>UPDATED: {mounted ? lastUpdate.toLocaleTimeString() : '--:--:--'}</div>
             <div className="flex items-center gap-2">
               <span>REFRESH: 3s</span>

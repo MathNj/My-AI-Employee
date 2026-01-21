@@ -13,9 +13,17 @@ from playwright.async_api import async_playwright
 
 nest_asyncio.apply()
 
-# Add parent directory to path to import shared logger
+# Add parent directory to path to import shared modules
 sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 from logger import log_ad_event, flush_logs
+
+# Import CSV validator for secure CSV reading
+try:
+    from csv_validator import safe_read_csv, ValidationError, REQUIRED_PRODUCT_COLUMNS
+    USE_CSV_VALIDATOR = True
+except ImportError:
+    USE_CSV_VALIDATOR = False
+    print("Warning: csv_validator not available, using pandas directly")
 
 counter = 0
 current_date = datetime.now().strftime("%Y-%m-%d")
@@ -32,31 +40,57 @@ def ensure_urls_file():
         print("URLS.csv already exists.")
 
 def load_stored_links():
+    """Load stored links from CSV with validation."""
     ensure_urls_file()
     stored_links = {}
     try:
-        df = pd.read_csv(DRIVE_FILE_PATH)
+        # Use safe CSV reader if available
+        if USE_CSV_VALIDATOR:
+            df = safe_read_csv(
+                DRIVE_FILE_PATH,
+                required_columns={'URL', 'Ad Name'},
+                encoding='utf-8'
+            )
+        else:
+            # Fallback to pandas (less secure)
+            df = pd.read_csv(DRIVE_FILE_PATH)
+
         for _, row in df.iterrows():
             url = str(row.get("URL", "")).strip()
             ad_name = str(row.get("Ad Name", "")).strip()
             if url:
                 stored_links.setdefault(url, []).append(ad_name)
-    except Exception:
-        pass
+    except Exception as e:
+        print(f"Warning: Could not load stored links: {e}")
     return stored_links
 
 def update_stored_links(new_urls, url_to_ads):
+    """Update stored links with validation."""
     rows_to_append = []
     for url in new_urls:
         ad_names = url_to_ads.get(url, ["Unknown Ad"])
         for ad_name in ad_names:
             rows_to_append.append({"URL": url, "Ad Name": ad_name})
     df_new = pd.DataFrame(rows_to_append)
+
     if os.path.exists(DRIVE_FILE_PATH):
-        df_existing = pd.read_csv(DRIVE_FILE_PATH)
+        # Use safe CSV reader if available
+        if USE_CSV_VALIDATOR:
+            try:
+                df_existing = safe_read_csv(
+                    DRIVE_FILE_PATH,
+                    required_columns={'URL', 'Ad Name'}
+                )
+            except ValidationError:
+                # If validation fails, use pandas fallback
+                df_existing = pd.read_csv(DRIVE_FILE_PATH)
+        else:
+            df_existing = pd.read_csv(DRIVE_FILE_PATH)
+
         df_combined = pd.concat([df_existing, df_new], ignore_index=True)
     else:
         df_combined = df_new
+
     df_combined.drop_duplicates(subset=["URL", "Ad Name"]).to_csv(DRIVE_FILE_PATH, index=False)
 
 async def is_product_page(page):
@@ -296,16 +330,24 @@ def send_email(sender_email, sender_password, recipient_email, subject, body):
         print(f"Error sending email: {e}")
 
 async def main():
+    """Main function with safe CSV reading."""
     try:
-        df = pd.read_csv(ACTIVE_AD_SHEET_PATH)
+        # Use safe CSV reader if available
+        if USE_CSV_VALIDATOR:
+            df = safe_read_csv(
+                ACTIVE_AD_SHEET_PATH,
+                required_columns={'URL', 'Ad Name'}
+            )
+        else:
+            df = pd.read_csv(ACTIVE_AD_SHEET_PATH)
     except Exception as e:
-        print("Error reading CSV:", e)
+        print(f"Error reading CSV: {e}")
         return
 
     url_to_ads = {}
     for _, row in df.iterrows():
-        url = str(row.get('URL')).strip()
-        ad = str(row.get('Ad Name')).strip()
+        url = str(row.get('URL', '')).strip()
+        ad = str(row.get('Ad Name', '')).strip()
         if url.startswith("http"):
             url_to_ads.setdefault(url, []).append(ad)
 

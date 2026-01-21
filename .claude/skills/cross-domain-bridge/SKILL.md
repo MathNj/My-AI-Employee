@@ -58,6 +58,14 @@ Scores items based on:
 - Rule requirements (approval limits, etc.)
 - Personal boundary violations
 
+### 4. Invoice Request Detection (NEW)
+Automatically detects invoice requests in emails/WhatsApp and:
+- Flags item with `invoice_request_detected: true`
+- Suggests action: `generate_invoice`
+- Routes to `invoice-generator` skill
+- Extracts invoice amount and checks approval threshold
+- Enriches with company banking details from Company_Handbook.md
+
 ---
 
 ## Quick Start

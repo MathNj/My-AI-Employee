@@ -46,7 +46,16 @@ class ContextEnricher:
         self.business_keywords = [
             'invoice', 'payment', 'project', 'deadline', 'client',
             'contract', 'proposal', 'deliverable', 'milestone',
-            'meeting', 'call', 'urgent', 'asap', 'emergency'
+            'meeting', 'call', 'urgent', 'asap', 'emergency',
+            'bill', 'receipt', 'statement', 'purchase order', 'po#',
+            'send invoice', 'please bill', 'charge for', 'quote'
+        ]
+
+        # Invoice-specific keywords
+        self.invoice_keywords = [
+            'invoice', 'bill', 'payment', 'receipt', 'statement',
+            'purchase order', 'po#', 'send invoice', 'please bill',
+            'charge for', 'quote', 'estimate'
         ]
 
     def _load_business_goals(self):
@@ -218,6 +227,34 @@ class ContextEnricher:
                 'enriched_at': datetime.now().isoformat(),
                 'enriched_by': 'cross-domain-bridge'
             }
+
+            # Check for invoice request
+            if any(kw in ' '.join(entities['keywords']).lower() for kw in self.invoice_keywords):
+                enrichment['invoice_request_detected'] = True
+                enrichment['suggested_action'] = 'generate_invoice'
+                enrichment['suggested_skill'] = 'invoice-generator'
+
+                # Extract invoice-specific context
+                invoice_amount = None
+                if entities['amounts']:
+                    try:
+                        invoice_amount = float(entities['amounts'][0].replace(',', ''))
+                    except:
+                        pass
+
+                if invoice_amount:
+                    enrichment['invoice_amount'] = invoice_amount
+                    enrichment['invoice_currency'] = 'USD'  # Default, could be extracted
+
+                    # Check approval threshold
+                    if invoice_amount > 5000:
+                        enrichment['approval_required'] = True
+                        enrichment['approval_reason'] = f"Invoice amount ${invoice_amount:,.2f} exceeds auto-approval threshold ($5,000)"
+                    else:
+                        enrichment['approval_required'] = False
+                        enrichment['approval_reason'] = f"Invoice amount ${invoice_amount:,.2f} below auto-approval threshold"
+
+                logger.info(f"[INVOICE] Invoice request detected in {file_path.name}")
 
             # Check if approval required (based on amounts)
             if entities['amounts']:

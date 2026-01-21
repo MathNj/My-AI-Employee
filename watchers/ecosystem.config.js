@@ -29,6 +29,14 @@
  * Created: 2026-01-12
  */
 
+/**
+ * Resolve paths relative to this config file
+ */
+const path = require('path');
+const watchersDir = __dirname;
+const vaultDir = path.resolve(__dirname, '..');
+const logsDir = path.resolve(vaultDir, 'Logs');
+
 module.exports = {
   apps: [
     {
@@ -36,7 +44,7 @@ module.exports = {
       name: 'gmail-watcher',
       script: 'gmail_watcher.py',
       interpreter: 'python3',
-      cwd: __dirname,
+      cwd: watchersDir,
       instances: 1,
       autorestart: true,
       watch: false,
@@ -44,8 +52,8 @@ module.exports = {
       env: {
         PYTHONUNBUFFERED: '1',
       },
-      error_file: '../Logs/pm2-gmail-error.log',
-      out_file: '../Logs/pm2-gmail-out.log',
+      error_file: path.join(logsDir, 'pm2-gmail-error.log'),
+      out_file: path.join(logsDir, 'pm2-gmail-out.log'),
       log_date_format: 'YYYY-MM-DD HH:mm:ss',
       merge_logs: true,
       min_uptime: '10s',
@@ -58,7 +66,7 @@ module.exports = {
       name: 'filesystem-watcher',
       script: 'filesystem_watcher.py',
       interpreter: 'python3',
-      cwd: __dirname,
+      cwd: watchersDir,
       instances: 1,
       autorestart: true,
       watch: false,
@@ -66,8 +74,8 @@ module.exports = {
       env: {
         PYTHONUNBUFFERED: '1',
       },
-      error_file: '../Logs/pm2-filesystem-error.log',
-      out_file: '../Logs/pm2-filesystem-out.log',
+      error_file: path.join(logsDir, 'pm2-filesystem-error.log'),
+      out_file: path.join(logsDir, 'pm2-filesystem-out.log'),
       log_date_format: 'YYYY-MM-DD HH:mm:ss',
       merge_logs: true,
       min_uptime: '10s',
@@ -80,7 +88,7 @@ module.exports = {
       name: 'whatsapp-watcher',
       script: 'whatsapp_watcher.py',
       interpreter: 'python3',
-      cwd: __dirname,
+      cwd: watchersDir,
       instances: 1,
       autorestart: true,
       watch: false,
@@ -89,8 +97,8 @@ module.exports = {
         PYTHONUNBUFFERED: '1',
         WHATSAPP_HEADLESS: 'true',
       },
-      error_file: '../Logs/pm2-whatsapp-error.log',
-      out_file: '../Logs/pm2-whatsapp-out.log',
+      error_file: path.join(logsDir, 'pm2-whatsapp-error.log'),
+      out_file: path.join(logsDir, 'pm2-whatsapp-out.log'),
       log_date_format: 'YYYY-MM-DD HH:mm:ss',
       merge_logs: true,
       min_uptime: '10s',
@@ -103,7 +111,7 @@ module.exports = {
       name: 'calendar-watcher',
       script: 'calendar_watcher.py',
       interpreter: 'python3',
-      cwd: __dirname,
+      cwd: watchersDir,
       args: '--interval 300 --hours-ahead 48 --min-hours-ahead 1',
       instances: 1,
       autorestart: true,
@@ -112,8 +120,8 @@ module.exports = {
       env: {
         PYTHONUNBUFFERED: '1',
       },
-      error_file: '../Logs/pm2-calendar-error.log',
-      out_file: '../Logs/pm2-calendar-out.log',
+      error_file: path.join(logsDir, 'pm2-calendar-error.log'),
+      out_file: path.join(logsDir, 'pm2-calendar-out.log'),
       log_date_format: 'YYYY-MM-DD HH:mm:ss',
       merge_logs: true,
       min_uptime: '10s',

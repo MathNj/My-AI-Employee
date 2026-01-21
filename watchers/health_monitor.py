@@ -298,10 +298,10 @@ def main():
 
     # Show individual watcher status
     for name, health in health_data.items():
-        status = "✓ ALIVE" if health.alive else "✗ STOPPED"
-        log_status = "✓ FRESH" if health.log_fresh else "✗ STALE"
+        status = "[OK] ALIVE" if health.alive else "[FAIL] STOPPED"
+        log_status = "[OK] FRESH" if health.log_fresh else "[FAIL] STALE"
         cpu_status = f"{health.cpu_usage}%"
-        error_status = f"✓ OK" if health.error_count == 0 else f"✗ {health.error_count} errors"
+        error_status = f"[OK] OK" if health.error_count == 0 else f"[FAIL] {health.error_count} errors"
         print(f"{status} {log_status} {cpu_status:6} {error_status:12} {name:20}")
 
     # Exit with appropriate code

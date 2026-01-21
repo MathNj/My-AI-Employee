@@ -1,4 +1,5 @@
 #!/usr/bin/env python3
+# -*- coding: utf-8 -*-
 """
 Auto-Approver - AI-powered approval decision system
 
@@ -6,25 +7,75 @@ Uses Claude's reasoning to automatically approve, reject, or hold
 pending action requests based on context and Company_Handbook.md rules.
 """
 
+import sys
+import io
+# Configure UTF-8 for Windows
+if sys.platform == 'win32':
+    sys.stdout = io.TextIOWrapper(sys.stdout.buffer, encoding='utf-8', errors='replace')
+    sys.stderr = io.TextIOWrapper(sys.stderr.buffer, encoding='utf-8', errors='replace')
+
 from pathlib import Path
 import json
 import shutil
 import logging
 import time
 import argparse
+import sys
 from datetime import datetime, timedelta
 from typing import Dict, List, Optional
 import subprocess
 
+# Setup logging first with UTF-8 support
+logger = logging.getLogger(__name__)
+
+# Create UTF-8 stream handler
+stream_handler = logging.StreamHandler()
+stream_handler.setFormatter(logging.Formatter('%(asctime)s - %(name)s - %(levelname)s - %(message)s'))
+
+logging.basicConfig(
+    level=logging.INFO,
+    format='%(asctime)s - %(name)s - %(levelname)s - %(message)s',
+    handlers=[stream_handler],
+    force=True  # Override any existing configuration
+)
+
 # Error Recovery and Audit Logging
 try:
-    sys.path.insert(0, str(Path(__file__).parent.parent.parent.parent / "watchers"))
+    watchers_path = Path(__file__).parent.parent.parent.parent / "watchers"
+    sys.path.insert(0, str(watchers_path))
     from error_recovery import retry_with_backoff, handle_error_with_recovery
     from audit_logger import log_approval, log_error
-except ImportError:
-    # Fallback if modules not in path
-    from watchers.error_recovery import retry_with_backoff, handle_error_with_recovery
-    from watchers.audit_logger import log_approval, log_error
+    _import_error = None
+except ImportError as e:
+    # Define fallback functions if modules not available
+    _import_error = str(e)
+    logger.warning(f"Could not import error_recovery/audit_logger modules: {e}")
+
+    def retry_with_backoff(func, max_attempts=3, base_delay=1):
+        """Fallback retry decorator"""
+        def wrapper(*args, **kwargs):
+            for attempt in range(max_attempts):
+                try:
+                    return func(*args, **kwargs)
+                except Exception as e:
+                    if attempt == max_attempts - 1:
+                        raise
+                    time.sleep(base_delay * (2 ** attempt))
+            return wrapper
+        return wrapper
+
+    def handle_error_with_recovery(error, context=""):
+        """Fallback error handler"""
+        logger.error(f"Error in {context}: {error}")
+        return None
+
+    def log_approval(decision, details):
+        """Fallback approval logger"""
+        logger.info(f"Approval decision: {decision} - {details}")
+
+    def log_error(error, context=""):
+        """Fallback error logger"""
+        logger.error(f"Error in {context}: {error}")
 
 # Configuration
 SCRIPT_PATH = Path(__file__).parent
@@ -36,19 +87,12 @@ LOGS_PATH = VAULT_PATH / "Logs"
 CONFIG_PATH = SCRIPT_PATH.parent / "config"
 COMPANY_HANDBOOK = VAULT_PATH / "Company_Handbook.md"
 
-# Setup logging
+# Setup file logging with UTF-8 encoding
 LOGS_PATH.mkdir(exist_ok=True)
 log_file = LOGS_PATH / f'auto_approver_{datetime.now().strftime("%Y-%m-%d")}.log'
-
-logging.basicConfig(
-    level=logging.INFO,
-    format='%(asctime)s - %(levelname)s - %(message)s',
-    handlers=[
-        logging.FileHandler(log_file),
-        logging.StreamHandler()
-    ]
-)
-logger = logging.getLogger(__name__)
+file_handler = logging.FileHandler(log_file, encoding='utf-8')
+file_handler.setFormatter(logging.Formatter('%(asctime)s - %(name)s - %(levelname)s - %(message)s'))
+logger.addHandler(file_handler)
 
 
 class AutoApprover:
@@ -129,11 +173,21 @@ class AutoApprover:
         return context
 
     def get_pending_files(self) -> List[Path]:
-        """Get all files in Pending_Approval"""
+        """Get all files in Pending_Approval including subdirectories"""
         if not PENDING_APPROVAL_PATH.exists():
             return []
 
-        return list(PENDING_APPROVAL_PATH.glob("*.md"))
+        # Get all .md files in root
+        files = list(PENDING_APPROVAL_PATH.glob("*.md"))
+
+        # Get all .md files in subdirectories recursively
+        files.extend(PENDING_APPROVAL_PATH.rglob("*.md"))
+
+        # Remove duplicates and sort
+        files = list(set(files))
+        files.sort(key=lambda x: x.stat().st_mtime)
+
+        return files
 
     def parse_frontmatter(self, file_path: Path) -> Dict:
         """Parse YAML frontmatter from markdown file"""
@@ -333,6 +387,9 @@ Respond in JSON format:
         """Process a single approval request"""
         logger.info(f"Processing: {file_path.name}")
 
+        # Parse frontmatter to get item type
+        frontmatter = self.parse_frontmatter(file_path)
+
         # Analyze with Claude (or rules as fallback)
         analysis = self.analyze_with_claude(file_path)
 
@@ -347,7 +404,7 @@ Respond in JSON format:
 
         # Log to audit trail (standardized format)
         try:
-            item_type = frontmatter.get('type', 'unknown') if hasattr(self, 'parse_frontmatter') else 'unknown'
+            item_type = frontmatter.get('type', 'unknown')
             log_approval(
                 item_type=item_type,
                 item_id=file_path.name,
@@ -372,17 +429,26 @@ Respond in JSON format:
         # Execute decision
         if not dry_run:
             if decision == 'approve':
-                shutil.move(str(file_path), str(APPROVED_PATH / file_path.name))
-                logger.info(f"✅ APPROVED: {file_path.name}")
+                # Preserve subdirectory structure
+                relative_path = file_path.relative_to(PENDING_APPROVAL_PATH)
+                dest_path = APPROVED_PATH / relative_path
+                dest_path.parent.mkdir(parents=True, exist_ok=True)
+                shutil.move(str(file_path), str(dest_path))
+                logger.info(f"[+] APPROVED: {relative_path}")
                 logger.info(f"   Reasoning: {reasoning}")
 
             elif decision == 'reject':
-                shutil.move(str(file_path), str(REJECTED_PATH / file_path.name))
-                logger.info(f"❌ REJECTED: {file_path.name}")
+                # Preserve subdirectory structure
+                relative_path = file_path.relative_to(PENDING_APPROVAL_PATH)
+                dest_path = REJECTED_PATH / relative_path
+                dest_path.parent.mkdir(parents=True, exist_ok=True)
+                shutil.move(str(file_path), str(dest_path))
+                logger.info(f"[-] REJECTED: {relative_path}")
                 logger.info(f"   Reasoning: {reasoning}")
 
             else:  # hold
-                logger.info(f"⏸️  HELD: {file_path.name}")
+                relative_path = file_path.relative_to(PENDING_APPROVAL_PATH)
+                logger.info(f"[=] HELD: {relative_path}")
                 logger.info(f"   Reasoning: {reasoning}")
         else:
             logger.info(f"[DRY RUN] Would {decision.upper()}: {file_path.name}")
