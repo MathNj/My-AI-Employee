@@ -236,7 +236,7 @@ def generate_text_image(
 
     # Save image
     img.save(output_path, quality=95)
-    print(f"  ✓ Image saved to: {output_path}")
+    print(f"  [OK] Image saved to: {output_path}")
 
     return output_path
 
@@ -308,13 +308,13 @@ def check_login_status(page) -> bool:
             try:
                 element = page.wait_for_selector(selector, timeout=5000)
                 if element:
-                    print(f"✓ Found element using selector: {selector}")
-                    print("✓ User is logged in")
+                    print(f"[OK] Found element using selector: {selector}")
+                    print("[OK] User is logged in")
                     return True
             except PlaywrightTimeout:
                 continue
 
-        print("✗ User is not logged in")
+        print("[FAIL] User is not logged in")
         return False
 
     except Exception as e:
@@ -359,7 +359,7 @@ def authenticate(page, headless: bool = False) -> bool:
             if check_login_status(page):
                 print()
                 print("✅ Authentication successful!")
-                print(f"✓ Session saved to: {SESSION_PATH}")
+                print(f"[OK] Session saved to: {SESSION_PATH}")
                 print()
                 return True
 
@@ -413,7 +413,7 @@ def post_to_instagram(
             try:
                 new_post_btn = page.wait_for_selector(selector, timeout=5000)
                 if new_post_btn:
-                    print(f"  ✓ Found New post button: {selector}")
+                    print(f"  [OK] Found New post button: {selector}")
                     new_post_btn.click()
                     break
             except PlaywrightTimeout:
@@ -435,7 +435,7 @@ def post_to_instagram(
                 if 'button' in selector:  # Only try to click button selectors
                     select_btn = page.wait_for_selector(selector, timeout=3000, state='visible')
                     if select_btn and select_btn.is_visible():
-                        print(f"  ✓ Clicking 'Select from computer': {selector}")
+                        print(f"  [OK] Clicking 'Select from computer': {selector}")
                         select_btn.click()
                         select_btn_clicked = True
                         time.sleep(1)
@@ -449,7 +449,7 @@ def post_to_instagram(
             try:
                 file_input = page.wait_for_selector(selector, timeout=5000, state='attached')
                 if file_input:
-                    print(f"  ✓ Found file input: {selector}")
+                    print(f"  [OK] Found file input: {selector}")
                     break
             except PlaywrightTimeout:
                 continue
@@ -462,7 +462,7 @@ def post_to_instagram(
         # Upload the file
         print("  Uploading file...")
         file_input.set_input_files(str(image_path))
-        print("  ✓ Image uploaded")
+        print("  [OK] Image uploaded")
 
         # Wait for Instagram to process the uploaded image
         print("  Waiting for image to process...")
@@ -479,7 +479,7 @@ def post_to_instagram(
                 try:
                     next_btn = page.wait_for_selector(selector, timeout=5000, state='visible')
                     if next_btn and next_btn.is_visible():
-                        print(f"  ✓ Clicking Next ({next_clicks + 1}/{max_next_clicks})")
+                        print(f"  [OK] Clicking Next ({next_clicks + 1}/{max_next_clicks})")
                         next_btn.click()
                         next_clicks += 1
                         time.sleep(2)
@@ -498,7 +498,7 @@ def post_to_instagram(
                 try:
                     caption_area = page.wait_for_selector(selector, timeout=5000)
                     if caption_area:
-                        print(f"  ✓ Found caption area: {selector}")
+                        print(f"  [OK] Found caption area: {selector}")
                         break
                 except PlaywrightTimeout:
                     continue
@@ -507,7 +507,7 @@ def post_to_instagram(
                 caption_area.click()
                 time.sleep(0.5)
                 caption_area.fill(caption)
-                print("  ✓ Caption added")
+                print("  [OK] Caption added")
 
                 # Just wait for tag suggestions to settle - don't press Escape!
                 # Escape triggers the discard popup
@@ -528,7 +528,7 @@ def post_to_instagram(
             if share_button.count() > 0:
                 print(f"  Found Share button with _ac7b parent class")
                 share_button.first.click(force=True)
-                print("  ✓ Clicked Share button")
+                print("  [OK] Clicked Share button")
                 clicked = True
                 time.sleep(5)
             else:

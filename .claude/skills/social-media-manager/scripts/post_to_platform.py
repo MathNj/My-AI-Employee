@@ -322,9 +322,9 @@ def main():
         status = result['status']
         platform = result['platform']
         if status == 'posted':
-            logger.info(f"✓ {platform}: Posted successfully (ID: {result['id']})")
+            logger.info(f"[OK] {platform}: Posted successfully (ID: {result['id']})")
         else:
-            logger.error(f"✗ {platform}: {result.get('error', 'Unknown error')}")
+            logger.error(f"[FAIL] {platform}: {result.get('error', 'Unknown error')}")
 
     # Update dashboard
     vault_path = Path(os.getenv('VAULT_PATH', 'C:/Users/Najma-LP/Desktop/My Vault/AI_Employee_Vault'))

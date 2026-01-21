@@ -223,10 +223,10 @@ def main():
     success = updater.update_dashboard()
 
     if success:
-        print("✓ Dashboard updated successfully")
+        print("[OK] Dashboard updated successfully")
         print(f"  Location: {DASHBOARD_PATH}")
     else:
-        print("✗ Dashboard update failed")
+        print("[FAIL] Dashboard update failed")
         return 1
 
     return 0

@@ -244,10 +244,10 @@ def main():
     )
 
     if result['success']:
-        print(f"✓ Email sent successfully!")
+        print(f"[OK] Email sent successfully!")
         print(f"  Message ID: {result['message_id']}")
     else:
-        print(f"✗ Failed to send email: {result['error']}")
+        print(f"[FAIL] Failed to send email: {result['error']}")
         sys.exit(1)
 
 

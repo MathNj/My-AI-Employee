@@ -142,7 +142,7 @@ def try_multiple_selectors(page: Page, selectors: list, timeout: int = 5000) -> 
         try:
             element = page.wait_for_selector(selector, timeout=timeout)
             if element:
-                print(f"✓ Found element using selector: {selector}")
+                print(f"[OK] Found element using selector: {selector}")
                 return element
         except PlaywrightTimeoutError:
             continue
@@ -205,14 +205,14 @@ def check_login_status(page: Page) -> bool:
         profile_icon = try_multiple_selectors(page, SELECTORS['logged_in']['profile_icon'], timeout=5000)
 
         if profile_icon:
-            print("✓ User is logged in")
+            print("[OK] User is logged in")
             return True
         else:
-            print("✗ User is not logged in")
+            print("[FAIL] User is not logged in")
             return False
 
     except Exception as e:
-        print(f"✗ Error checking login status: {e}")
+        print(f"[FAIL] Error checking login status: {e}")
         return False
 
 
@@ -256,7 +256,7 @@ def authenticate(page: Page, headless: bool = False) -> bool:
         while elapsed < max_wait:
             if check_login_status(page):
                 print("\n✅ Authentication successful!")
-                print(f"✓ Session saved to: {SESSION_PATH}")
+                print(f"[OK] Session saved to: {SESSION_PATH}")
                 return True
 
             print(f"⏳ Waiting for login... ({elapsed}s / {max_wait}s)")
@@ -362,7 +362,7 @@ def post_to_linkedin(page: Page, message: str, dry_run: bool = False) -> Tuple[b
                         is_visible = btn.is_visible()
                         if is_disabled != 'true' and is_visible:
                             post_button = btn
-                            print(f"  ✓ Found enabled Post button using: {selector}")
+                            print(f"  [OK] Found enabled Post button using: {selector}")
                             break
                     if post_button:
                         break

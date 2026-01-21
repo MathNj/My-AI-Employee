@@ -204,7 +204,7 @@ def generate_text_image(
     )
 
     img.save(output_path, quality=95)
-    print(f"  ✓ Image saved to: {output_path}")
+    print(f"  [OK] Image saved to: {output_path}")
     return output_path
 
 
@@ -267,13 +267,13 @@ def check_login_status(page) -> bool:
             try:
                 element = page.wait_for_selector(selector, timeout=5000)
                 if element:
-                    print(f"✓ Found element using selector: {selector}")
-                    print("✓ User is logged in")
+                    print(f"[OK] Found element using selector: {selector}")
+                    print("[OK] User is logged in")
                     return True
             except PlaywrightTimeout:
                 continue
 
-        print("✗ User is not logged in")
+        print("[FAIL] User is not logged in")
         return False
 
     except Exception as e:
@@ -307,7 +307,7 @@ def authenticate(page, headless: bool = False) -> bool:
             if check_login_status(page):
                 print()
                 print("✅ Authentication successful!")
-                print(f"✓ Session saved to: {SESSION_PATH}")
+                print(f"[OK] Session saved to: {SESSION_PATH}")
                 print()
                 return True
 
@@ -351,7 +351,7 @@ def post_to_facebook(
             try:
                 composer = page.wait_for_selector(selector, timeout=5000)
                 if composer:
-                    print(f"  ✓ Found composer button: {selector}")
+                    print(f"  [OK] Found composer button: {selector}")
                     composer.click()
                     composer_opened = True
                     time.sleep(2)
@@ -373,7 +373,7 @@ def post_to_facebook(
                     try:
                         photo_btn = page.wait_for_selector(selector, timeout=3000)
                         if photo_btn:
-                            print(f"  ✓ Found Photo/Video button: {selector}")
+                            print(f"  [OK] Found Photo/Video button: {selector}")
                             photo_btn.click()
                             time.sleep(2)
                             break
@@ -386,14 +386,14 @@ def post_to_facebook(
                     try:
                         file_input = page.wait_for_selector(selector, timeout=5000, state='attached')
                         if file_input:
-                            print(f"  ✓ Found file input")
+                            print(f"  [OK] Found file input")
                             break
                     except PlaywrightTimeout:
                         continue
 
                 if file_input:
                     file_input.set_input_files(str(image_path))
-                    print("  ✓ Image uploaded")
+                    print("  [OK] Image uploaded")
                     time.sleep(3)
                 else:
                     print("  ⚠️  Could not upload image")
@@ -409,7 +409,7 @@ def post_to_facebook(
                 try:
                     text_area = page.wait_for_selector(selector, timeout=5000)
                     if text_area:
-                        print(f"  ✓ Found text area")
+                        print(f"  [OK] Found text area")
                         break
                 except PlaywrightTimeout:
                     continue
@@ -418,7 +418,7 @@ def post_to_facebook(
                 text_area.click()
                 time.sleep(0.5)
                 text_area.fill(text)
-                print("  ✓ Text added")
+                print("  [OK] Text added")
                 time.sleep(2)
 
         # Click Post button
@@ -428,7 +428,7 @@ def post_to_facebook(
             try:
                 post_btn = page.wait_for_selector(selector, timeout=5000, state='visible')
                 if post_btn and post_btn.is_visible():
-                    print(f"  ✓ Found Post button: {selector}")
+                    print(f"  [OK] Found Post button: {selector}")
                     post_btn.click(force=True)
                     break
             except PlaywrightTimeout:
@@ -438,7 +438,7 @@ def post_to_facebook(
             print("  ❌ Could not find Post button")
             return False
 
-        print("  ✓ Clicked Post button")
+        print("  [OK] Clicked Post button")
         time.sleep(5)
 
         print("✅ Post published successfully!")

@@ -243,7 +243,7 @@ class OdooCategorizer:
                 self.stats["categorized"] += 1
                 self.stats["confidence_total"] += category["confidence"]
 
-                logger.info(f"✓ {description[:50]:50} -> {category['category']} ({category['confidence']:.0%})")
+                logger.info(f"[OK] {description[:50]:50} -> {category['category']} ({category['confidence']:.0%})")
 
             else:
                 manual_review.append({

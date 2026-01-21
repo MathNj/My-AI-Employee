@@ -199,7 +199,7 @@ Task is ready for processing. Review Company_Handbook.md for any relevant rules.
                 "plan": plan_file.name
             })
 
-            logger.info(f"✓ Created plan for: {task_file.name}")
+            logger.info(f"[OK] Created plan for: {task_file.name}")
 
         logger.info(f"=== Processed {len(tasks)} task(s) ===")
         logger.info(f"Plans created in: {self.plans}")
