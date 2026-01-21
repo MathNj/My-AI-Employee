@@ -10,6 +10,7 @@ Computes:
 """
 
 import pandas as pd
+import numpy as np
 import logging
 from datetime import datetime, timedelta
 from typing import Dict, List, Tuple
@@ -246,11 +247,17 @@ class MetricsCalculator:
         val_range = max_val - min_val if max_val != min_val else 1
 
         heatmap_data['normalized'] = ((heatmap_data[metric] - min_val) / val_range * 100).round(1)
-        heatmap_data['color_category'] = pd.cut(
-            heatmap_data['normalized'],
-            bins=[0, 25, 50, 75, 100],
-            labels=['Low', 'Below Average', 'Average', 'Above Average', 'High']
-        )
+
+        # Assign color categories based on normalized values
+        conditions = [
+            heatmap_data['normalized'] <= 20,
+            (heatmap_data['normalized'] > 20) & (heatmap_data['normalized'] <= 40),
+            (heatmap_data['normalized'] > 40) & (heatmap_data['normalized'] <= 60),
+            (heatmap_data['normalized'] > 60) & (heatmap_data['normalized'] <= 80),
+            heatmap_data['normalized'] > 80
+        ]
+        labels = ['Low', 'Below Average', 'Average', 'Above Average', 'High']
+        heatmap_data['color_category'] = np.select(conditions, labels, default='Average')
 
         return heatmap_data
 

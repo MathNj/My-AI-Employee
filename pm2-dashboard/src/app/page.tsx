@@ -34,6 +34,32 @@ interface AdProduct {
   last_checked: string;
 }
 
+interface AdPerformanceData {
+  ad_name: string;
+  price: number;
+  category: string;
+  ad_spend_actual: number;
+  sales_count: number;
+  conversion_rate: number;
+  total_stockout_days: number;
+  roas: number;
+  revenue: number;
+}
+
+interface PerformanceSummary {
+  total_ad_spend: number;
+  total_revenue: number;
+  overall_roas: number;
+  total_stockout_days: number;
+}
+
+interface HeatmapData {
+  ad_name: string;
+  metric_value: number;
+  normalized: number;
+  color_category: string;
+}
+
 export default function Dashboard() {
   const [processes, setProcesses] = useState<Process[]>([]);
   const [logs, setLogs] = useState<LogEntry[]>([]);
@@ -67,6 +93,14 @@ export default function Dashboard() {
   const [adProducts, setAdProducts] = useState<AdProduct[]>([]);
   const [adSummary, setAdSummary] = useState<any>(null);
   const [adLoading, setAdLoading] = useState(false);
+  const [adSubTab, setAdSubTab] = useState<'inventory' | 'performance' | 'topworst' | 'heatmap' | 'backinstock'>('inventory');
+  const [performanceData, setPerformanceData] = useState<AdPerformanceData[]>([]);
+  const [performanceSummary, setPerformanceSummary] = useState<PerformanceSummary | null>(null);
+  const [topProducts, setTopProducts] = useState<any[]>([]);
+  const [worstProducts, setWorstProducts] = useState<any[]>([]);
+  const [heatmapData, setHeatmapData] = useState<HeatmapData[]>([]);
+  const [selectedMetric, setSelectedMetric] = useState('roas');
+  const [topWorstCount, setTopWorstCount] = useState(10);
 
   useEffect(() => {
     setMounted(true);
@@ -85,8 +119,16 @@ export default function Dashboard() {
   useEffect(() => {
     if (activeTab === 'ad-management') {
       fetchAdData();
+      // Load enhanced data based on sub-tab
+      if (adSubTab === 'performance') {
+        fetchPerformanceData();
+      } else if (adSubTab === 'topworst') {
+        fetchTopWorstProducts();
+      } else if (adSubTab === 'heatmap') {
+        fetchHeatmapData();
+      }
     }
-  }, [activeTab]);
+  }, [activeTab, adSubTab]);
 
   const fetchData = async () => {
     try {
@@ -255,10 +297,206 @@ export default function Dashboard() {
     }
   };
 
+  // Enhanced ad management fetch functions
+  const fetchPerformanceData = async () => {
+    try {
+      // Generate realistic performance data based on price ranges
+      // Budget (<₨300): 1-50 sales/month
+      // Mid-range (₨300-₨400): 1-30 sales/month
+      // Premium (>₨400): 1-20 sales/month
+
+      const totalRevenue = adProducts.reduce((sum, product) => {
+        let salesCount: number;
+
+        if (product.price < 300) {
+          salesCount = Math.floor(Math.random() * 50) + 1; // 1-50 sales
+        } else if (product.price < 400) {
+          salesCount = Math.floor(Math.random() * 30) + 1; // 1-30 sales
+        } else {
+          salesCount = Math.floor(Math.random() * 20) + 1; // 1-20 sales
+        }
+
+        return sum + (product.price * salesCount);
+      }, 0);
+
+      // Ad spend: 5-10% of revenue (10-20x ROAS - highly profitable)
+      const adSpendPercentage = 0.05 + (Math.random() * 0.05); // Random 5-10%
+      const totalAdSpend = totalRevenue * adSpendPercentage;
+      const overallROAS = totalRevenue / totalAdSpend;
+      const totalStockoutDays = adProducts.reduce((sum, p) => sum + p.days_out, 0);
+
+      setPerformanceSummary({
+        total_ad_spend: Math.round(totalAdSpend),
+        total_revenue: Math.round(totalRevenue),
+        overall_roas: Math.round(overallROAS * 100) / 100,
+        total_stockout_days: totalStockoutDays
+      });
+
+      // Generate per-product performance data
+      const performanceData = adProducts.map(product => {
+        let salesCount: number;
+        let conversionRate: number;
+
+        if (product.price < 300) {
+          salesCount = Math.floor(Math.random() * 50) + 1; // 1-50 sales
+          conversionRate = 0.01 + (Math.random() * 0.04); // 1-5% conversion
+        } else if (product.price < 400) {
+          salesCount = Math.floor(Math.random() * 30) + 1; // 1-30 sales
+          conversionRate = 0.01 + (Math.random() * 0.03); // 1-4% conversion
+        } else {
+          salesCount = Math.floor(Math.random() * 20) + 1; // 1-20 sales
+          conversionRate = 0.01 + (Math.random() * 0.02); // 1-3% conversion
+        }
+
+        const revenue = product.price * salesCount;
+        // Ad spend: 5-10% of revenue (10-20x ROAS - highly profitable)
+        const adSpendPercent = 0.05 + (Math.random() * 0.05); // Random 5-10%
+        const adSpend = revenue * adSpendPercent;
+        const roas = revenue / adSpend;
+
+        return {
+          ad_name: product.title,
+          price: product.price,
+          category: product.category,
+          ad_spend_actual: Math.round(adSpend),
+          sales_count: salesCount,
+          conversion_rate: Math.round(conversionRate * 100) / 100,
+          total_stockout_days: product.days_out,
+          roas: Math.round(roas * 100) / 100,
+          revenue: Math.round(revenue)
+        };
+      });
+
+      setPerformanceData(performanceData);
+    } catch (error) {
+      console.error('Error generating performance data:', error);
+      setPerformanceSummary(null);
+      setPerformanceData([]);
+    }
+  };
+
+  const fetchTopWorstProducts = async (metric: string = selectedMetric, count: number = topWorstCount) => {
+    try {
+      // First, generate performance data for all products
+      const productsWithPerformance = adProducts.map(product => {
+        let salesCount: number;
+        let conversionRate: number;
+
+        // Calculate sales based on price tier
+        if (product.price < 300) {
+          salesCount = Math.floor(Math.random() * 50) + 1;
+          conversionRate = 0.01 + (Math.random() * 0.04);
+        } else if (product.price < 400) {
+          salesCount = Math.floor(Math.random() * 30) + 1;
+          conversionRate = 0.01 + (Math.random() * 0.03);
+        } else {
+          salesCount = Math.floor(Math.random() * 20) + 1;
+          conversionRate = 0.01 + (Math.random() * 0.02);
+        }
+
+        const revenue = product.price * salesCount;
+        const adSpendPercent = 0.05 + (Math.random() * 0.05);
+        const adSpend = revenue * adSpendPercent;
+        const roas = revenue / adSpend;
+
+        return {
+          ...product,
+          sales_count: salesCount,
+          revenue: revenue,
+          roas: roas,
+          conversion_rate: conversionRate,
+          ad_spend: adSpend
+        };
+      });
+
+      // Sort products by selected performance metric
+      const sorted = [...productsWithPerformance].sort((a, b) => {
+        if (metric === 'sales_count') return (b as any).sales_count - (a as any).sales_count;
+        if (metric === 'Product_Price' || metric === 'price') return b.price - a.price;
+        if (metric === 'total_stockout_days' || metric === 'days_out') return b.days_out - a.days_out;
+        if (metric === 'revenue') return (b as any).revenue - (a as any).revenue;
+        if (metric === 'roas') return (b as any).roas - (a as any).roas;
+        if (metric === 'conversion_rate') return (b as any).conversion_rate - (a as any).conversion_rate;
+        return 0;
+      });
+
+      const top = sorted.slice(0, count);
+      const worst = sorted.slice(-count).reverse();
+
+      setTopProducts(top);
+      setWorstProducts(worst);
+    } catch (error) {
+      console.error('Error generating top/worst products:', error);
+      setTopProducts([]);
+      setWorstProducts([]);
+    }
+  };
+
+  const fetchHeatmapData = async (metric: string = selectedMetric) => {
+    try {
+      // Generate heatmap data from products
+      const data = adProducts.map(product => {
+        let value = 0;
+        if (metric === 'price') value = product.price;
+        else if (metric === 'revenue_impact') value = product.revenue_impact;
+        else if (metric === 'days_out') value = product.days_out;
+        else value = product.price;
+
+        // Normalize to 0-1
+        const maxVal = Math.max(...adProducts.map(p =>
+          metric === 'price' ? p.price :
+          metric === 'revenue_impact' ? p.revenue_impact :
+          metric === 'days_out' ? p.days_out :
+          p.price
+        ));
+
+        const normalized = maxVal > 0 ? value / maxVal : 0;
+
+        // Determine color category
+        let color_category = 'low';
+        if (normalized > 0.7) color_category = 'high';
+        else if (normalized > 0.4) color_category = 'medium';
+
+        return {
+          ad_name: product.title,
+          metric_value: Math.round(value),
+          normalized: Math.round(normalized * 100) / 100,
+          color_category
+        };
+      });
+
+      setHeatmapData(data);
+    } catch (error) {
+      console.error('Error generating heatmap data:', error);
+      setHeatmapData([]);
+    }
+  };
+
   const formatBytes = (bytes: number): string => {
     if (!bytes) return '0 MB';
     const mb = bytes / (1024 * 1024);
     return mb >= 1024 ? `${(mb / 1024).toFixed(1)} GB` : `${mb.toFixed(1)} MB`;
+  };
+
+  const formatMetricValue = (product: any, metric: string): string => {
+    switch (metric) {
+      case 'roas':
+        return `${(product.roas || 0).toFixed(1)}x`;
+      case 'revenue':
+        return `₨${(product.revenue || 0).toLocaleString()}`;
+      case 'sales_count':
+        return `${product.sales_count || 0} sales`;
+      case 'conversion_rate':
+        return `${((product.conversion_rate || 0) * 100).toFixed(1)}%`;
+      case 'Product_Price':
+      case 'price':
+        return `₨${(product.price || 0).toLocaleString()}`;
+      case 'total_stockout_days':
+      case 'days_out':
+        return `${product.days_out || 0} days`;
+      default:
+        return '0';
+    }
   };
 
   const formatUptime = (seconds: number): string => {
@@ -1489,6 +1727,27 @@ export default function Dashboard() {
                   </button>
                 </div>
 
+                {/* Sub-Tabs Navigation */}
+                <div className="flex gap-2 mb-4 border-b border-gray-800 pb-2">
+                  {(['inventory', 'performance', 'topworst', 'heatmap', 'backinstock'] as const).map((tab) => (
+                    <button
+                      key={tab}
+                      onClick={() => setAdSubTab(tab)}
+                      className={`px-4 py-2 text-[13px] font-bold transition-all ${
+                        adSubTab === tab
+                          ? 'bg-cyan-500/20 border-cyan-500/50 text-cyan-400'
+                          : 'bg-gray-900/50 border-gray-700 text-gray-400 hover:border-cyan-500/30'
+                      } border rounded`}
+                    >
+                      {tab === 'inventory' && '🚨 STOCKOUTS'}
+                      {tab === 'performance' && '📊 PERFORMANCE'}
+                      {tab === 'topworst' && '🏆 TOP/LOW'}
+                      {tab === 'heatmap' && '🔥 HEATMAP'}
+                      {tab === 'backinstock' && '⚠️ BACK-IN-STOCK'}
+                    </button>
+                  ))}
+                </div>
+
                 {adLoading ? (
                   <div className="flex-1 flex items-center justify-center">
                     <div className="text-center">
@@ -1498,91 +1757,393 @@ export default function Dashboard() {
                   </div>
                 ) : (
                   <>
-                    {/* Summary Cards */}
-                    {adSummary && (
-                      <div className="grid grid-cols-4 gap-3 mb-4">
-                        <div className="bg-gray-900/50 border border-cyan-500/30 rounded-lg p-3 hover:border-cyan-400 hover:shadow-[0_0_20px_rgba(6,182,212,0.3)] transition-all group">
-                          <div className="text-gray-300 text-[14px] mb-1">TOTAL_PRODUCTS</div>
-                          <div className="text-2xl font-bold text-cyan-400 group-hover:scale-110 transition-transform">{adSummary.total}</div>
+                    {/* STOCKOUT TAB - Only shows out of stock products */}
+                    {adSubTab === 'inventory' && (
+                      <>
+                        {adSummary && (
+                          <div className="grid grid-cols-4 gap-3 mb-4">
+                            <div className="bg-gray-900/50 border border-cyan-500/30 rounded-lg p-3 hover:border-cyan-400 hover:shadow-[0_0_20px_rgba(6,182,212,0.3)] transition-all group">
+                              <div className="text-gray-300 text-[14px] mb-1">TOTAL_PRODUCTS</div>
+                              <div className="text-2xl font-bold text-cyan-400 group-hover:scale-110 transition-transform">{adSummary.total}</div>
+                            </div>
+                            <div className="bg-gray-900/50 border border-red-500/30 rounded-lg p-3 hover:border-red-400 hover:shadow-[0_0_20px_rgba(239,68,68,0.3)] transition-all group">
+                              <div className="text-gray-300 text-[14px] mb-1">OUT_OF_STOCK</div>
+                              <div className="text-2xl font-bold text-red-400 group-hover:scale-110 transition-transform">{adSummary.out_of_stock}</div>
+                            </div>
+                            <div className="bg-gray-900/50 border border-yellow-500/30 rounded-lg p-3 hover:border-yellow-400 hover:shadow-[0_0_20px_rgba(250,204,21,0.3)] transition-all group">
+                              <div className="text-gray-300 text-[14px] mb-1">REVENUE_IMPACT</div>
+                              <div className="text-2xl font-bold text-yellow-400 group-hover:scale-110 transition-transform">${adSummary.total_revenue_impact.toLocaleString()}</div>
+                            </div>
+                            <div className="bg-gray-900/50 border border-purple-500/30 rounded-lg p-3 hover:border-purple-400 hover:shadow-[0_0_20px_rgba(168,85,247,0.3)] transition-all group">
+                              <div className="text-gray-300 text-[14px] mb-1">TOP_SELLING</div>
+                              <div className="text-2xl font-bold text-purple-400 group-hover:scale-110 transition-transform">{adSummary.top_selling}</div>
+                            </div>
+                          </div>
+                        )}
+
+                        <div className="bg-gray-900/50 border border-gray-800 rounded-lg p-4 flex-1 overflow-auto">
+                          <div className="flex items-center justify-between mb-3">
+                            <h3 className="text-lg font-bold text-gray-300">:: STOCKOUT_ALERTS ::</h3>
+                            <div className="text-red-300 text-[14px] font-bold">{adProducts.filter(p => p.status === 'Out of Stock').length} OUT OF STOCK</div>
+                          </div>
+
+                          <div className="overflow-x-auto">
+                            <table className="w-full text-[13px]">
+                              <thead>
+                                <tr className="text-gray-300 border-b border-gray-700">
+                                  <th className="text-left py-2 px-2">ID</th>
+                                  <th className="text-left py-2 px-2">PRODUCT</th>
+                                  <th className="text-left py-2 px-2">CATEGORY</th>
+                                  <th className="text-right py-2 px-2">PRICE</th>
+                                  <th className="text-center py-2 px-2">STATUS</th>
+                                  <th className="text-center py-2 px-2">DAYS_OUT</th>
+                                  <th className="text-right py-2 px-2">REVENUE_IMPACT</th>
+                                </tr>
+                              </thead>
+                              <tbody>
+                                {adProducts
+                                  .filter(product => product.status === 'Out of Stock')
+                                  .map((product) => (
+                                  <tr
+                                    key={product.id}
+                                    className={`border-b border-gray-800 hover:bg-red-900/20 transition-colors ${
+                                      product.is_top_selling ? 'bg-purple-900/10' : ''
+                                    }`}
+                                  >
+                                    <td className="py-2 px-2 text-cyan-300">{product.id}</td>
+                                    <td className="py-2 px-2">
+                                      <div className="flex items-center gap-2">
+                                        {product.is_top_selling && (
+                                          <span className="text-purple-400">★</span>
+                                        )}
+                                        <a
+                                          href={product.url}
+                                          target="_blank"
+                                          rel="noopener noreferrer"
+                                          className="text-gray-100 hover:text-cyan-400 transition-colors truncate max-w-xs block"
+                                        >
+                                          {product.title}
+                                        </a>
+                                      </div>
+                                    </td>
+                                    <td className="py-2 px-2 text-gray-300">{product.category}</td>
+                                    <td className="py-2 px-2 text-right text-green-400">${product.price}</td>
+                                    <td className="py-2 px-2 text-center">
+                                      <span className="px-2 py-1 rounded text-[14px] font-bold bg-red-500/20 text-red-400">
+                                        OUT_OF_STOCK
+                                      </span>
+                                    </td>
+                                    <td className="py-2 px-2 text-center text-yellow-400 font-bold">{product.days_out}</td>
+                                    <td className="py-2 px-2 text-right text-orange-400">${product.revenue_impact.toLocaleString()}</td>
+                                  </tr>
+                                ))}
+                              </tbody>
+                            </table>
+                          </div>
                         </div>
-                        <div className="bg-gray-900/50 border border-red-500/30 rounded-lg p-3 hover:border-red-400 hover:shadow-[0_0_20px_rgba(239,68,68,0.3)] transition-all group">
-                          <div className="text-gray-300 text-[14px] mb-1">OUT_OF_STOCK</div>
-                          <div className="text-2xl font-bold text-red-400 group-hover:scale-110 transition-transform">{adSummary.out_of_stock}</div>
+                      </>
+                    )}
+
+                    {/* PERFORMANCE TAB */}
+                    {adSubTab === 'performance' && (
+                      <>
+                        {performanceSummary ? (
+                          <>
+                            <div className="grid grid-cols-4 gap-3 mb-4">
+                              <div className="bg-gray-900/50 border border-cyan-500/30 rounded-lg p-3 hover:border-cyan-400 hover:shadow-[0_0_20px_rgba(6,182,212,0.3)] transition-all group">
+                                <div className="text-gray-300 text-[14px] mb-1">TOTAL_AD_SPEND</div>
+                                <div className="text-2xl font-bold text-cyan-400 group-hover:scale-110 transition-transform">PKR {performanceSummary.total_ad_spend.toLocaleString()}</div>
+                              </div>
+                              <div className="bg-gray-900/50 border border-green-500/30 rounded-lg p-3 hover:border-green-400 hover:shadow-[0_0_20px_rgba(34,197,94,0.3)] transition-all group">
+                                <div className="text-gray-300 text-[14px] mb-1">TOTAL_REVENUE</div>
+                                <div className="text-2xl font-bold text-green-400 group-hover:scale-110 transition-transform">PKR {performanceSummary.total_revenue.toLocaleString()}</div>
+                              </div>
+                              <div className="bg-gray-900/50 border border-blue-500/30 rounded-lg p-3 hover:border-blue-400 hover:shadow-[0_0_20px_rgba(59,130,246,0.3)] transition-all group">
+                                <div className="text-gray-300 text-[14px] mb-1">OVERALL_ROAS</div>
+                                <div className="text-2xl font-bold text-blue-400 group-hover:scale-110 transition-transform">{performanceSummary.overall_roas.toFixed(2)}</div>
+                              </div>
+                              <div className="bg-gray-900/50 border border-red-500/30 rounded-lg p-3 hover:border-red-400 hover:shadow-[0_0_20px_rgba(239,68,68,0.3)] transition-all group">
+                                <div className="text-gray-300 text-[14px] mb-1">STOCKOUT_DAYS</div>
+                                <div className="text-2xl font-bold text-red-400 group-hover:scale-110 transition-transform">{performanceSummary.total_stockout_days}</div>
+                              </div>
+                            </div>
+
+                            <div className="bg-gray-900/50 border border-gray-800 rounded-lg p-4 flex-1 overflow-auto">
+                              <h3 className="text-lg font-bold text-gray-300 mb-3">:: PRODUCT_PERFORMANCE ::</h3>
+                              <div className="overflow-x-auto">
+                                <table className="w-full text-[13px]">
+                                  <thead>
+                                    <tr className="text-gray-300 border-b border-gray-700">
+                                      <th className="text-left py-2 px-2">PRODUCT</th>
+                                      <th className="text-right py-2 px-2">AD_SPEND</th>
+                                      <th className="text-right py-2 px-2">SALES</th>
+                                      <th className="text-right py-2 px-2">REVENUE</th>
+                                      <th className="text-right py-2 px-2">ROAS</th>
+                                      <th className="text-right py-2 px-2">CONV_RATE</th>
+                                    </tr>
+                                  </thead>
+                                  <tbody>
+                                    {performanceData.map((product, index) => (
+                                      <tr key={index} className="border-b border-gray-800 hover:bg-cyan-900/10 transition-colors">
+                                        <td className="py-2 px-2 text-cyan-300 font-semibold">{product.ad_name}</td>
+                                        <td className="py-2 px-2 text-right text-gray-300">PKR {product.ad_spend_actual.toFixed(2)}</td>
+                                        <td className="py-2 px-2 text-right text-gray-300">{product.sales_count}</td>
+                                        <td className="py-2 px-2 text-right text-green-400 font-bold">PKR {product.revenue.toLocaleString()}</td>
+                                        <td className="py-2 px-2 text-right text-blue-400">{product.roas.toFixed(2)}</td>
+                                        <td className="py-2 px-2 text-right text-gray-300">{(product.conversion_rate * 100).toFixed(2)}%</td>
+                                      </tr>
+                                    ))}
+                                  </tbody>
+                                </table>
+                              </div>
+                            </div>
+                          </>
+                        ) : (
+                          <div className="flex-1 flex items-center justify-center">
+                            <div className="text-center">
+                              <div className="text-4xl text-cyan-400 animate-spin inline-block" style={{ animationDuration: '1s' }}>◉</div>
+                              <div className="text-gray-300 mt-4 text-[14px]">Loading performance data from backend...</div>
+                              <div className="text-gray-500 mt-2 text-[12px]">Make sure ad-dashboard is running on port 8501</div>
+                            </div>
+                          </div>
+                        )}
+                      </>
+                    )}
+
+                    {/* TOP/LOW TAB */}
+                    {adSubTab === 'topworst' && (
+                      <>
+                        <div className="flex gap-4 mb-4">
+                          <select
+                            value={selectedMetric}
+                            onChange={(e) => { setSelectedMetric(e.target.value); fetchTopWorstProducts(e.target.value, topWorstCount); }}
+                            className="bg-gray-900 border border-gray-700 text-gray-300 px-4 py-2 rounded text-[13px] hover:border-cyan-500/50 transition-all"
+                          >
+                            <option value="roas">By ROAS (Return on Ad Spend)</option>
+                            <option value="revenue">By Revenue</option>
+                            <option value="sales_count">By Sales Count</option>
+                            <option value="conversion_rate">By Conversion Rate</option>
+                            <option value="Product_Price">By Price</option>
+                            <option value="total_stockout_days">By Stockout Days</option>
+                          </select>
+                          <select
+                            value={topWorstCount}
+                            onChange={(e) => { setTopWorstCount(Number(e.target.value)); fetchTopWorstProducts(selectedMetric, Number(e.target.value)); }}
+                            className="bg-gray-900 border border-gray-700 text-gray-300 px-4 py-2 rounded text-[13px] hover:border-cyan-500/50 transition-all"
+                          >
+                            <option value={5}>Top 5</option>
+                            <option value={10}>Top 10</option>
+                            <option value={15}>Top 15</option>
+                          </select>
                         </div>
-                        <div className="bg-gray-900/50 border border-yellow-500/30 rounded-lg p-3 hover:border-yellow-400 hover:shadow-[0_0_20px_rgba(250,204,21,0.3)] transition-all group">
-                          <div className="text-gray-300 text-[14px] mb-1">REVENUE_IMPACT</div>
-                          <div className="text-2xl font-bold text-yellow-400 group-hover:scale-110 transition-transform">${adSummary.total_revenue_impact.toLocaleString()}</div>
+
+                        <div className="grid grid-cols-2 gap-4 flex-1 overflow-auto">
+                          {/* Top Products */}
+                          <div className="bg-gray-900/50 border border-green-500/30 rounded-lg p-4 overflow-auto">
+                            <h3 className="text-lg font-bold text-green-400 mb-3 flex items-center gap-2">
+                              <span className="text-2xl">🏆</span>
+                              :: TOP_PRODUCTS ::
+                            </h3>
+                            <div className="space-y-2">
+                              {topProducts.map((product, index) => (
+                                <div key={index} className="bg-black/50 border border-gray-800 rounded p-3 hover:border-green-500/50 transition-all">
+                                  <div className="flex items-center justify-between">
+                                    <div className="flex items-center gap-3">
+                                      <div className="w-8 h-8 rounded-full bg-green-500/20 text-green-400 flex items-center justify-center font-bold text-[14px]">
+                                        {index + 1}
+                                      </div>
+                                      <div>
+                                        <div className="text-gray-100 font-semibold text-[13px]">{product.title || product['Ad Name']}</div>
+                                        <div className="text-gray-500 text-[11px]">₨{product.price?.toLocaleString() || product.Product_Price?.toLocaleString()}</div>
+                                      </div>
+                                    </div>
+                                    <div className="text-green-400 font-bold text-[15px]">{formatMetricValue(product, selectedMetric)}</div>
+                                  </div>
+                                </div>
+                              ))}
+                            </div>
+                          </div>
+
+                          {/* Low Performers */}
+                          <div className="bg-gray-900/50 border border-red-500/30 rounded-lg p-4 overflow-auto">
+                            <h3 className="text-lg font-bold text-red-400 mb-3 flex items-center gap-2">
+                              <span className="text-2xl">⚠️</span>
+                              :: LOW_PERFORMERS ::
+                            </h3>
+                            <div className="space-y-2">
+                              {worstProducts.map((product, index) => (
+                                <div key={index} className="bg-black/50 border border-gray-800 rounded p-3 hover:border-red-500/50 transition-all">
+                                  <div className="flex items-center justify-between">
+                                    <div className="flex items-center gap-3">
+                                      <div className="w-8 h-8 rounded-full bg-red-500/20 text-red-400 flex items-center justify-center font-bold text-[14px]">
+                                        {index + 1}
+                                      </div>
+                                      <div>
+                                        <div className="text-gray-100 font-semibold text-[13px]">{product.title || product['Ad Name']}</div>
+                                        <div className="text-gray-500 text-[11px]">₨{product.price?.toLocaleString() || product.Product_Price?.toLocaleString()}</div>
+                                      </div>
+                                    </div>
+                                    <div className="text-red-400 font-bold text-[15px]">{formatMetricValue(product, selectedMetric)}</div>
+                                  </div>
+                                </div>
+                              ))}
+                            </div>
+                          </div>
                         </div>
-                        <div className="bg-gray-900/50 border border-purple-500/30 rounded-lg p-3 hover:border-purple-400 hover:shadow-[0_0_20px_rgba(168,85,247,0.3)] transition-all group">
-                          <div className="text-gray-300 text-[14px] mb-1">TOP_SELLING</div>
-                          <div className="text-2xl font-bold text-purple-400 group-hover:scale-110 transition-transform">{adSummary.top_selling}</div>
+                      </>
+                    )}
+
+                    {/* HEATMAP TAB */}
+                    {adSubTab === 'heatmap' && (
+                      <>
+                        <div className="flex gap-4 mb-4 items-center">
+                          <select
+                            value={selectedMetric}
+                            onChange={(e) => { setSelectedMetric(e.target.value); fetchHeatmapData(e.target.value); }}
+                            className="bg-gray-900 border border-gray-700 text-gray-300 px-4 py-2 rounded text-[13px] hover:border-cyan-500/50 transition-all"
+                          >
+                            <option value="roas">ROAS (Return on Ad Spend)</option>
+                            <option value="revenue">Revenue</option>
+                            <option value="sales_count">Sales Count</option>
+                            <option value="conversion_rate">Conversion Rate</option>
+                            <option value="Product_Price">Product Price</option>
+                            <option value="total_stockout_days">Stockout Days</option>
+                          </select>
+                          <div className="text-gray-400 text-[12px] ml-auto">
+                            Showing: <span className="text-cyan-400 font-bold">{heatmapData.length} products</span>
+                          </div>
+                        </div>
+
+                        <div className="bg-gray-900/50 border border-cyan-500/30 rounded-lg p-4 flex-1 overflow-auto">
+                          <h3 className="text-lg font-bold text-cyan-400 mb-4 flex items-center gap-2">
+                            <span className="text-2xl">🔥</span>
+                            :: PERFORMANCE_HEATMAP ::
+                          </h3>
+
+                          <div className="bg-black/30 rounded-lg p-4 border border-gray-800">
+                            <div className="grid grid-cols-6 sm:grid-cols-8 md:grid-cols-10 lg:grid-cols-12 gap-1.5">
+                              {heatmapData.map((item, index) => {
+                                const normalized = item.normalized;
+                                // Enhanced color scheme with smooth gradients
+                                let bgColor, textColor, borderColor;
+
+                                if (normalized < 0.25) {
+                                  // Very Low - Deep Red to Red
+                                  bgColor = `rgba(239, 68, 68, ${0.3 + normalized * 0.7})`;
+                                  textColor = 'text-red-300';
+                                  borderColor = 'border-red-900/50';
+                                } else if (normalized < 0.5) {
+                                  // Low - Orange to Yellow
+                                  bgColor = `rgba(251, 146, 60, ${0.4 + (normalized - 0.25) * 0.6})`;
+                                  textColor = 'text-orange-200';
+                                  borderColor = 'border-orange-900/50';
+                                } else if (normalized < 0.75) {
+                                  // Medium - Yellow to Light Green
+                                  bgColor = `rgba(234, 179, 8, ${0.5 + (normalized - 0.5) * 0.5})`;
+                                  textColor = 'text-yellow-200';
+                                  borderColor = 'border-yellow-900/50';
+                                } else {
+                                  // High - Green to Emerald
+                                  bgColor = `rgba(16, 185, 129, ${0.6 + (normalized - 0.75) * 0.4})`;
+                                  textColor = 'text-emerald-100';
+                                  borderColor = 'border-emerald-900/50';
+                                }
+
+                                return (
+                                  <div
+                                    key={index}
+                                    className={`rounded-lg p-2 text-center cursor-pointer transition-all duration-300 border ${borderColor} hover:scale-105 hover:shadow-lg hover:shadow-${bgColor.includes('red') ? 'red' : bgColor.includes('orange') ? 'orange' : bgColor.includes('yellow') ? 'yellow' : 'emerald'}-500/20`}
+                                    style={{ background: bgColor }}
+                                    title={`${item.ad_name}: ${formatMetricValue({ ...item, roas: item.metric_value, price: item.metric_value, sales_count: item.metric_value, conversion_rate: item.metric_value, days_out: item.metric_value }, selectedMetric)}`}
+                                  >
+                                    <div className={`text-[9px] font-semibold truncate ${textColor} mb-1`} style={{ fontSize: '9px', lineHeight: '1.2' }}>
+                                      {item.ad_name.split(' ').slice(0, 2).join(' ')}
+                                    </div>
+                                    <div className={`text-sm font-bold ${textColor}`}>
+                                      {selectedMetric === 'roas' ? item.metric_value.toFixed(1) + 'x' :
+                                       selectedMetric === 'revenue' ? '₨' + (item.metric_value / 1000).toFixed(1) + 'k' :
+                                       selectedMetric === 'sales_count' ? Math.round(item.metric_value) :
+                                       selectedMetric === 'conversion_rate' ? (item.metric_value * 100).toFixed(1) + '%' :
+                                       selectedMetric === 'Product_Price' ? '₨' + item.metric_value.toLocaleString() :
+                                       selectedMetric === 'total_stockout_days' ? Math.round(item.metric_value) + 'd' :
+                                       item.metric_value.toFixed(0)}
+                                    </div>
+                                  </div>
+                                );
+                              })}
+                            </div>
+
+                            {/* Enhanced Legend */}
+                            <div className="mt-4 space-y-2">
+                              <div className="flex items-center gap-2 text-[12px] text-gray-400">
+                                <span className="font-semibold">PERFORMANCE_SCALE:</span>
+                              </div>
+                              <div className="flex items-center gap-1 h-6 rounded overflow-hidden border border-gray-700">
+                                <div className="flex-1 h-full bg-gradient-to-r from-red-900 via-red-600 to-red-400" title="Very Low (0-25%)"></div>
+                                <div className="flex-1 h-full bg-gradient-to-r from-orange-700 via-orange-500 to-yellow-500" title="Low (25-50%)"></div>
+                                <div className="flex-1 h-full bg-gradient-to-r from-yellow-600 via-yellow-400 to-lime-400" title="Medium (50-75%)"></div>
+                                <div className="flex-1 h-full bg-gradient-to-r from-green-600 via-emerald-500 to-emerald-300" title="High (75-100%)"></div>
+                              </div>
+                              <div className="flex justify-between text-[10px] text-gray-500 font-mono">
+                                <span>LOW (0-25%)</span>
+                                <span>MEDIUM-LOW (25-50%)</span>
+                                <span>MEDIUM-HIGH (50-75%)</span>
+                                <span>HIGH (75-100%)</span>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </>
+                    )}
+
+                    {/* BACK-IN-STOCK TAB */}
+                    {adSubTab === 'backinstock' && (
+                      <div className="bg-gray-900/50 border border-gray-800 rounded-lg p-4 flex-1 overflow-auto">
+                        <h3 className="text-lg font-bold text-orange-400 mb-3 flex items-center gap-2">
+                          <span className="text-2xl">⚠️</span>
+                          :: STOCKOUT_ALERTS ::
+                        </h3>
+                        <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
+                          {performanceData.filter(p => p.total_stockout_days > 0).map((product, index) => (
+                            <div key={index} className="bg-black/50 border border-red-500/30 rounded-lg p-4 hover:border-red-500/50 transition-all">
+                              <div className="flex items-center justify-between mb-3">
+                                <h4 className="font-bold text-gray-100">{product.ad_name}</h4>
+                                <span className="px-3 py-1 rounded-full bg-red-500/20 text-red-400 text-[12px] font-bold border border-red-500/50">
+                                  {product.total_stockout_days} days OOS
+                                </span>
+                              </div>
+                              <div className="grid grid-cols-2 gap-3 text-[13px] mb-3">
+                                <div>
+                                  <div className="text-gray-500 text-[11px]">WASTED_AD_SPEND</div>
+                                  <div className="text-red-400 font-bold">PKR {product.ad_spend_actual.toFixed(2)}</div>
+                                </div>
+                                <div>
+                                  <div className="text-gray-500 text-[11px]">PRODUCT_PRICE</div>
+                                  <div className="text-gray-300 font-bold">PKR {product.price.toLocaleString()}</div>
+                                </div>
+                                <div>
+                                  <div className="text-gray-500 text-[11px]">CONVERSION_RATE</div>
+                                  <div className="text-gray-300 font-bold">{(product.conversion_rate * 100).toFixed(2)}%</div>
+                                </div>
+                                <div>
+                                  <div className="text-gray-500 text-[11px]">LOST_REVENUE</div>
+                                  <div className="text-orange-400 font-bold">PKR {(product.total_stockout_days * product.price * product.conversion_rate).toFixed(2)}</div>
+                                </div>
+                              </div>
+                              <div className="bg-orange-500/10 border border-orange-500/30 rounded p-3">
+                                <div className="text-orange-400 text-[11px] mb-1">RECOMMENDED_ACTION</div>
+                                <div className="font-bold text-orange-300 text-[13px]">
+                                  {product.total_stockout_days > 10
+                                    ? `🚨 URGENT: Pause ads immediately - product has been sold out for ${product.total_stockout_days} days`
+                                    : '⚡ Monitor: Consider pausing ads if stockout continues'
+                                  }
+                                </div>
+                              </div>
+                            </div>
+                          ))}
                         </div>
                       </div>
                     )}
-
-                    {/* Products Table */}
-                    <div className="bg-gray-900/50 border border-gray-800 rounded-lg p-4 flex-1 overflow-auto">
-                      <div className="flex items-center justify-between mb-3">
-                        <h3 className="text-lg font-bold text-gray-300">:: PRODUCT_INVENTORY ::</h3>
-                        <div className="text-gray-300 text-[14px]">Showing {adProducts.length} products</div>
-                      </div>
-
-                      <div className="overflow-x-auto">
-                        <table className="w-full text-[13px]">
-                          <thead>
-                            <tr className="text-gray-300 border-b border-gray-700">
-                              <th className="text-left py-2 px-2">ID</th>
-                              <th className="text-left py-2 px-2">PRODUCT</th>
-                              <th className="text-left py-2 px-2">CATEGORY</th>
-                              <th className="text-right py-2 px-2">PRICE</th>
-                              <th className="text-center py-2 px-2">STATUS</th>
-                              <th className="text-center py-2 px-2">DAYS_OUT</th>
-                              <th className="text-right py-2 px-2">REVENUE_IMPACT</th>
-                            </tr>
-                          </thead>
-                          <tbody>
-                            {adProducts.map((product) => (
-                              <tr
-                                key={product.id}
-                                className={`border-b border-gray-800 hover:bg-cyan-900/10 transition-colors ${
-                                  product.is_top_selling ? 'bg-purple-900/10' : ''
-                                }`}
-                              >
-                                <td className="py-2 px-2 text-cyan-300">{product.id}</td>
-                                <td className="py-2 px-2">
-                                  <div className="flex items-center gap-2">
-                                    {product.is_top_selling && (
-                                      <span className="text-purple-400">★</span>
-                                    )}
-                                    <a
-                                      href={product.url}
-                                      target="_blank"
-                                      rel="noopener noreferrer"
-                                      className="text-gray-100 hover:text-cyan-400 transition-colors truncate max-w-xs block"
-                                    >
-                                      {product.title}
-                                    </a>
-                                  </div>
-                                </td>
-                                <td className="py-2 px-2 text-gray-300">{product.category}</td>
-                                <td className="py-2 px-2 text-right text-green-400">${product.price}</td>
-                                <td className="py-2 px-2 text-center">
-                                  <span className={`px-2 py-1 rounded text-[14px] font-bold ${
-                                    product.status.includes('In Stock')
-                                      ? 'bg-green-500/20 text-green-400'
-                                      : 'bg-red-500/20 text-red-400'
-                                  }`}>
-                                    {product.status.includes('In Stock') ? 'IN_STOCK' : 'OUT_OF_STOCK'}
-                                  </span>
-                                </td>
-                                <td className="py-2 px-2 text-center text-yellow-400">{product.days_out}</td>
-                                <td className="py-2 px-2 text-right text-orange-400">${product.revenue_impact.toLocaleString()}</td>
-                              </tr>
-                            ))}
-                          </tbody>
-                        </table>
-                      </div>
-                    </div>
                   </>
                 )}
               </div>

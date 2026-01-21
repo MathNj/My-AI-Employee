@@ -5,9 +5,20 @@ import json
 from datetime import datetime, timedelta
 from fastapi import FastAPI, Request, Query
 from fastapi.responses import HTMLResponse, JSONResponse
+from fastapi.middleware.cors import CORSMiddleware
 from jinja2 import Template
+from metrics_calculator import MetricsCalculator
 
 app = FastAPI()
+
+# Add CORS middleware to allow cross-origin requests from Next.js dashboard
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["http://localhost:3000", "http://127.0.0.1:3000"],  # Next.js dev server
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
 
 # Load product prices from CSV
 product_prices_cache = {}
@@ -449,12 +460,24 @@ HTML_TEMPLATE = """
 
         <!-- Tables -->
         <div class="card overflow-hidden">
-            <div class="flex border-b" style="border-color: var(--border);">
+            <div class="flex border-b flex-wrap" style="border-color: var(--border);">
                 <button onclick="switchTab('offline')" class="tab-btn active" data-tab="offline">
                     <i class="ph-fill ph-warning-circle mr-2"></i>Offline Ads <span class="badge bg-red-100 text-red-700 ml-2">{{ current_oos_list|length }}</span>
                 </button>
                 <button onclick="switchTab('history')" class="tab-btn" data-tab="history">
                     <i class="ph-fill ph-clock-counter-clockwise mr-2"></i>Event History <span class="badge bg-blue-100 text-blue-700 ml-2">{{ logs|length }}</span>
+                </button>
+                <button onclick="switchTab('performance')" class="tab-btn" data-tab="performance">
+                    <i class="ph-fill ph-chart-bar mr-2"></i>Ad Performance
+                </button>
+                <button onclick="switchTab('topworst')" class="tab-btn" data-tab="topworst">
+                    <i class="ph-fill ph-trophy mr-2"></i>Top/Worst Products
+                </button>
+                <button onclick="switchTab('heatmap')" class="tab-btn" data-tab="heatmap">
+                    <i class="ph-fill ph-fire mr-2"></i>Heatmaps
+                </button>
+                <button onclick="switchTab('backinstock')" class="tab-btn" data-tab="backinstock">
+                    <i class="ph-fill ph-arrow-counter-clockwise mr-2"></i>Back-in-Stock
                 </button>
             </div>
 
@@ -553,6 +576,146 @@ HTML_TEMPLATE = """
                             {% endfor %}
                         </tbody>
                     </table>
+                </div>
+            </div>
+
+            <!-- Ad Performance Tab -->
+            <div id="tab-performance" class="tab-content hidden">
+                <div class="p-5">
+                    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mb-6">
+                        <div class="p-4 rounded-lg" style="background: var(--bg_hover);">
+                            <div class="text-xs uppercase text-muted mb-1">Total Ad Spend</div>
+                            <div class="text-2xl font-bold" id="totalAdSpend">Loading...</div>
+                        </div>
+                        <div class="p-4 rounded-lg" style="background: var(--bg_hover);">
+                            <div class="text-xs uppercase text-muted mb-1">Total Revenue</div>
+                            <div class="text-2xl font-bold text-green-600" id="totalRevenue">Loading...</div>
+                        </div>
+                        <div class="p-4 rounded-lg" style="background: var(--bg_hover);">
+                            <div class="text-xs uppercase text-muted mb-1">Overall ROAS</div>
+                            <div class="text-2xl font-bold text-blue-600" id="overallROAS">Loading...</div>
+                        </div>
+                        <div class="p-4 rounded-lg" style="background: var(--bg_hover);">
+                            <div class="text-xs uppercase text-muted mb-1">Total Stockout Days</div>
+                            <div class="text-2xl font-bold text-red-600" id="totalStockoutDays">Loading...</div>
+                        </div>
+                    </div>
+
+                    <h3 class="text-lg font-bold mb-4">Product Performance</h3>
+                    <div class="overflow-x-auto">
+                        <table class="w-full" style="table-layout: fixed; min-width: 1200px;">
+                            <thead style="background: var(--bg_hover);">
+                                <tr>
+                                    <th class="px-4 py-3 text-left text-xs font-black uppercase">Product</th>
+                                    <th class="px-4 py-3 text-left text-xs font-black uppercase">Ad Spend</th>
+                                    <th class="px-4 py-3 text-left text-xs font-black uppercase">Sales</th>
+                                    <th class="px-4 py-3 text-left text-xs font-black uppercase">Revenue</th>
+                                    <th class="px-4 py-3 text-left text-xs font-black uppercase">ROAS</th>
+                                    <th class="px-4 py-3 text-left text-xs font-black uppercase">Conv. Rate</th>
+                                </tr>
+                            </thead>
+                            <tbody id="performanceTableBody">
+                                <tr>
+                                    <td colspan="6" class="px-4 py-8 text-center text-muted">
+                                        <i class="ph ph-spinner animate-spin text-2xl"></i>
+                                        <span class="ml-2">Loading performance data...</span>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Top/Worst Products Tab -->
+            <div id="tab-topworst" class="tab-content hidden">
+                <div class="p-5">
+                    <div class="flex space-x-4 mb-6">
+                        <select id="topworstMetric" onchange="loadTopWorstProducts()" class="px-4 py-2 rounded-lg border" style="background: var(--bg); border-color: var(--border); color: var(--text);">
+                            <option value="sales_count">By Sales Count</option>
+                            <option value="Product_Price">By Price</option>
+                            <option value="total_stockout_days">By Stockout Days</option>
+                        </select>
+                        <select id="topworstCount" onchange="loadTopWorstProducts()" class="px-4 py-2 rounded-lg border" style="background: var(--bg); border-color: var(--border); color: var(--text);">
+                            <option value="5">Top 5</option>
+                            <option value="10" selected>Top 10</option>
+                            <option value="15">Top 15</option>
+                        </select>
+                    </div>
+
+                    <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                        <!-- Top Products -->
+                        <div class="card">
+                            <h3 class="text-lg font-bold mb-4 flex items-center">
+                                <i class="ph-fill ph-trophy text-green-500 mr-2"></i>
+                                Top Products
+                            </h3>
+                            <div id="topProductsList" class="space-y-2">
+                                <div class="text-center py-8 text-muted">
+                                    <i class="ph ph-spinner animate-spin text-2xl"></i>
+                                    <span class="ml-2">Loading...</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Worst Products -->
+                        <div class="card">
+                            <h3 class="text-lg font-bold mb-4 flex items-center">
+                                <i class="ph-fill ph-warning text-red-500 mr-2"></i>
+                                Worst Products
+                            </h3>
+                            <div id="worstProductsList" class="space-y-2">
+                                <div class="text-center py-8 text-muted">
+                                    <i class="ph ph-spinner animate-spin text-2xl"></i>
+                                    <span class="ml-2">Loading...</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Heatmap Tab -->
+            <div id="tab-heatmap" class="tab-content hidden">
+                <div class="p-5">
+                    <div class="flex space-x-4 mb-6">
+                        <select id="heatmapMetric" onchange="loadHeatmap()" class="px-4 py-2 rounded-lg border" style="background: var(--bg); border-color: var(--border); color: var(--text);">
+                            <option value="ad_spend_actual">Ad Spend</option>
+                            <option value="sales_count">Sales Count</option>
+                            <option value="Product_Price">Product Price</option>
+                            <option value="total_stockout_days">Stockout Days</option>
+                            <option value="conversion_rate">Conversion Rate</option>
+                        </select>
+                    </div>
+
+                    <h3 class="text-lg font-bold mb-4">Performance Heatmap</h3>
+                    <div class="overflow-x-auto">
+                        <div id="heatmapContainer" class="min-w-[800px]">
+                            <div class="text-center py-8 text-muted">
+                                <i class="ph ph-spinner animate-spin text-2xl"></i>
+                                <span class="ml-2">Loading heatmap...</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="mt-4 flex items-center space-x-2 text-sm">
+                        <span class="text-muted">Legend:</span>
+                        <div class="w-8 h-4 rounded" style="background: linear-gradient(to right, #22c55e, #eab308, #ef4444);"></div>
+                        <span class="text-muted">Low → High</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Back-in-Stock Tab -->
+            <div id="tab-backinstock" class="tab-content hidden">
+                <div class="p-5">
+                    <h3 class="text-lg font-bold mb-4">Recent Back-in-Stock Events</h3>
+                    <div id="backInStockList" class="space-y-4">
+                        <div class="text-center py-8 text-muted">
+                            <i class="ph ph-spinner animate-spin text-2xl"></i>
+                            <span class="ml-2">Loading back-in-stock events...</span>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
@@ -862,6 +1025,17 @@ HTML_TEMPLATE = """
             document.querySelector(`.tab-btn[data-tab="${tabName}"]`).classList.add('active');
             document.querySelectorAll('.tab-content').forEach(content => content.classList.remove('active'));
             document.getElementById(`tab-${tabName}`).classList.add('active');
+
+            // Load data for new tabs
+            if (tabName === 'performance') {
+                loadAdPerformance();
+            } else if (tabName === 'topworst') {
+                loadTopWorstProducts();
+            } else if (tabName === 'heatmap') {
+                loadHeatmap();
+            } else if (tabName === 'backinstock') {
+                loadBackInStock();
+            }
         }
 
         function showAdHistory(adName) {
@@ -948,6 +1122,180 @@ HTML_TEMPLATE = """
         document.addEventListener('keydown', function(e) {
             if (e.key === 'Escape') closeModal();
         });
+
+        // New Tab Functions
+
+        async function loadAdPerformance() {
+            try {
+                const response = await fetch('/api/ad-performance');
+                const data = await response.json();
+
+                // Update summary cards
+                document.getElementById('totalAdSpend').textContent = `PKR ${data.total_ad_spend.toLocaleString()}`;
+                document.getElementById('totalRevenue').textContent = `PKR ${data.total_revenue.toLocaleString()}`;
+                document.getElementById('overallROAS').textContent = data.overall_roas.toFixed(2);
+                document.getElementById('totalStockoutDays').textContent = data.total_stockout_days;
+
+                // Load product details
+                const productsResponse = await fetch('/api/product-details');
+                const productsData = await productsResponse.json();
+
+                // Update performance table
+                const tbody = document.getElementById('performanceTableBody');
+                tbody.innerHTML = productsData.products.map(p => `
+                    <tr class="table-row" style="border-bottom: 1px solid var(--border);">
+                        <td class="px-4 py-3 font-semibold text-sm">${p.ad_name}</td>
+                        <td class="px-4 py-3 text-sm">PKR ${p.ad_spend_actual.toFixed(2)}</td>
+                        <td class="px-4 py-3 text-sm">${p.sales_count}</td>
+                        <td class="px-4 py-3 text-sm text-green-600 font-bold">PKR ${(p.price * p.sales_count).toLocaleString()}</td>
+                        <td class="px-4 py-3 text-sm">${p.roas.toFixed(2)}</td>
+                        <td class="px-4 py-3 text-sm">${(p.conversion_rate * 100).toFixed(2)}%</td>
+                    </tr>
+                `).join('');
+            } catch (error) {
+                console.error('Error loading ad performance:', error);
+                document.getElementById('totalAdSpend').textContent = 'Error loading data';
+            }
+        }
+
+        async function loadTopWorstProducts() {
+            try {
+                const metric = document.getElementById('topworstMetric').value;
+                const count = document.getElementById('topworstCount').value;
+
+                const [topResponse, worstResponse] = await Promise.all([
+                    fetch(`/api/top-products?n=${count}&metric=${metric}`),
+                    fetch(`/api/worst-products?n=${count}&metric=${metric}`)
+                ]);
+
+                const topData = await topResponse.json();
+                const worstData = await worstResponse.json();
+
+                // Update top products list
+                const topList = document.getElementById('topProductsList');
+                topList.innerHTML = topData.top_products.map((p, i) => `
+                    <div class="flex items-center justify-between p-3 rounded-lg" style="background: var(--bg_hover);">
+                        <div class="flex items-center space-x-3">
+                            <div class="w-8 h-8 rounded-full bg-green-500 text-white flex items-center justify-center font-bold text-sm">${i + 1}</div>
+                            <div>
+                                <div class="font-semibold text-sm">${p['Ad Name']}</div>
+                                <div class="text-xs text-muted">PKR ${p.Product_Price.toLocaleString()}</div>
+                            </div>
+                        </div>
+                        <div class="text-right">
+                            <div class="font-bold text-green-600">${p[metric]}</div>
+                        </div>
+                    </div>
+                `).join('');
+
+                // Update worst products list
+                const worstList = document.getElementById('worstProductsList');
+                worstList.innerHTML = worstData.worst_products.map((p, i) => `
+                    <div class="flex items-center justify-between p-3 rounded-lg" style="background: var(--bg_hover);">
+                        <div class="flex items-center space-x-3">
+                            <div class="w-8 h-8 rounded-full bg-red-500 text-white flex items-center justify-center font-bold text-sm">${i + 1}</div>
+                            <div>
+                                <div class="font-semibold text-sm">${p['Ad Name']}</div>
+                                <div class="text-xs text-muted">PKR ${p.Product_Price.toLocaleString()}</div>
+                            </div>
+                        </div>
+                        <div class="text-right">
+                            <div class="font-bold text-red-600">${p[metric]}</div>
+                        </div>
+                    </div>
+                `).join('');
+            } catch (error) {
+                console.error('Error loading top/worst products:', error);
+            }
+        }
+
+        async function loadHeatmap() {
+            try {
+                const metric = document.getElementById('heatmapMetric').value;
+                const response = await fetch(`/api/heatmap-data?metric=${metric}`);
+                const data = await response.json();
+
+                const container = document.getElementById('heatmapContainer');
+                const heatmapData = data.heatmap_data;
+
+                // Calculate color scale
+                const maxValue = Math.max(...heatmapData.map(d => d[metric]));
+                const minValue = Math.min(...heatmapData.map(d => d[metric]));
+
+                // Create heatmap grid
+                container.innerHTML = `
+                    <div class="grid grid-cols-4 sm:grid-cols-5 md:grid-cols-6 lg:grid-cols-8 gap-2">
+                        ${heatmapData.map(d => {
+                            const value = d[metric];
+                            const normalized = (value - minValue) / (maxValue - minValue);
+                            const hue = (1 - normalized) * 120; // 120 = green, 0 = red
+                            const bgColor = `hsl(${hue}, 70%, 45%)`;
+
+                            return `
+                                <div class="rounded-lg p-3 text-center cursor-pointer hover:opacity-80 transition-opacity" style="background: ${bgColor}; color: white;">
+                                    <div class="text-xs font-bold truncate" title="${d['Ad Name']}">${d['Ad Name'].substring(0, 15)}${d['Ad Name'].length > 15 ? '...' : ''}</div>
+                                    <div class="text-lg font-bold">${metric.includes('rate') ? (value * 100).toFixed(1) + '%' : value.toFixed(metric === 'ad_spend_actual' ? 0 : 1)}</div>
+                                    <div class="text-xs opacity-90">${d.color_category || ''}</div>
+                                </div>
+                            `;
+                        }).join('')}
+                    </div>
+                `;
+            } catch (error) {
+                console.error('Error loading heatmap:', error);
+                document.getElementById('heatmapContainer').innerHTML = '<div class="text-center text-red-500 py-8">Error loading heatmap</div>';
+            }
+        }
+
+        async function loadBackInStock() {
+            try {
+                const response = await fetch('/api/stockout-summary');
+                const data = await response.json();
+
+                const container = document.getElementById('backInStockList');
+
+                if (data.stockout_products.length === 0) {
+                    container.innerHTML = '<div class="text-center py-8 text-muted">No products currently out of stock</div>';
+                    return;
+                }
+
+                container.innerHTML = data.stockout_products.map(p => `
+                    <div class="card p-4">
+                        <div class="flex items-center justify-between mb-3">
+                            <h4 class="font-bold text-lg">${p['Ad Name']}</h4>
+                            <span class="badge bg-red-100 text-red-700">${p.total_stockout_days} days OOS</span>
+                        </div>
+                        <div class="grid grid-cols-2 md:grid-cols-4 gap-4 text-sm">
+                            <div>
+                                <div class="text-muted text-xs">Wasted Ad Spend</div>
+                                <div class="font-bold text-red-600">PKR ${p.ad_spend_actual.toFixed(2)}</div>
+                            </div>
+                            <div>
+                                <div class="text-muted text-xs">Product Price</div>
+                                <div class="font-bold">PKR ${p.Product_Price.toLocaleString()}</div>
+                            </div>
+                            <div>
+                                <div class="text-muted text-xs">Conversion Rate</div>
+                                <div class="font-bold">${(p.conversion_rate * 100).toFixed(2)}%</div>
+                            </div>
+                            <div>
+                                <div class="text-muted text-xs">Last Stockout</div>
+                                <div class="font-bold">${p.last_stockout_date || 'N/A'}</div>
+                            </div>
+                        </div>
+                        <div class="mt-3 p-3 rounded-lg" style="background: var(--bg_hover);">
+                            <div class="text-xs text-muted mb-1">Recommended Action</div>
+                            <div class="font-semibold text-orange-600">
+                                ${p.total_stockout_days > 10 ? 'URGENT: Pause ads immediately - product has been sold out for ' + p.total_stockout_days + ' days' : 'Monitor: Consider pausing ads if stockout continues'}
+                            </div>
+                        </div>
+                    </div>
+                `).join('');
+            } catch (error) {
+                console.error('Error loading back-in-stock data:', error);
+                document.getElementById('backInStockList').innerHTML = '<div class="text-center text-red-500 py-8">Error loading data</div>';
+            }
+        }
     </script>
 </body>
 </html>
@@ -1336,6 +1684,185 @@ async def get_ad_history(region: str = Query(...), ad_name: str = Query(...)):
 
     history.sort(key=lambda x: (x["date"], x["time"]), reverse=True)
     return JSONResponse({"ad_name": ad_name, "history_count": len(history), "history": history})
+
+# ==================== NEW API ENDPOINTS FOR AD PERFORMANCE ====================
+
+@app.get("/api/ad-performance")
+async def get_ad_performance():
+    """Get ad performance metrics for all products"""
+    try:
+        calc = MetricsCalculator()
+        summary = calc.generate_performance_summary()
+        return JSONResponse(summary)
+    except Exception as e:
+        return JSONResponse({"error": str(e)}, status_code=500)
+
+@app.get("/api/top-products")
+async def get_top_products(n: int = Query(10, ge=1, le=50), metric: str = Query("sales_count")):
+    """Get top N products by specified metric"""
+    try:
+        calc = MetricsCalculator()
+        top_products = calc.get_top_products(metric, n)
+
+        # Add full details
+        result = []
+        for _, row in top_products.iterrows():
+            result.append({
+                "ad_name": row["Ad Name"],
+                "metric_value": row[metric],
+                "product_price": row["Product_Price"],
+                "category": row["Category"]
+            })
+        return JSONResponse({"top_products": result, "metric": metric, "count": len(result)})
+    except Exception as e:
+        return JSONResponse({"error": str(e)}, status_code=500)
+
+@app.get("/api/worst-products")
+async def get_worst_products(n: int = Query(10, ge=1, le=50), metric: str = Query("total_stockout_days")):
+    """Get worst N products by specified metric"""
+    try:
+        calc = MetricsCalculator()
+        worst_products = calc.get_worst_products(metric, n)
+
+        # Add full details
+        result = []
+        for _, row in worst_products.iterrows():
+            result.append({
+                "ad_name": row["Ad Name"],
+                "metric_value": row[metric],
+                "product_price": row["Product_Price"],
+                "category": row["Category"]
+            })
+        return JSONResponse({"worst_products": result, "metric": metric, "count": len(result)})
+    except Exception as e:
+        return JSONResponse({"error": str(e)}, status_code=500)
+
+@app.get("/api/heatmap-data")
+async def get_heatmap_data(metric: str = Query("ad_spend_actual")):
+    """Get heatmap data for visualization"""
+    try:
+        calc = MetricsCalculator()
+        heatmap_data = calc.generate_heatmap_data(metric)
+
+        result = []
+        for _, row in heatmap_data.iterrows():
+            result.append({
+                "ad_name": row["Ad Name"],
+                "metric_value": row[metric],
+                "normalized": row["normalized"],
+                "color_category": row["color_category"]
+            })
+        return JSONResponse({"heatmap_data": result, "metric": metric})
+    except Exception as e:
+        return JSONResponse({"error": str(e)}, status_code=500)
+
+@app.get("/api/product-details")
+async def get_all_product_details():
+    """Get detailed metrics for all products"""
+    try:
+        calc = MetricsCalculator()
+        if calc.df.empty:
+            return JSONResponse({"products": []})
+
+        products = []
+        for _, row in calc.df.iterrows():
+            revenue = row["Product_Price"] * row["sales_count"]
+            roas = calc.calculate_roas(revenue, row["ad_spend_actual"])
+
+            products.append({
+                "ad_name": row["Ad Name"],
+                "price": float(row["Product_Price"]),
+                "category": row["Category"],
+                "ad_spend_actual": float(row["ad_spend_actual"]),
+                "sales_count": int(row["sales_count"]),
+                "conversion_rate": float(row["conversion_rate"]),
+                "total_stockout_days": int(row["total_stockout_days"]),
+                "roas": roas,
+                "revenue": float(revenue)
+            })
+
+        return JSONResponse({"products": products})
+    except Exception as e:
+        return JSONResponse({"error": str(e)}, status_code=500)
+
+@app.get("/api/product-details/{ad_name}")
+async def get_product_details(ad_name: str):
+    """Get detailed metrics for a specific product"""
+    try:
+        calc = MetricsCalculator()
+        product = calc.df[calc.df["Ad Name"] == ad_name].iloc[0] if not calc.df.empty else None
+
+        if product is None:
+            return JSONResponse({"error": "Product not found"}, status_code=404)
+
+        # Calculate impact metrics
+        impact = calc.calculate_revenue_impact(
+            days_out=product.get("total_stockout_days", 0),
+            price=product["Product_Price"],
+            conversion_rate=product.get("conversion_rate", 0.02),
+            ad_spend=product.get("ad_spend_actual", 0)
+        )
+
+        # Calculate product score
+        score = calc.calculate_product_score(
+            total_stockout_days=product.get("total_stockout_days", 0),
+            price=product["Product_Price"],
+            ad_spend_daily=product.get("ad_spend_daily", 0),
+            sales_count=product.get("sales_count", 0),
+            conversion_rate=product.get("conversion_rate", 0.02)
+        )
+
+        return JSONResponse({
+            "ad_name": product["Ad Name"],
+            "product_price": float(product["Product_Price"]),
+            "category": product["Category"],
+            "ad_spend_daily": float(product["ad_spend_daily"]),
+            "ad_spend_actual": float(product["ad_spend_actual"]),
+            "sales_count": int(product["sales_count"]),
+            "conversion_rate": float(product["conversion_rate"]),
+            "total_stockout_days": int(product["total_stockout_days"]),
+            "days_since_last_stockout": int(product.get("days_since_last_stockout", 0)),
+            "last_stockout_date": str(product.get("last_stockout_date", "N/A")),
+            "performance_score": score,
+            "revenue_impact": impact
+        })
+    except Exception as e:
+        return JSONResponse({"error": str(e)}, status_code=500)
+
+@app.get("/api/stockout-summary")
+async def get_stockout_summary():
+    """Get summary of current stockout situation"""
+    try:
+        calc = MetricsCalculator()
+
+        # Products currently out of stock
+        stockout_products = calc.df[calc.df["total_stockout_days"] > 0].copy() if not calc.df.empty else []
+
+        # Sort by stockout days
+        stockout_products = stockout_products.sort_values("total_stockout_days", ascending=False)
+
+        result = []
+        for _, row in stockout_products.iterrows():
+            result.append({
+                "ad_name": row["Ad Name"],
+                "total_stockout_days": int(row["total_stockout_days"]),
+                "days_since_last_stockout": int(row["days_since_last_stockout"]),
+                "product_price": float(row["Product_Price"]),
+                "ad_spend_actual": float(row["ad_spend_actual"]),
+                "category": row["Category"],
+                "last_stockout_date": str(row.get("last_stockout_date", "N/A"))
+            })
+
+        total_wasted = calc.df["ad_spend_actual"].sum() if not calc.df.empty else 0
+
+        return JSONResponse({
+            "stockout_products": result,
+            "total_products_stockout": len(result),
+            "total_wasted_ad_spend": round(total_wasted, 2),
+            "summary": f"{len(result)} products currently out of stock"
+        })
+    except Exception as e:
+        return JSONResponse({"error": str(e)}, status_code=500)
 
 if __name__ == "__main__":
     uvicorn.run(app, host="0.0.0.0", port=8501)

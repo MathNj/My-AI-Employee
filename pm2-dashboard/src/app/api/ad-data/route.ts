@@ -169,12 +169,11 @@ export async function GET(request: NextRequest) {
           const csvStatus = parts[4] || 'Unknown';
 
           // Parse price from CSV (in PKR)
-          let price = parseFloat(rawPrice.replace(/[PKR, Rs.\s]/g, ''));
+          let price = parseFloat(rawPrice.replace(/[PKR, Rs.\s,]/g, ''));
           if (isNaN(price) || price === 0) {
             price = Math.floor(Math.random() * 25000) + 15000;
-          } else {
-            price = price * 100; // Convert to PKR (495.00 -> 49500)
           }
+          // Price is already in PKR from CSV (495.00), no conversion needed
 
           // Determine stock status from CSV
           let isOutOfStock = false;
@@ -196,7 +195,7 @@ export async function GET(request: NextRequest) {
           const revenue_impact = daysOut * (price / 100) * 0.02; // 2% conversion rate
 
           // Top selling based on price and category
-          const isTopSelling = price > 40000 &&
+          const isTopSelling = price > 350 &&  // Adjusted threshold for realistic PKR prices
                               (category === 'Premium' || category === 'Lawn');
 
           products.push({

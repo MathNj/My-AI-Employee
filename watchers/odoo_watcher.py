@@ -12,6 +12,7 @@ import sys
 import json
 import time
 import logging
+import subprocess
 from datetime import datetime, timedelta
 from pathlib import Path
 from typing import Dict, List, Any, Optional
@@ -57,6 +58,11 @@ ACCOUNTING_PATH.mkdir(exist_ok=True)
 # State tracking
 STATE_FILE = LOG_DIR / 'odoo_watcher_state.json'
 CHECK_INTERVAL = 300  # 5 minutes
+
+# Email notification settings
+NOTIFICATION_ENABLED = os.getenv('NOTIFICATION_ENABLED', 'true').lower() == 'true'
+NOTIFICATION_EMAIL = os.getenv('NOTIFICATION_EMAIL', '')
+NOTIFICATION_THRESHOLD = float(os.getenv('NOTIFICATION_THRESHOLD', '0'))  # Notify for invoices >= this amount
 
 class OdooWatcherState:
     """Manages watcher state for detecting new/changed items"""
@@ -353,6 +359,10 @@ class OdooWatcher:
             task_path.write_text(task_content)
             logger.info(f"Created task: {task_filename}")
 
+            # Send email notification if enabled and above threshold
+            if amount >= NOTIFICATION_THRESHOLD:
+                self._send_email_notification('invoice', invoice)
+
             # Save to Accounting/Invoices
             self._save_to_accounting('invoice', invoice)
 
@@ -410,6 +420,10 @@ class OdooWatcher:
 
             task_path.write_text(task_content)
             logger.info(f"Created task: {task_filename}")
+
+            # Send email notification if enabled and above threshold
+            if amount >= NOTIFICATION_THRESHOLD:
+                self._send_email_notification('payment', payment)
 
             # Save to Accounting/Payments
             self._save_to_accounting('payment', payment)
@@ -471,6 +485,10 @@ class OdooWatcher:
             task_path.write_text(task_content)
             logger.info(f"Created task: {task_filename}")
 
+            # Send email notification if enabled and above threshold
+            if amount >= NOTIFICATION_THRESHOLD:
+                self._send_email_notification('bill', bill)
+
             # Save to Accounting/Bills
             self._save_to_accounting('bill', bill)
 
@@ -511,6 +529,226 @@ class OdooWatcher:
         except Exception as e:
             logger.error(f"Error saving to accounting: {e}")
 
+    def _send_email_notification(self, notification_type: str, item_data: Dict) -> bool:
+        """Send email notification via Gmail MCP server
+
+        Args:
+            notification_type: Type of notification (invoice, payment, bill)
+            item_data: Dictionary with item details
+
+        Returns:
+            True if successful, False otherwise
+        """
+        if not NOTIFICATION_ENABLED:
+            logger.debug("Email notifications disabled")
+            return False
+
+        if not NOTIFICATION_EMAIL:
+            logger.warning("NOTIFICATION_EMAIL not set, skipping email notification")
+            return False
+
+        try:
+            # Build email based on type
+            if notification_type == 'invoice':
+                subject = f"📄 New Invoice Created: {item_data.get('name', 'Unknown')}"
+                body = self._format_invoice_email(item_data)
+            elif notification_type == 'payment':
+                subject = f"💰 Payment Received: {item_data.get('name', 'Unknown')}"
+                body = self._format_payment_email(item_data)
+            elif notification_type == 'bill':
+                subject = f"📋 New Vendor Bill: {item_data.get('name', 'Unknown')}"
+                body = self._format_bill_email(item_data)
+            else:
+                logger.warning(f"Unknown notification type: {notification_type}")
+                return False
+
+            # Create email task file for approval workflow
+            timestamp = datetime.now().strftime('%Y%m%d_%H%M%S')
+            email_filename = f"EMAIL_ODOO_{notification_type.upper()}_{timestamp}.md"
+            email_path = NEEDS_ACTION_PATH / email_filename
+
+            email_content = f"""---
+type: email_notification
+source: odoo_watcher
+notification_type: {notification_type}
+priority: medium
+to: {NOTIFICATION_EMAIL}
+subject: {subject}
+format: text
+auto_approve: true
+---
+
+{body}
+"""
+
+            email_path.write_text(email_content, encoding='utf-8')
+            logger.info(f"Email notification queued: {email_filename}")
+
+            # Try to send immediately via Gmail MCP if available
+            self._send_via_gmail_mcp(NOTIFICATION_EMAIL, subject, body)
+
+            return True
+
+        except Exception as e:
+            logger.error(f"Failed to send email notification: {e}")
+            return False
+
+    def _format_invoice_email(self, invoice: Dict) -> str:
+        """Format invoice notification email body"""
+        invoice_name = invoice.get('name', 'Unknown')
+        partner = invoice.get('partner_id', [{}])[0]
+        partner_name = partner.get('name', 'Unknown') if isinstance(partner, dict) else 'Unknown'
+        amount = invoice.get('amount_total', 0)
+        invoice_date = invoice.get('invoice_date') or invoice.get('create_date', '')
+        state = invoice.get('state', 'draft')
+
+        return f"""A new invoice has been created in Odoo.
+
+Invoice Details:
+  Invoice Number: {invoice_name}
+  Customer: {partner_name}
+  Amount: ${amount:,.2f}
+  Invoice Date: {invoice_date}
+  Status: {state}
+  Odoo ID: {invoice.get('id')}
+
+Next Steps:
+  - Review invoice in Odoo: http://localhost:8069/web#id={invoice.get('id')}&model=account.move
+  - Check task file in Needs_Action/ for details
+  - Invoice will be sent to customer after approval
+
+---
+Generated by Odoo Watcher
+{datetime.now().strftime('%Y-%m-%d %H:%M:%S')}
+"""
+
+    def _format_payment_email(self, payment: Dict) -> str:
+        """Format payment notification email body"""
+        payment_name = payment.get('name', 'Unknown')
+        partner = payment.get('partner_id', [{}])[0]
+        partner_name = partner.get('name', 'Unknown') if isinstance(partner, dict) else 'Unknown'
+        amount = payment.get('amount', 0)
+        payment_date = payment.get('payment_date', '')
+        state = payment.get('state', 'draft')
+
+        return f"""A payment has been received in Odoo.
+
+Payment Details:
+  Payment Reference: {payment_name}
+  Customer: {partner_name}
+  Amount: ${amount:,.2f}
+  Payment Date: {payment_date}
+  Status: {state}
+  Odoo ID: {payment.get('id')}
+
+Next Steps:
+  - Review payment in Odoo: http://localhost:8069/web#id={payment.get('id')}&model=account.payment
+  - Reconcile with outstanding invoice if needed
+  - Check task file in Needs_Action/ for details
+
+---
+Generated by Odoo Watcher
+{datetime.now().strftime('%Y-%m-%d %H:%M:%S')}
+"""
+
+    def _format_bill_email(self, bill: Dict) -> str:
+        """Format vendor bill notification email body"""
+        bill_name = bill.get('name', 'Unknown')
+        partner = bill.get('partner_id', [{}])[0]
+        vendor_name = partner.get('name', 'Unknown') if isinstance(partner, dict) else 'Unknown'
+        amount = bill.get('amount_total', 0)
+        bill_date = bill.get('invoice_date', '')
+        due_date = bill.get('invoice_date_due', '')
+        state = bill.get('state', 'draft')
+
+        return f"""A new vendor bill has been received in Odoo.
+
+Bill Details:
+  Bill Number: {bill_name}
+  Vendor: {vendor_name}
+  Amount: ${amount:,.2f}
+  Bill Date: {bill_date}
+  Due Date: {due_date}
+  Status: {state}
+  Odoo ID: {bill.get('id')}
+
+Next Steps:
+  - Review bill in Odoo: http://localhost:8069/web#id={bill.get('id')}&model=account.move
+  - Approve for payment
+  - Check task file in Needs_Action/ for details
+
+---
+Generated by Odoo Watcher
+{datetime.now().strftime('%Y-%m-%d %H:%M:%S')}
+"""
+
+    def _send_via_gmail_mcp(self, to: str, subject: str, body: str) -> bool:
+        """Send email directly via Gmail MCP server
+
+        Args:
+            to: Recipient email
+            subject: Email subject
+            body: Email body
+
+        Returns:
+            True if successful, False otherwise
+        """
+        try:
+            mcp_server_path = VAULT_PATH / 'mcp-servers' / 'gmail-mcp' / 'dist' / 'index.js'
+
+            if not mcp_server_path.exists():
+                logger.debug(f"Gmail MCP server not found at: {mcp_server_path}")
+                return False
+
+            # Build MCP request
+            request_data = {
+                "jsonrpc": "2.0",
+                "id": 1,
+                "method": "tools/call",
+                "params": {
+                    "name": "send_email",
+                    "arguments": {
+                        "to": [to],
+                        "subject": subject,
+                        "body": body,
+                        "isHtml": False
+                    }
+                }
+            }
+
+            # Call MCP server
+            result = subprocess.run(
+                ["node", str(mcp_server_path)],
+                input=json.dumps(request_data) + "\n",
+                capture_output=True,
+                text=True,
+                cwd=str(mcp_server_path.parent),
+                timeout=30
+            )
+
+            if result.returncode == 0:
+                try:
+                    response = json.loads(result.stdout)
+                    if "result" in response:
+                        logger.info(f"✅ Email notification sent via Gmail MCP to {to}")
+                        return True
+                    else:
+                        logger.warning(f"Gmail MCP returned error: {response.get('error')}")
+                        return False
+                except json.JSONDecodeError:
+                    logger.warning("Could not parse Gmail MCP response")
+                    return False
+            else:
+                logger.debug(f"Gmail MCP error: {result.stderr}")
+                return False
+
+        except subprocess.TimeoutExpired:
+            logger.debug("Gmail MCP timeout")
+            return False
+        except Exception as e:
+            logger.debug(f"Failed to send via Gmail MCP: {e}")
+            return False
+
     def get_status(self) -> Dict:
         """Get watcher status"""
         return {
@@ -520,7 +758,10 @@ class OdooWatcher:
             'check_interval': CHECK_INTERVAL,
             'state_file': str(STATE_FILE),
             'odoo_url': ODOO_URL,
-            'odoo_db': ODOO_DB
+            'odoo_db': ODOO_DB,
+            'notifications_enabled': NOTIFICATION_ENABLED,
+            'notification_email': NOTIFICATION_EMAIL if NOTIFICATION_EMAIL else 'Not configured',
+            'notification_threshold': NOTIFICATION_THRESHOLD
         }
 
     def run_once(self) -> Dict[str, int]:

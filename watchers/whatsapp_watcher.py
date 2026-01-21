@@ -109,6 +109,33 @@ class WhatsAppWatcher(BaseWatcher):
         self.logger.info(f"Session path: {self.session_path}")
         self.logger.info(f"Headless mode: {self.headless}")
 
+    def _safe_query_unread_chats(self):
+        """
+        Safely query for unread chats with comprehensive error handling.
+
+        This method wraps the Playwright query_selector_all call in extensive error
+        handling to prevent TargetClosedError from crashing the watcher.
+
+        Returns:
+            List of chat elements or empty list if error occurs
+        """
+        try:
+            # Use the most specific selector available
+            return self.page.query_selector_all('[data-testid="cell-frame-container"] [aria-label*="unread message"]')
+        except Exception as e:
+            error_msg = str(e)
+
+            # Check if this is a TargetClosedError or similar browser error
+            if any(err in error_msg for err in ["Target closed", "Target page", "Target page, context or browser has been closed", "Session closed", "Browser has been closed"]):
+                self.logger.warning(f"TargetClosedError: Browser disconnected - {error_msg}")
+                # Mark page as None so main loop will reinitialize
+                self.page = None
+                return []
+
+            # For other errors, log and return empty
+            self.logger.error(f"Error querying unread chats: {error_msg}")
+            return []
+
     def initialize_browser(self) -> bool:
         """
         Initialize Playwright browser with persistent session.
@@ -241,38 +268,35 @@ class WhatsAppWatcher(BaseWatcher):
 
         Note:
             If page becomes unresponsive, attempts to reconnect automatically.
+            This method is wrapped in extensive error handling to prevent crashes.
         """
+        # Top-level safety check
         if not self.page:
             self.logger.error("Browser not initialized")
             return []
 
+        # Check page validity with try-catch around the check itself
         try:
-            # Check if page is still responsive
-            try:
-                self.page.title()
-            except Exception as e:
-                self.logger.warning(f"Page unresponsive ({e}), attempting to reconnect...")
-                if not self._initialize_browser():
-                    self.logger.error("Failed to reconnect to browser")
-                    return []
-                self.logger.info("Successfully reconnected to browser")
+            if self.page.is_closed():
+                self.logger.warning("Page is closed, will reinitialize")
+                return []
+        except Exception as check_err:
+            self.logger.error(f"Error checking page state: {check_err}")
+            return []
 
-            # Find all unread chat elements (with error handling for closed page)
-            try:
-                unread_chats = self.page.query_selector_all('[data-testid="cell-frame-container"] [aria-label*="unread message"]')
-            except Exception as e:
-                self.logger.error(f"Error querying unread chats: {e}")
-                # Page might have closed, try to reconnect
-                self.logger.warning("Page may have closed, attempting to reconnect...")
-                if not self._initialize_browser():
-                    self.logger.error("Failed to reconnect after page closed")
-                    return []
-                # Retry after reconnection
-                try:
-                    unread_chats = self.page.query_selector_all('[data-testid="cell-frame-container"] [aria-label*="unread message"]')
-                except Exception as e2:
-                    self.logger.error(f"Still failed after reconnection: {e2}")
-                    return []
+        try:
+            # Check if page is still valid using is_closed() only
+            # This is the most reliable check and doesn't trigger page operations
+            if not self.page or self.page.is_closed():
+                self.logger.warning("Page object is None or closed")
+                return []
+
+            # Find all unread chat elements (with comprehensive error handling)
+            # Use a wrapper function to catch Playwright errors
+            unread_chats = self._safe_query_unread_chats()
+            if not unread_chats:
+                self.logger.debug("No unread messages found or error occurred")
+                return []
 
             if not unread_chats:
                 self.logger.debug("No unread messages")
@@ -323,11 +347,12 @@ class WhatsAppWatcher(BaseWatcher):
 
                 except Exception as e:
                     # Check if page closed during processing
-                    if "Target closed" in str(e) or "Session closed" in str(e):
+                    if "Target closed" in str(e) or "Session closed" in str(e) or "Target page" in str(e):
                         self.logger.warning(f"Page closed while processing chat, stopping this check cycle")
                         # Mark browser for reinitialization
                         self.page = None
-                        raise  # Re-raise to be caught by outer handler
+                        # Don't re-raise - just return empty to trigger main loop reconnection
+                        return []
                     else:
                         self.logger.error(f"Error processing chat element: {e}")
                     continue
@@ -522,8 +547,21 @@ Add notes here about actions taken on this message.
                         # Increment check counter
                         self.total_checks += 1
 
-                        # Check for new items
-                        new_items = self.check_for_updates()
+                        # Check for new items with specific TargetClosedError handling
+                        new_items = []
+                        try:
+                            new_items = self.check_for_updates()
+                        except Exception as check_error:
+                            error_str = str(check_error)
+                            self.logger.warning(f"Exception caught in main loop: {error_str}")
+                            # Clean up and reinitialize for ANY error during check
+                            self.logger.info("Cleaning up and reinitializing browser...")
+                            self._cleanup_browser()
+                            time.sleep(5)
+                            if not self.initialize_browser():
+                                self.logger.error("Failed to reinitialize after error")
+                                time.sleep(30)
+                            continue
 
                         # Process each new item
                         if new_items:

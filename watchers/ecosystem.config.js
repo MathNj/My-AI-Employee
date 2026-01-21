@@ -43,7 +43,7 @@ module.exports = {
       // Gmail Watcher - Monitors important emails
       name: 'gmail-watcher',
       script: 'gmail_watcher.py',
-      interpreter: 'python3',
+      interpreter: 'python',
       cwd: watchersDir,
       instances: 1,
       autorestart: true,
@@ -65,7 +65,7 @@ module.exports = {
       // Filesystem Watcher - Monitors Inbox folder
       name: 'filesystem-watcher',
       script: 'filesystem_watcher.py',
-      interpreter: 'python3',
+      interpreter: 'python',
       cwd: watchersDir,
       instances: 1,
       autorestart: true,
@@ -87,7 +87,7 @@ module.exports = {
       // WhatsApp Watcher - Monitors WhatsApp Web
       name: 'whatsapp-watcher',
       script: 'whatsapp_watcher.py',
-      interpreter: 'python3',
+      interpreter: 'python',
       cwd: watchersDir,
       instances: 1,
       autorestart: true,
@@ -110,7 +110,7 @@ module.exports = {
       // Google Calendar Watcher - Monitors upcoming events
       name: 'calendar-watcher',
       script: 'calendar_watcher.py',
-      interpreter: 'python3',
+      interpreter: 'python',
       cwd: watchersDir,
       args: '--interval 300 --hours-ahead 48 --min-hours-ahead 1',
       instances: 1,
