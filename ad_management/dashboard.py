@@ -9,27 +9,39 @@ from jinja2 import Template
 
 app = FastAPI()
 
-# Simple price cache to avoid repeated scraping
-price_cache = {}
+# Load product prices from CSV
+product_prices_cache = {}
 
-def scrape_product_price_sync(url) -> float:
-    """Scrape product price (sync version)"""
-    # Handle NaN or invalid URLs
+def load_product_prices_from_csv() -> dict:
+    """Load actual prices from URLS.csv"""
+    global product_prices_cache
+
+    if product_prices_cache:
+        return product_prices_cache
+
+    try:
+        df = pd.read_csv("URLS.csv")
+        for _, row in df.iterrows():
+            url = str(row.get("URL", ""))
+            price = float(row.get("Product_Price", 0))
+            if url and url.startswith('http'):
+                product_prices_cache[url] = price
+        print(f"[OK] Loaded {len(product_prices_cache)} product prices from URLS.csv")
+    except Exception as e:
+        print(f"[ERROR] Failed to load product prices: {e}")
+
+    return product_prices_cache
+
+def get_product_price_from_csv(url: str) -> float:
+    """Get actual product price from CSV"""
     if not isinstance(url, str) or url == "#" or not url.startswith('http'):
-        price_cache[str(url)] = 0.0
         return 0.0
 
-    if url in price_cache:
-        return price_cache[url]
+    # Load prices if not already loaded
+    if not product_prices_cache:
+        load_product_prices_from_csv()
 
-    # For now, return a default price - actual scraping would require separate process
-    # We'll use $285 as default (average dress price)
-    import random
-    # Generate price between $150-$400 for variety
-    price = random.randint(150, 400)
-    price_cache[url] = float(price)
-    print(f"Generated price ${price} for {url[:50]}...")
-    return float(price)
+    return product_prices_cache.get(url, 0.0)
 
 global_LOG_PATH = os.path.join("global", "Ad_Status_Log.xlsx")
 HISTORY_DAYS = 90
@@ -342,7 +354,7 @@ HTML_TEMPLATE = """
                             <td class="px-4 py-3 font-bold text-lg">{{ loop.index }}</td>
                             <td class="px-4 py-3 font-semibold">{{ product.ad_name }}</td>
                             <td class="px-4 py-3">
-                                <span class="text-green-600 font-black text-lg">${{ product.product_price }}</span>
+                                <span class="text-green-600 font-black text-lg">PKR ${{ "{:,.0f}".format(product.product_price) }}</span>
                             </td>
                             <td class="px-4 py-3">
                                 {% if product.status == 'offline' %}
@@ -473,7 +485,7 @@ HTML_TEMPLATE = """
                                     <span class="badge bg-gradient-to-r from-red-500 to-red-600 text-white text-xs">{{ item.days_oos }}d</span>
                                 </td>
                                 <td class="px-4 py-3">
-                                    <span class="text-green-600 font-bold">${{ item.product_price }}</span>
+                                    <span class="text-green-600 font-bold">PKR ${{ "{:,.0f}".format(item.product_price) }}</span>
                                 </td>
                                 <td class="px-4 py-3">
                                     <span class="text-red-600 font-bold">${{ item.revenue_loss }}</span>
@@ -546,7 +558,15 @@ HTML_TEMPLATE = """
         </div>
 
         <div class="mt-6 text-center text-sm text-muted">
-            <p>Last updated: {{ last_update }} | Data retention: {{ history_days }} days</p>
+            <p>
+                <span class="inline-flex items-center px-3 py-1 rounded-full text-xs font-bold bg-yellow-100 text-yellow-800 border border-yellow-300">
+                    ⚠️ Sample Data - Prices from CSV, not live scraped
+                </span>
+                <span class="ml-3 text-muted">|</span>
+                <span class="ml-3">Last updated: {{ last_update }}</span>
+                <span class="text-muted">|</span>
+                Data retention: {{ history_days }} days
+            </p>
         </div>
     </main>
 
@@ -713,7 +733,7 @@ HTML_TEMPLATE = """
             adData.forEach(ad => {
                 // Shorten ad name for display
                 const shortName = ad.ad_name.length > 25 ? ad.ad_name.substring(0, 25) + '...' : ad.ad_name;
-                labels.push(`${shortName} ($${ad.product_price})`);
+                labels.push(`${shortName} (PKR ${ad.product_price.toLocaleString()})`);
                 data.push(ad.product_price);
 
                 // Color based on price amount
@@ -998,8 +1018,8 @@ def calculate_metrics(df: pd.DataFrame, daily_revenue: float) -> tuple:
 
         total_oos_seconds += ad_total_seconds
 
-        # Get product price for this ad (scrape from URL)
-        product_price = scrape_product_price_sync(last_url)
+        # Get product price for this ad from CSV (not random)
+        product_price = get_product_price_from_csv(last_url)
         if product_price > 0:
             ad_price_data.append({
                 "ad_name": ad_name,
