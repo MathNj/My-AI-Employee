@@ -10,7 +10,7 @@ A fully autonomous AI Employee system that achieves **Gold Tier** status with 10
 
 **Status:** ✅ **100% Gold Tier Compliant**
 **Test Results:** ✅ **65/65 tests passing (100% success rate)**
-**Last Updated:** 2026-01-20
+**Last Updated:** 2026-01-21
 
 ### Gold Tier Requirements (All Complete)
 
@@ -31,13 +31,14 @@ A fully autonomous AI Employee system that achieves **Gold Tier** status with 10
 
 **Your Personal AI Employee operates continuously without manual intervention:**
 
-1. **Monitors 6+ Input Sources:**
+1. **Monitors 7+ Input Sources:**
    - Gmail (unread important emails every 2 minutes)
    - Slack (keyword matches every 1 minute)
    - Google Calendar (events 1-48 hours ahead every 5 minutes)
-   - WhatsApp (urgent messages every 30 seconds)
+   - WhatsApp (urgent messages every 30 seconds, enhanced error recovery)
+   - Instagram (posts and engagement monitoring)
    - File System (real-time file drops in Inbox folder)
-   - Odoo Accounting (financial events every 5 minutes)
+   - Odoo Accounting (financial events every 5 minutes, email notifications)
 
 2. **Processes with 24+ Agent Skills:**
    - Auto-approver (AI-powered approval decisions)
@@ -162,16 +163,18 @@ python test_comprehensive.py
 
 ## Key Features
 
-### 🔄 **Continuous Monitoring (6 Watchers)**
-- Gmail, WhatsApp, Slack, Calendar, File System, Odoo
+### 🔄 **Continuous Monitoring (7 Watchers)**
+- Gmail, WhatsApp, Slack, Calendar, Instagram, File System, Odoo
 - Orchestrator manages all watchers with auto-restart
 - Health monitoring and error recovery
+- WhatsApp TargetClosedError fix with auto-recovery
 
 ### 🧠 **AI-Powered Decision Making (24+ Skills)**
 - Auto-approver evaluates safety of actions
 - Cross-domain bridge unifies personal + business context
 - Ralph loop for autonomous multi-step completion
 - CEO briefing generation (weekly business audits)
+- Ad monitoring for e-commerce stockout detection
 
 ### 📧 **External Actions (3 MCP Servers)**
 - Gmail MCP: Send/search emails via OAuth 2.0
@@ -216,12 +219,13 @@ AI_Employee_Vault/
 │   ├── error_recovery.py      # Retry, circuit breaker, graceful degradation
 │   ├── audit_logger.py        # Audit logging system
 │   ├── gmail_watcher.py
-│   ├── whatsapp_watcher.py
+│   ├── whatsapp_watcher.py    # Enhanced with TargetClosedError fix
 │   ├── slack_watcher.py
 │   ├── calendar_watcher.py
+│   ├── instagram_watcher.py   # NEW: Instagram monitoring
 │   ├── filesystem_watcher.py
-│   └── odoo_watcher.py
-├── .claude/skills/            # Claude Code Agent Skills (24 skills)
+│   └── odoo_watcher.py        # Enhanced with email notifications
+├── .claude/skills/            # Claude Code Agent Skills (24+ skills)
 │   ├── auto-approver/
 │   ├── task-processor/
 │   ├── approval-processor/
@@ -234,6 +238,7 @@ AI_Employee_Vault/
 │   ├── cross-domain-bridge/
 │   ├── ralph-loop/
 │   ├── scheduler-manager/
+│   ├── ad_monitoring/         # NEW: E-commerce ad monitoring
 │   └── [12 more skills]
 ├── mcp-servers/               # MCP servers
 │   ├── gmail-mcp/             # Gmail OAuth 2.0
@@ -593,5 +598,5 @@ This is a hackathon project for educational purposes. See individual component l
 **Built with:** Claude Code, Obsidian, Python, Playwright, Docker, Odoo, MCP Protocol
 
 **Version:** 1.0 (Gold Tier)
-**Last Updated:** 2026-01-20
+**Last Updated:** 2026-01-21
 **Repository:** https://github.com/MathNj/My-AI-Employee
