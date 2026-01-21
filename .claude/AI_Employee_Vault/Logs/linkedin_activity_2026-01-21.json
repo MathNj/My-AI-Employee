@@ -1,0 +1,12 @@
+[
+  {
+    "timestamp": "2026-01-21T22:39:29.112185",
+    "action": "post_failed",
+    "details": {
+      "message": "|",
+      "error": "Post button clicked but compose dialog didn't close. Post may have failed.",
+      "file": "LINKEDIN_POST_20260121_ai_employee.md"
+    },
+    "skill": "linkedin-poster"
+  }
+]
