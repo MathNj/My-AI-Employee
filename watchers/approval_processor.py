@@ -15,7 +15,10 @@ import subprocess
 # Fix encoding for Windows
 if sys.platform == 'win32':
     try:
-        sys.stdout.reconfigure(encoding='utf-8')
+        if hasattr(sys.stdout, 'reconfigure'):
+            sys.stdout.reconfigure(encoding='utf-8')
+        if hasattr(sys.stderr, 'reconfigure'):
+            sys.stderr.reconfigure(encoding='utf-8')
     except:
         pass
 
@@ -26,6 +29,24 @@ try:
 except ImportError:
     EMAIL_SENDER_AVAILABLE = False
     logging.warning("Email sender not available - emails will require manual sending")
+
+# Import WhatsApp sender
+WHATSAPP_SENDER_AVAILABLE = False
+try:
+    whatsapp_mcp_path = Path(__file__).parent.parent / 'mcp-servers' / 'whatsapp-mcp'
+    if whatsapp_mcp_path.exists():
+        sys.path.insert(0, str(whatsapp_mcp_path))
+        from whatsapp_sender import WhatsAppSender
+        WHATSAPP_SENDER_AVAILABLE = True
+        logging.info("WhatsApp sender imported successfully")
+    else:
+        logging.warning(f"WhatsApp MCP server not found at {whatsapp_mcp_path}")
+except ImportError as e:
+    logging.warning(f"WhatsApp sender import failed: {e}")
+    WHATSAPP_SENDER_AVAILABLE = False
+except Exception as e:
+    logging.warning(f"WhatsApp sender initialization error: {e}")
+    WHATSAPP_SENDER_AVAILABLE = False
 
 # Configuration
 VAULT_PATH = Path(__file__).parent.parent
@@ -77,6 +98,20 @@ class ApprovalProcessor:
                 logger.warning("Gmail credentials not found - emails will require manual sending")
         else:
             logger.info("Email sender not available - emails will require manual sending")
+
+        # Initialize WhatsApp sender if available
+        self.whatsapp_sender = None
+        if WHATSAPP_SENDER_AVAILABLE:
+            try:
+                self.whatsapp_sender = WhatsAppSender(
+                    session_path=None,  # Use default (same as watcher)
+                    headless=True  # Run in headless mode
+                )
+                logger.info("WhatsApp sender initialized")
+            except Exception as e:
+                logger.warning(f"Failed to initialize WhatsApp sender: {e}")
+        else:
+            logger.info("WhatsApp sender not available - WhatsApp messages will require manual sending")
 
         logger.info("ApprovalProcessor initialized")
         logger.info(f"  Monitoring: {self.approved}")
@@ -132,6 +167,8 @@ class ApprovalProcessor:
         try:
             if action_type == 'email':
                 return self.execute_email(action_file, metadata, content)
+            elif action_type == 'whatsapp':
+                return self.execute_whatsapp(action_file, metadata, content)
             elif action_type in ['linkedin_post', 'x_post', 'facebook_post', 'instagram_post']:
                 return self.execute_social_post(action_file, metadata, action_type)
             else:
@@ -206,6 +243,65 @@ class ApprovalProcessor:
         else:
             logger.info("  Email sender not available - requires manual sending")
             self.move_to_done(action_file, note="Email requires manual sending via Gmail\n\nPlease send:\nTo: {to}\nSubject: {subject}\n\n{body}")
+            return True
+
+    def execute_whatsapp(self, action_file, metadata, content):
+        """
+        Execute WhatsApp message action
+
+        Reads WhatsApp message content from the approved action file and sends it.
+        """
+        to = metadata.get('to', metadata.get('recipient', ''))
+        message_id = metadata.get('message_id', '')
+
+        # Extract message body from content (after frontmatter)
+        # Look for ## Message or similar section
+        body_lines = []
+        in_message_section = False
+        for line in content.split('\n'):
+            if line.startswith('## Message') or line.startswith('## WhatsApp Message'):
+                in_message_section = True
+                continue
+            if in_message_section and (line.startswith('#') or line.startswith('---')):
+                break
+            if in_message_section:
+                body_lines.append(line)
+
+        message = '\n'.join(body_lines).strip()
+
+        # If no message section, use entire content after frontmatter
+        if not message:
+            # Find content after frontmatter ends
+            parts = content.split('---', 2)
+            if len(parts) > 1:
+                message = parts[1].strip()
+            else:
+                message = content
+
+        logger.info(f"  WhatsApp to: {to}")
+        logger.info(f"  Message length: {len(message)} chars")
+
+        # Try to send via WhatsApp sender
+        if self.whatsapp_sender and to and message:
+            logger.info("  Attempting to send via WhatsApp sender...")
+
+            result = self.whatsapp_sender.send_message(
+                to=to,
+                message=message
+            )
+
+            if result['success']:
+                self.move_to_done(action_file, note=f"WhatsApp message sent successfully via Playwright automation.\nRecipient: {result.get('recipient')}\nTimestamp: {result.get('timestamp')}")
+                logger.info(f"  [OK] WhatsApp message sent successfully!")
+                return True
+            else:
+                logger.error(f"  Failed to send WhatsApp message: {result.get('error')}")
+                logger.info("  Moving to Done with note for manual sending")
+                self.move_to_done(action_file, note=f"WhatsApp sending failed: {result.get('error')}\n\nPlease send manually:\nTo: {to}\n\n{message}")
+                return False
+        else:
+            logger.info("  WhatsApp sender not available - requires manual sending")
+            self.move_to_done(action_file, note=f"WhatsApp message requires manual sending\n\nPlease send:\nTo: {to}\n\n{message}")
             return True
 
     def execute_social_post(self, action_file, metadata, platform):

@@ -1,6 +1,6 @@
 ---
 name: ralph-loop
-description: "Autonomous task completion loop that keeps Claude working until all tasks in a plan are done. Use when you need multi-step autonomous execution. Triggers: run ralph loop, autonomous task processing, complete all tasks, ralph execute, keep working until done."
+description: "Autonomous task completion loop that keeps Claude working until all tasks in a plan are done. Use when you need multi-step autonomous execution. Triggers: run ralph loop, autonomous task processing, complete all tasks, ralph execute, keep working until done. NOW WITH MCP INTEGRATION for enhanced state management and progress tracking."
 ---
 
 # Ralph Loop - Autonomous Task Completion
@@ -8,6 +8,8 @@ description: "Autonomous task completion loop that keeps Claude working until al
 **Gold Tier Requirement #10** - Implements the "Ralph Wiggum" pattern from Requirements1.md Section 2D
 
 Enables Claude Code to work autonomously on multi-step tasks until completion, solving the "one-shot" limitation through a Stop hook that intercepts exit and re-injects prompts until tasks are complete.
+
+**NEW:** Now with Ralph MCP Server integration for enhanced state management, progress tracking, and iteration control!
 
 ---
 

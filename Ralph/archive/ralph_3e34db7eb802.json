@@ -1,0 +1,13 @@
+{
+  "task_id": "ralph_3e34db7eb802",
+  "original_path": "Needs_Action\\TEST_ralph_test.md",
+  "target_path": "Done/TEST_ralph_test.md",
+  "max_iterations": 5,
+  "current_iteration": 1,
+  "prompt": "Test prompt for Ralph",
+  "completion_strategy": "file_movement",
+  "started_at": "2026-01-23T16:27:16.312270",
+  "status": "in_progress",
+  "notes": [],
+  "history": []
+}

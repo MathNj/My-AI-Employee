@@ -1,0 +1,2 @@
+# Ralph MCP Server - Python Dependencies
+# No external dependencies required - uses Python standard library only

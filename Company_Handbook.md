@@ -1,12 +1,13 @@
 # Company Handbook - Rules of Engagement
 
 ---
-version: 2.2
+version: 2.3
 tier: gold
-last_updated: 2026-01-21
+last_updated: 2026-01-22
 odoo_integrated: true
 social_media_enabled: true
 instagram_watcher_enabled: true
+whatsapp_mcp_enabled: true
 whatsapp_enhanced: true
 ad_management_enabled: true
 architecture: local_first
@@ -99,6 +100,7 @@ This AI Employee follows a **Perception → Reasoning → Action** architecture:
 
 4. **Action Layer (MCP Servers)** - Model Context Protocol servers for:
    - Email sending (Gmail MCP)
+   - WhatsApp messaging (WhatsApp MCP with Playwright automation)
    - Social media posting (LinkedIn, Facebook, Instagram, X/Twitter)
    - Browser automation (Playwright for web interactions)
    - Accounting operations (Odoo/Odoo integration)
@@ -138,6 +140,7 @@ This AI Employee follows a **Perception → Reasoning → Action** architecture:
 **ALWAYS create approval requests for:**
 - ✅ All payment actions (invoices, bills, transfers)
 - ✅ All emails (Gold tier standard until trust builds)
+- ✅ All WhatsApp messages (Gold tier standard until trust builds)
 - ✅ All social media posts (LinkedIn, Facebook, Instagram, X/Twitter)
 - ✅ New vendor/contact additions
 - ✅ Subscription changes or cancellations

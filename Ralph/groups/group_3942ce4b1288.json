@@ -1,0 +1,10 @@
+{
+  "group_id": "group_3942ce4b1288",
+  "group_name": "Test Group",
+  "task_ids": [
+    "ralph_d1700d1a40ac"
+  ],
+  "strategy": "sequential",
+  "created_at": "2026-01-23T16:55:28.509385",
+  "status": "pending"
+}

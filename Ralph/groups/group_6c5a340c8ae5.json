@@ -1,0 +1,12 @@
+{
+  "group_id": "group_6c5a340c8ae5",
+  "group_name": "High Priority Batch",
+  "task_ids": [
+    "ralph_d363f02925d0",
+    "ralph_4551ddcf19d2",
+    "ralph_63bc8e8afd9e"
+  ],
+  "strategy": "sequential",
+  "created_at": "2026-01-23T16:58:32.026718",
+  "status": "pending"
+}

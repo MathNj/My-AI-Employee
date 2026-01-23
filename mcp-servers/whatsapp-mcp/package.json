@@ -1,0 +1,20 @@
+{
+  "name": "whatsapp-mcp-server",
+  "version": "1.0.0",
+  "description": "WhatsApp MCP Server for Personal AI Employee",
+  "main": "server.py",
+  "scripts": {
+    "start": "python server.py",
+    "test": "python whatsapp_sender.py --to \"Test Contact\" --message \"Test message from WhatsApp MCP\""
+  },
+  "keywords": [
+    "mcp",
+    "whatsapp",
+    "messaging"
+  ],
+  "author": "Personal AI Employee Project",
+  "license": "MIT",
+  "dependencies": {
+    "playwright": "^1.40.0"
+  }
+}
