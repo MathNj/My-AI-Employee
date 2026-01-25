@@ -101,6 +101,10 @@ export default function Dashboard() {
   const [heatmapData, setHeatmapData] = useState<HeatmapData[]>([]);
   const [selectedMetric, setSelectedMetric] = useState('roas');
   const [topWorstCount, setTopWorstCount] = useState(10);
+  const [stockCheckLoading, setStockCheckLoading] = useState(false);
+  const [realStockData, setRealStockData] = useState<any[]>([]);
+  const [lastStockCheck, setLastStockCheck] = useState<Date | null>(null);
+  const [hasCheckedStock, setHasCheckedStock] = useState(false);
 
   useEffect(() => {
     setMounted(true);
@@ -126,6 +130,14 @@ export default function Dashboard() {
         fetchTopWorstProducts();
       } else if (adSubTab === 'heatmap') {
         fetchHeatmapData();
+      } else if (adSubTab === 'backinstock') {
+        // Automatically check real stock when opening back-in-stock tab
+        if (!hasCheckedStock) {
+          checkRealStock();
+          setHasCheckedStock(true);
+        } else {
+          fetchPerformanceData();
+        }
       }
     }
   }, [activeTab, adSubTab]);
@@ -297,6 +309,135 @@ export default function Dashboard() {
     }
   };
 
+  // Check real stock via web scraping using ad_monitoring skill
+  const checkRealStock = async () => {
+    setStockCheckLoading(true);
+    try {
+      const res = await fetch('/api/ad-data?action=check-stock');
+      const data = await res.json();
+
+      if (data.success) {
+        console.log('Stock check response:', data);
+
+        // Merge scraped data with products - match by URL for accuracy
+        const updatedProducts = adProducts.map(product => {
+          // Try to match by URL first (most reliable)
+          const scraped = data.stock_updates?.find((s: any) => {
+            // Normalize URLs for comparison
+            const normalizeUrl = (url: string) => url.replace(/^https?:\/\//, '').replace(/\/$/, '').toLowerCase();
+            return normalizeUrl(s.url) === normalizeUrl(product.url);
+          });
+
+          if (scraped && scraped.scraped) {
+            // Update with real scraped data - use API's days_out directly
+            return {
+              ...product,
+              title: scraped.title || product.title,
+              status: scraped.status,
+              days_out: scraped.days_out ?? 0,  // Use API's calculated days_out
+              price: scraped.price || product.price,
+              last_checked: scraped.scraped_at,
+              source: scraped.source || 'unknown'  // Track data source
+            };
+          }
+          return product;
+        });
+
+        console.log('Updated products:', updatedProducts.filter(p => p.status === 'Out of Stock' || p.status === 'Low Stock'));
+
+        // Update state first
+        setAdProducts(updatedProducts);
+        setRealStockData(data.stock_updates || []);
+        setLastStockCheck(new Date());
+
+        // Regenerate performance data with updated products (pass directly to avoid race condition)
+        await fetchPerformanceDataWithProducts(updatedProducts);
+      }
+    } catch (error) {
+      console.error('Error checking stock:', error);
+    } finally {
+      setStockCheckLoading(false);
+    }
+  };
+
+  // Fetch performance data with specific products (avoids race condition)
+  const fetchPerformanceDataWithProducts = async (products: any[]) => {
+    try {
+      const totalRevenue = products.reduce((sum, product) => {
+        const seed = product.id * 123;
+        let salesCount: number;
+
+        if (product.price < 300) {
+          salesCount = Math.floor(seededRandom(seed) * 50) + 1;
+        } else if (product.price < 400) {
+          salesCount = Math.floor(seededRandom(seed) * 30) + 1;
+        } else {
+          salesCount = Math.floor(seededRandom(seed) * 20) + 1;
+        }
+
+        return sum + (product.price * salesCount);
+      }, 0);
+
+      const adSpendPercentage = 0.05 + (seededRandom(999) * 0.05);
+      const totalAdSpend = totalRevenue * adSpendPercentage;
+      const overallROAS = totalRevenue / totalAdSpend;
+      const totalStockoutDays = products.reduce((sum, p) => sum + p.days_out, 0);
+
+      setPerformanceSummary({
+        total_ad_spend: Math.round(totalAdSpend),
+        total_revenue: Math.round(totalRevenue),
+        overall_roas: Math.round(overallROAS * 100) / 100,
+        total_stockout_days: totalStockoutDays
+      });
+
+      const performanceData = products.map(product => {
+        const seed = product.id * 456;
+        let salesCount: number;
+        let conversionRate: number;
+
+        if (product.price < 300) {
+          salesCount = Math.floor(seededRandom(seed) * 50) + 1;
+          conversionRate = 0.01 + (seededRandom(seed + 1) * 0.04);
+        } else if (product.price < 400) {
+          salesCount = Math.floor(seededRandom(seed) * 30) + 1;
+          conversionRate = 0.01 + (seededRandom(seed + 1) * 0.03);
+        } else {
+          salesCount = Math.floor(seededRandom(seed) * 20) + 1;
+          conversionRate = 0.01 + (seededRandom(seed + 1) * 0.02);
+        }
+
+        const revenue = product.price * salesCount;
+        const adSpendPercent = 0.05 + (seededRandom(seed + 2) * 0.05);
+        const adSpend = revenue * adSpendPercent;
+        const roas = revenue / adSpend;
+
+        return {
+          ad_name: product.title,
+          price: product.price,
+          category: product.category,
+          ad_spend_actual: Math.round(adSpend),
+          sales_count: salesCount,
+          conversion_rate: Math.round(conversionRate * 100) / 100,
+          total_stockout_days: product.days_out, // Uses real scraped days_out
+          roas: Math.round(roas * 100) / 100,
+          revenue: Math.round(revenue)
+        };
+      });
+
+      setPerformanceData(performanceData);
+    } catch (error) {
+      console.error('Error generating performance data:', error);
+      setPerformanceSummary(null);
+      setPerformanceData([]);
+    }
+  };
+
+  // Seeded random number generator for consistent data
+  const seededRandom = (seed: number): number => {
+    const x = Math.sin(seed) * 10000;
+    return x - Math.floor(x);
+  };
+
   // Enhanced ad management fetch functions
   const fetchPerformanceData = async () => {
     try {
@@ -304,23 +445,25 @@ export default function Dashboard() {
       // Budget (<₨300): 1-50 sales/month
       // Mid-range (₨300-₨400): 1-30 sales/month
       // Premium (>₨400): 1-20 sales/month
+      // Uses seeded random based on product ID for consistency
 
       const totalRevenue = adProducts.reduce((sum, product) => {
+        const seed = product.id * 123; // Unique seed per product
         let salesCount: number;
 
         if (product.price < 300) {
-          salesCount = Math.floor(Math.random() * 50) + 1; // 1-50 sales
+          salesCount = Math.floor(seededRandom(seed) * 50) + 1; // 1-50 sales
         } else if (product.price < 400) {
-          salesCount = Math.floor(Math.random() * 30) + 1; // 1-30 sales
+          salesCount = Math.floor(seededRandom(seed) * 30) + 1; // 1-30 sales
         } else {
-          salesCount = Math.floor(Math.random() * 20) + 1; // 1-20 sales
+          salesCount = Math.floor(seededRandom(seed) * 20) + 1; // 1-20 sales
         }
 
         return sum + (product.price * salesCount);
       }, 0);
 
       // Ad spend: 5-10% of revenue (10-20x ROAS - highly profitable)
-      const adSpendPercentage = 0.05 + (Math.random() * 0.05); // Random 5-10%
+      const adSpendPercentage = 0.05 + (seededRandom(999) * 0.05); // Seeded random 5-10%
       const totalAdSpend = totalRevenue * adSpendPercentage;
       const overallROAS = totalRevenue / totalAdSpend;
       const totalStockoutDays = adProducts.reduce((sum, p) => sum + p.days_out, 0);
@@ -332,25 +475,26 @@ export default function Dashboard() {
         total_stockout_days: totalStockoutDays
       });
 
-      // Generate per-product performance data
+      // Generate per-product performance data with seeded random values
       const performanceData = adProducts.map(product => {
+        const seed = product.id * 456; // Different seed for performance metrics
         let salesCount: number;
         let conversionRate: number;
 
         if (product.price < 300) {
-          salesCount = Math.floor(Math.random() * 50) + 1; // 1-50 sales
-          conversionRate = 0.01 + (Math.random() * 0.04); // 1-5% conversion
+          salesCount = Math.floor(seededRandom(seed) * 50) + 1; // 1-50 sales
+          conversionRate = 0.01 + (seededRandom(seed + 1) * 0.04); // 1-5% conversion
         } else if (product.price < 400) {
-          salesCount = Math.floor(Math.random() * 30) + 1; // 1-30 sales
-          conversionRate = 0.01 + (Math.random() * 0.03); // 1-4% conversion
+          salesCount = Math.floor(seededRandom(seed) * 30) + 1; // 1-30 sales
+          conversionRate = 0.01 + (seededRandom(seed + 1) * 0.03); // 1-4% conversion
         } else {
-          salesCount = Math.floor(Math.random() * 20) + 1; // 1-20 sales
-          conversionRate = 0.01 + (Math.random() * 0.02); // 1-3% conversion
+          salesCount = Math.floor(seededRandom(seed) * 20) + 1; // 1-20 sales
+          conversionRate = 0.01 + (seededRandom(seed + 1) * 0.02); // 1-3% conversion
         }
 
         const revenue = product.price * salesCount;
         // Ad spend: 5-10% of revenue (10-20x ROAS - highly profitable)
-        const adSpendPercent = 0.05 + (Math.random() * 0.05); // Random 5-10%
+        const adSpendPercent = 0.05 + (seededRandom(seed + 2) * 0.05); // Seeded random 5-10%
         const adSpend = revenue * adSpendPercent;
         const roas = revenue / adSpend;
 
@@ -377,37 +521,17 @@ export default function Dashboard() {
 
   const fetchTopWorstProducts = async (metric: string = selectedMetric, count: number = topWorstCount) => {
     try {
-      // First, generate performance data for all products
-      const productsWithPerformance = adProducts.map(product => {
-        let salesCount: number;
-        let conversionRate: number;
+      // First, ensure performance data is available
+      if (performanceData.length === 0) {
+        await fetchPerformanceData();
+      }
 
-        // Calculate sales based on price tier
-        if (product.price < 300) {
-          salesCount = Math.floor(Math.random() * 50) + 1;
-          conversionRate = 0.01 + (Math.random() * 0.04);
-        } else if (product.price < 400) {
-          salesCount = Math.floor(Math.random() * 30) + 1;
-          conversionRate = 0.01 + (Math.random() * 0.03);
-        } else {
-          salesCount = Math.floor(Math.random() * 20) + 1;
-          conversionRate = 0.01 + (Math.random() * 0.02);
-        }
-
-        const revenue = product.price * salesCount;
-        const adSpendPercent = 0.05 + (Math.random() * 0.05);
-        const adSpend = revenue * adSpendPercent;
-        const roas = revenue / adSpend;
-
-        return {
-          ...product,
-          sales_count: salesCount,
-          revenue: revenue,
-          roas: roas,
-          conversion_rate: conversionRate,
-          ad_spend: adSpend
-        };
-      });
+      // Use existing performance data for consistency
+      const productsWithPerformance = performanceData.map(data => ({
+        ...data,
+        price: data.price,
+        days_out: data.total_stockout_days
+      }));
 
       // Sort products by selected performance metric
       const sorted = [...productsWithPerformance].sort((a, b) => {
@@ -434,23 +558,49 @@ export default function Dashboard() {
 
   const fetchHeatmapData = async (metric: string = selectedMetric) => {
     try {
-      // Generate heatmap data from products
-      const data = adProducts.map(product => {
-        let value = 0;
-        if (metric === 'price') value = product.price;
-        else if (metric === 'revenue_impact') value = product.revenue_impact;
-        else if (metric === 'days_out') value = product.days_out;
-        else value = product.price;
+      // Ensure performance data is available for performance metrics
+      if (performanceData.length === 0) {
+        await fetchPerformanceData();
+      }
 
-        // Normalize to 0-1
-        const maxVal = Math.max(...adProducts.map(p =>
-          metric === 'price' ? p.price :
-          metric === 'revenue_impact' ? p.revenue_impact :
-          metric === 'days_out' ? p.days_out :
-          p.price
-        ));
+      // Map metric names to data sources
+      // Performance metrics: roas, revenue, sales_count, conversion_rate
+      // Product metrics: Product_Price, total_stockout_days
+      const performanceMetrics = ['roas', 'revenue', 'sales_count', 'conversion_rate'];
+      const productMetrics = ['Product_Price', 'total_stockout_days', 'price', 'days_out'];
 
-        const normalized = maxVal > 0 ? value / maxVal : 0;
+      // Use appropriate data source based on metric
+      const sourceData = performanceMetrics.includes(metric) ? performanceData :
+                          productMetrics.includes(metric) ? adProducts :
+                          performanceData;
+
+      // Map metric to property names
+      const getMetricValue = (item: any, metric: string): number => {
+        switch (metric) {
+          case 'roas': return item.roas || 0;
+          case 'revenue': return item.revenue || 0;
+          case 'sales_count': return item.sales_count || 0;
+          case 'conversion_rate': return item.conversion_rate || 0;
+          case 'Product_Price':
+          case 'price': return item.price || 0;
+          case 'total_stockout_days':
+          case 'days_out': return item.days_out || item.total_stockout_days || 0;
+          default: return 0;
+        }
+      };
+
+      const getName = (item: any): string => {
+        return item.ad_name || item.title || 'Unknown';
+      };
+
+      // Get all values and find max for normalization
+      const values = sourceData.map(item => getMetricValue(item, metric));
+      const maxVal = Math.max(...values, 0.001); // Avoid division by zero
+
+      // Generate heatmap data
+      const data = sourceData.map((item, index) => {
+        const value = getMetricValue(item, metric);
+        const normalized = value / maxVal;
 
         // Determine color category
         let color_category = 'low';
@@ -458,8 +608,8 @@ export default function Dashboard() {
         else if (normalized > 0.4) color_category = 'medium';
 
         return {
-          ad_name: product.title,
-          metric_value: Math.round(value),
+          ad_name: getName(item),
+          metric_value: value,
           normalized: Math.round(normalized * 100) / 100,
           color_category
         };
@@ -1772,7 +1922,7 @@ export default function Dashboard() {
                             </div>
                             <div className="bg-gray-900/50 border border-yellow-500/30 rounded-lg p-3 hover:border-yellow-400 hover:shadow-[0_0_20px_rgba(250,204,21,0.3)] transition-all group">
                               <div className="text-gray-300 text-[14px] mb-1">REVENUE_IMPACT</div>
-                              <div className="text-2xl font-bold text-yellow-400 group-hover:scale-110 transition-transform">${adSummary.total_revenue_impact.toLocaleString()}</div>
+                              <div className="text-2xl font-bold text-yellow-400 group-hover:scale-110 transition-transform">PKR {adSummary.total_revenue_impact.toLocaleString()}</div>
                             </div>
                             <div className="bg-gray-900/50 border border-purple-500/30 rounded-lg p-3 hover:border-purple-400 hover:shadow-[0_0_20px_rgba(168,85,247,0.3)] transition-all group">
                               <div className="text-gray-300 text-[14px] mb-1">TOP_SELLING</div>
@@ -1798,6 +1948,7 @@ export default function Dashboard() {
                                   <th className="text-center py-2 px-2">STATUS</th>
                                   <th className="text-center py-2 px-2">DAYS_OUT</th>
                                   <th className="text-right py-2 px-2">REVENUE_IMPACT</th>
+                                  <th className="text-center py-2 px-2">SOURCE</th>
                                 </tr>
                               </thead>
                               <tbody>
@@ -1827,14 +1978,27 @@ export default function Dashboard() {
                                       </div>
                                     </td>
                                     <td className="py-2 px-2 text-gray-300">{product.category}</td>
-                                    <td className="py-2 px-2 text-right text-green-400">${product.price}</td>
+                                    <td className="py-2 px-2 text-right text-green-400">PKR {product.price.toLocaleString()}</td>
                                     <td className="py-2 px-2 text-center">
                                       <span className="px-2 py-1 rounded text-[14px] font-bold bg-red-500/20 text-red-400">
                                         OUT_OF_STOCK
                                       </span>
                                     </td>
                                     <td className="py-2 px-2 text-center text-yellow-400 font-bold">{product.days_out}</td>
-                                    <td className="py-2 px-2 text-right text-orange-400">${product.revenue_impact.toLocaleString()}</td>
+                                    <td className="py-2 px-2 text-right text-orange-400">PKR {product.revenue_impact.toLocaleString()}</td>
+                                    <td className="py-2 px-2 text-center">
+                                      {(product as any).source === 'playwright_scrape' ? (
+                                        <span className="px-2 py-1 rounded text-[11px] font-bold bg-green-500/20 text-green-400">
+                                        LIVE
+                                        </span>
+                                      ) : (product as any).source === 'csv_fallback' ? (
+                                        <span className="px-2 py-1 rounded text-[11px] font-bold bg-yellow-500/20 text-yellow-400">
+                                        CSV
+                                        </span>
+                                      ) : (
+                                        <span className="text-gray-500 text-[11px]">-</span>
+                                      )}
+                                    </td>
                                   </tr>
                                 ))}
                               </tbody>
@@ -1953,7 +2117,7 @@ export default function Dashboard() {
                                         {index + 1}
                                       </div>
                                       <div>
-                                        <div className="text-gray-100 font-semibold text-[13px]">{product.title || product['Ad Name']}</div>
+                                        <div className="text-gray-100 font-semibold text-[13px]">{product.ad_name || product.title}</div>
                                         <div className="text-gray-500 text-[11px]">₨{product.price?.toLocaleString() || product.Product_Price?.toLocaleString()}</div>
                                       </div>
                                     </div>
@@ -1979,7 +2143,7 @@ export default function Dashboard() {
                                         {index + 1}
                                       </div>
                                       <div>
-                                        <div className="text-gray-100 font-semibold text-[13px]">{product.title || product['Ad Name']}</div>
+                                        <div className="text-gray-100 font-semibold text-[13px]">{product.ad_name || product.title}</div>
                                         <div className="text-gray-500 text-[11px]">₨{product.price?.toLocaleString() || product.Product_Price?.toLocaleString()}</div>
                                       </div>
                                     </div>
@@ -2099,10 +2263,46 @@ export default function Dashboard() {
                     {/* BACK-IN-STOCK TAB */}
                     {adSubTab === 'backinstock' && (
                       <div className="bg-gray-900/50 border border-gray-800 rounded-lg p-4 flex-1 overflow-auto">
-                        <h3 className="text-lg font-bold text-orange-400 mb-3 flex items-center gap-2">
-                          <span className="text-2xl">⚠️</span>
-                          :: STOCKOUT_ALERTS ::
-                        </h3>
+                        <div className="flex items-center justify-between mb-3">
+                          <h3 className="text-lg font-bold text-orange-400 flex items-center gap-2">
+                            <span className="text-2xl">⚠️</span>
+                            :: STOCKOUT_ALERTS ::
+                          </h3>
+                          <div className="flex items-center gap-2">
+                            {lastStockCheck && (
+                              <span className="text-gray-500 text-[11px]">
+                                Last check: {lastStockCheck.toLocaleTimeString()}
+                              </span>
+                            )}
+                            <button
+                              onClick={checkRealStock}
+                              disabled={stockCheckLoading}
+                              className="bg-orange-500/20 hover:bg-orange-500/30 text-orange-400 px-4 py-2 rounded text-[12px] font-bold border border-orange-500/50 transition-all disabled:opacity-50 disabled:cursor-not-allowed flex items-center gap-2"
+                            >
+                              {stockCheckLoading ? (
+                                <>
+                                  <span className="animate-spin">◉</span>
+                                  Checking...
+                                </>
+                              ) : (
+                                <>
+                                  <span>🔍</span>
+                                  Check Stock (Live)
+                                </>
+                              )}
+                            </button>
+                          </div>
+                        </div>
+                        {realStockData.length > 0 && (
+                          <div className="mb-4 p-3 bg-green-500/10 border border-green-500/30 rounded">
+                            <div className="text-green-400 text-[12px] font-bold mb-1">
+                              ✓ Stock data loaded from {realStockData.length} products
+                            </div>
+                            <div className="text-gray-400 text-[11px]">
+                              Using ad_monitoring skill ({realStockData.filter((d: any) => d.source === 'playwright_scrape').length} live-scraped, {realStockData.filter((d: any) => d.source === 'csv_fallback').length} CSV fallback)
+                            </div>
+                          </div>
+                        )}
                         <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
                           {performanceData.filter(p => p.total_stockout_days > 0).map((product, index) => (
                             <div key={index} className="bg-black/50 border border-red-500/30 rounded-lg p-4 hover:border-red-500/50 transition-all">

@@ -5,22 +5,22 @@
   "restart_delay": 5,
   "processes": {
     "calendar": {
-      "enabled": true,
+      "enabled": false,
       "priority": "high",
       "check_interval_override": 300
     },
     "slack": {
-      "enabled": true,
+      "enabled": false,
       "priority": "high",
       "check_interval_override": 60
     },
     "gmail": {
-      "enabled": true,
+      "enabled": false,
       "priority": "high",
       "check_interval_override": 120
     },
     "whatsapp": {
-      "enabled": true,
+      "enabled": false,
       "priority": "medium",
       "requires_visible_browser": true,
       "check_interval_override": 30
