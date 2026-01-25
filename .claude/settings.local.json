@@ -10,7 +10,12 @@
       "Bash(find:*)",
       "Bash(ls:*)",
       "Bash(dir \"AI_Employee_Vault\\\\Logs\")",
-      "Bash(dir /B *.md)"
+      "Bash(dir /B *.md)",
+      "Bash(tasklist:*)",
+      "Bash(powershell \"Get-Process python -ErrorAction SilentlyContinue | Select-Object Id, ProcessName, StartTime\")",
+      "Bash(powershell:*)",
+      "Bash(pm2:*)",
+      "Bash(pm2 info:*)"
     ]
   }
 }
