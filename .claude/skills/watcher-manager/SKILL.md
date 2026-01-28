@@ -80,7 +80,73 @@ The filesystem watcher:
 ## Resources
 
 ### scripts/generate_filesystem_watcher.py
-Script that generates a complete filesystem watcher Python script ready to use.
+Basic script that generates a simple filesystem watcher Python script.
+
+### scripts/watcher_manager_ultimate.py
+**NEW: Enhanced watcher manager with:**
+- Multi-folder watching with different rules per folder
+- Event filtering and deduplication
+- Pattern matching (glob) and ignore rules
+- Automatic restart on failure
+- Structured JSON logging
+- Watcher health monitoring
+- Event aggregation and throttling
+- Command execution on events
+- Webhook notifications
+- Hot reload configuration
+
+**Usage:**
+```bash
+# Start watching with enhanced features
+python .claude/skills/watcher-manager/scripts/watcher_manager_ultimate.py
+
+# Use custom config
+python .claude/skills/watcher-manager/scripts/watcher_manager_ultimate.py --config watcher_config.yaml
+
+# Show status
+python .claude/skills/watcher-manager/scripts/watcher_manager_ultimate.py --status
+
+# Health check
+python .claude/skills/watcher-manager/scripts/watcher_manager_ultimate.py --health
+```
+
+**Configuration (watcher_config.yaml):**
+```yaml
+folders:
+  - path: /path/to/Inbox
+    recursive: true
+    enabled: true
+    rules:
+      - name: create_tasks
+        filter:
+          patterns: ["*.pdf", "*.docx"]
+          ignore_patterns: ["*.tmp"]
+          extensions: [".pdf", ".docx"]
+        actions:
+          - type: create_task
+          - type: log
+            level: info
+        priority: 10
+
+deduplicate_window_seconds: 5
+aggregate_window_seconds: 60
+max_restarts: 10
+health_check_interval: 60
+```
 
 ### references/watcher_patterns.md
 Detailed patterns and examples for different watcher configurations.
+
+## Version History
+
+**v2.0.0** (2026-01-26) - Ultimate Edition
+- ✅ Multi-folder watching support
+- ✅ Advanced event filtering and deduplication
+- ✅ Health monitoring and auto-restart
+- ✅ Structured JSON logging
+- ✅ Event aggregation and throttling
+- ✅ Webhook notifications
+- ✅ Command execution on events
+- ✅ Hot reload configuration
+
+**v1.0.0** - Initial basic watcher generator

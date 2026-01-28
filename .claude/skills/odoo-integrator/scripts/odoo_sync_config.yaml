@@ -1,0 +1,135 @@
+# Odoo Sync Configuration File
+# Place this file in: ~/.config/odoo-sync/config.yaml or ./config.yaml
+
+# Odoo Connection Settings
+odoo:
+  mcp_url: http://localhost:8000
+  url: http://localhost:8069
+  db: odoo
+  username: admin
+  # api_key: # Set via environment variable ODOO_API_KEY
+
+# Database settings
+databases:
+  default: odoo
+  # Multi-database support
+  additional:
+    - name: company1_db
+      priority: high
+    - name: company2_db
+      priority: medium
+
+# Sync Settings
+sync:
+  batch_size: 100
+  incremental: true
+  enable_validation: true
+  enable_compression: true
+  compression_threshold: 10240  # 10KB
+  enable_backup: true
+  backup_keep: 5
+
+# Parallel Processing
+parallel:
+  enabled: true
+  max_workers: 4
+  queue_size: 1000
+
+# Caching
+cache:
+  enabled: true
+  provider: redis  # redis or memory
+  redis:
+    host: localhost
+    port: 6379
+    db: 0
+  ttl: 300  # 5 minutes
+
+# Rate Limiting
+rate_limit:
+  enabled: true
+  requests_per_second: 10
+  requests_per_minute: 500
+  burst: 20
+
+# Retry Strategy
+retry:
+  max_attempts: 3
+  base_delay: 1.0
+  max_delay: 60.0
+  multiplier: 2.0
+  jitter: true
+  # Per-error-type strategies
+  strategies:
+    timeout:
+      max_attempts: 5
+      base_delay: 2.0
+    rate_limit:
+      max_attempts: 3
+      base_delay: 5.0
+    server_error:
+      max_attempts: 3
+      base_delay: 1.0
+    connection_error:
+      max_attempts: 5
+      base_delay: 3.0
+
+# Circuit Breaker
+circuit_breaker:
+  enabled: true
+  failure_threshold: 5
+  timeout: 60  # seconds before half-open
+  success_threshold: 2  # successes to close
+
+# Logging
+logging:
+  level: INFO  # DEBUG, INFO, WARNING, ERROR
+  format: json  # json or text
+  output:
+    - type: file
+      path: ./Logs/odoo_sync.log
+      max_size: 10MB
+      backup_count: 5
+    - type: console
+      color: true
+
+# Metrics
+metrics:
+  enabled: true
+  port: 9090
+  path: /metrics
+
+# Paths
+paths:
+  vault: .  # Path to AI Employee vault
+  accounting: Accounting
+  needs_action: Needs_Action
+  backup: Accounting/.backups
+
+# Notifications
+notifications:
+  enabled: false
+  email:
+    to: admin@example.com
+    on_error: true
+    on_completion: true
+  webhook:
+    url: https://hooks.example.com/odoo-sync
+    on_error: true
+
+# Schedules (for cron-style automation)
+schedules:
+  # Run full sync daily at 2 AM
+  full_sync:
+    cron: "0 2 * * *"
+    command: "--sync all --force-full"
+
+  # Incremental sync every hour
+  incremental:
+    cron: "0 * * * *"
+    command: "--sync all"
+
+  # Backup daily at 3 AM
+  backup:
+    cron: "0 3 * * *"
+    command: "--backup"

@@ -171,10 +171,50 @@ Update Dashboard
 ## Resources
 
 ### scripts/process_tasks.py
-Main script to run task processing loop.
+Basic script to run task processing loop.
+
+### scripts/task_processor_ultimate.py
+**NEW: Enhanced task processor with:**
+- Parallel/concurrent task execution with ThreadPoolExecutor
+- Task dependency management with DAG (Directed Acyclic Graph)
+- Priority queue with aging for fair scheduling
+- Progress tracking and resumption
+- Structured JSON logging
+- Task validation before processing
+- SLA tracking and alerts
+- Batch operations support
+- Circular dependency detection
+- Task analytics and reporting
+
+**Usage:**
+```bash
+# Process all tasks with enhanced features
+python .claude/skills/task-processor/scripts/task_processor_ultimate.py
+
+# Show status with analytics
+python .claude/skills/task-processor/scripts/task_processor_ultimate.py --status
+
+# Validate task files
+python .claude/skills/task-processor/scripts/task_processor_ultimate.py --validate
+
+# Export report
+python .claude/skills/task-processor/scripts/task_processor_ultimate.py --export report.json
+```
 
 ### scripts/create_plan.py
 Helper to generate action plan files.
 
 ### references/task_patterns.md
 Common task patterns and how to handle them.
+
+## Version History
+
+**v2.0.0** (2026-01-26) - Ultimate Edition
+- ✅ Parallel task execution with dependency management
+- ✅ Priority queue with aging algorithm
+- ✅ Structured JSON logging
+- ✅ Task validation and SLA tracking
+- ✅ Progress tracking and analytics
+- ✅ Batch processing support
+
+**v1.0.0** - Initial basic task processor

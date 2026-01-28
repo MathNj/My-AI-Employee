@@ -312,6 +312,16 @@ All email actions logged to: `/Logs/emails_YYYY-MM-DD.json`
 
 ## Version History
 
+**v3.0.0** (2026-01-26) - Ultimate Edition
+- ✅ Email template system with Jinja2 rendering
+- ✅ Batch sending with rate limiting (token bucket algorithm)
+- ✅ Bounce and complaint handling with classification
+- ✅ Retry logic with exponential backoff
+- ✅ Email scheduling and queue management
+- ✅ Structured JSON logging
+- ✅ Delivery tracking and analytics
+- ✅ Email suppression list for bounces
+
 **v2.0.0** (2026-01-19)
 - ✅ Migrated from SMTP to Gmail MCP
 - ✅ OAuth 2.0 authentication
@@ -323,8 +333,77 @@ All email actions logged to: `/Logs/emails_YYYY-MM-DD.json`
 
 ---
 
+## Ultimate Edition Features
+
+### New Script: email_sender_ultimate.py
+
+**Advanced Email Sending with:**
+
+1. **Template System**
+   - Jinja2-based email templates
+   - Variable substitution
+   - HTML and plain text support
+   - Template inheritance
+
+2. **Batch Processing**
+   - Send multiple emails efficiently
+   - Rate limiting (configurable emails/minute)
+   - Parallel sending with thread pool
+   - Progress tracking
+
+3. **Bounce Handling**
+   - Automatic bounce classification (hard/soft)
+   - Suppression list management
+   - Bounce analytics
+   - SMTP code interpretation
+
+4. **Queue Management**
+   - Schedule emails for later
+   - Persistent queue storage
+   - Automatic retry on failure
+   - Delivery status tracking
+
+**Usage:**
+```bash
+# Send from template
+python .claude/skills/email-sender/scripts/email_sender_ultimate.py \
+  --template invoice_notification \
+  --to "client@example.com" \
+  --data '{"amount": "$2,500", "due_date": "2026-01-31"}'
+
+# Batch send from file
+python .claude/skills/email-sender/scripts/email_sender_ultimate.py \
+  --batch emails_batch.json
+
+# Process queued emails
+python .claude/skills/email-sender/scripts/email_sender_ultimate.py \
+  --process-queue
+
+# Check bounces
+python .claude/skills/email-sender/scripts/email_sender_ultimate.py \
+  --bounces
+
+# Show statistics
+python .claude/skills/email-sender/scripts/email_sender_ultimate.py \
+  --stats
+```
+
+**Configuration (email_sender_config.yaml):**
+```yaml
+smtp_host: smtp.gmail.com
+smtp_port: 587
+smtp_user: your-email@gmail.com
+smtp_password: your-app-password
+from_addr: noreply@example.com
+from_name: "AI Employee"
+rate_per_minute: 60
+max_retries: 3
+```
+
+---
+
 **Status:** Production Ready ✅
-**Method:** Gmail MCP (OAuth 2.0)
+**Method:** Gmail MCP (OAuth 2.0) or SMTP
 **Integration:** Auto-approver enabled
 
 
